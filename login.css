@@ -326,16 +326,16 @@ line-height: 22.53px;
 }
 
 form {
-  gap: 16px; /* was 18px */
+  gap: 14px; /* was 18px */
 }
 
 .forgot-link {
   margin-top: -12px;   /* was -14px, less negative space */
-  margin-bottom: 12px; /* reduce extra space */
+  margin-bottom: 20px; /* reduce extra space */
 }
 
 .signup-link {
-  margin-top: 12px; /* was 18px */
+  margin-top: 14px; /* was 18px */
 }
 
 
@@ -363,4 +363,3 @@ form {
     font-size: 15px;
   }
 }
-
