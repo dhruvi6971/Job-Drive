@@ -77,6 +77,26 @@
     </div>
   </div>
 
-  <script src="sidebar.js"></script>
+  <script>
+  const sidebar = document.querySelector('.sidebar');
+  const toggleBtn = document.getElementById('toggleSidebar');
+  const mobileToggleBtn = document.getElementById('mobileToggle');
+
+  toggleBtn.addEventListener('click', () => {
+    sidebar.classList.toggle('collapsed');
+    feather.replace();
+  });
+
+  mobileToggleBtn.addEventListener('click', () => {
+    sidebar.classList.toggle('active');
+    feather.replace();
+  });
+
+  // ✅ Call feather.replace once after DOM is ready
+  window.addEventListener('DOMContentLoaded', () => {
+    feather.replace();
+  });
+</script>
+
 </body>
 </html>
