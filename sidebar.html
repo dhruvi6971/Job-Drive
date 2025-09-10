@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>JobDrive Sidebar</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="sidebar.css" />
+  <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body>
+  <!-- Toggle button always visible on mobile -->
+<button id="mobileToggle" class="mobile-toggle-btn">
+  <i data-feather="menu"></i>
+</button>
+
+  <div class="sidebar">
+    <!-- Top Section -->
+    <div>
+      <div class="sidebar-logo">
+        <img src="logo1.png" alt="Jobdrive Logo" class="logo-img" />
+        <span id="toggleSidebar" class="back-icon">
+  <i data-feather="chevron-left" class="icon-left"></i>
+  <i data-feather="chevron-right" class="icon-right"></i>
+</span>
+
+      </div>
+
+      <ul class="sidebar-menu">
+        <li class="active">
+          <span class="icon"><i data-feather="home"></i></span>
+          <span class="label">Dashboard</span>
+        </li>
+        <li>
+          <span class="icon"><i data-feather="phone"></i></span>
+          <span class="label">Interviews</span>
+        </li>
+        <li>
+          <span class="icon"><i data-feather="layers"></i></span>
+          <span class="label">Job Drives</span>
+        </li>
+        <li>
+          <span class="icon"><i data-feather="user"></i></span>
+          <span class="label">Job Profiles</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Bottom Section -->
+    <div class="sidebar-bottom">
+      <ul class="sidebar-menu">
+        <li>
+          <span class="icon"><i data-feather="zap"></i></span>
+          <span class="label">Suggest Idea</span>
+        </li>
+        <li>
+          <span class="icon"><i data-feather="settings"></i></span>
+          <span class="label">Settings</span>
+        </li>
+        <li>
+          <span class="icon"><i data-feather="help-circle"></i></span>
+          <span class="label">Help</span>
+        </li>
+        <li>
+          <span class="icon"><i data-feather="log-out"></i></span>
+          <span class="label">Sign Out</span>
+        </li>
+      </ul>
+
+      <a href="/profile" class="sidebar-profile">
+        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profile" />
+        <div class="profile-info">
+          <span class="name">Brooklyn Simmons</span>
+          <span class="email">brooklyn@simmons.com</span>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <script src="sidebar.js"></script>
+</body>
+</html>

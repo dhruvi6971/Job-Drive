@@ -1,0 +1,302 @@
+body {
+  margin: 0;
+  font-family: 'Inter', Arial, sans-serif;
+  background-color: #F5F6F7;
+}
+
+/* === SIDEBAR === */
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 272px;
+  height: 100vh;
+  background: #111827;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0 0 24px 0;
+  box-sizing: border-box;
+  z-index: 1000;
+  transition: width 0.3s ease;
+}
+
+/* Collapsed sidebar */
+.sidebar.collapsed {
+  width: 72px !important;
+  padding: 0 0 16px 0;
+}
+
+.sidebar.collapsed .sidebar-logo img.logo-img {
+  display: none; /* Hide logo when collapsed */
+}
+
+.sidebar.collapsed .sidebar-menu li span.label {
+  display: none; /* Hide menu labels */
+}
+
+.sidebar.collapsed .sidebar-menu li {
+  justify-content: center; /* Center icons */
+  padding-left: 0;
+  gap: 0;
+}
+
+.sidebar.collapsed .sidebar-profile {
+  display: none; /* Hide profile section */
+}
+
+/* Toggle icon swap */
+.sidebar.collapsed .back-icon i[data-feather="chevron-left"] {
+  display: none;
+}
+
+.sidebar.collapsed .back-icon i[data-feather="chevron-right"] {
+  display: inline;
+}
+
+/* Default hide chevron-right icon */
+.back-icon i[data-feather="chevron-right"] {
+  display: none;
+}
+
+/* === LOGO === */
+.sidebar-logo {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 32px 0 16px;
+  margin: 8px 0 8px;
+}
+
+.logo-img {
+  width: 140px;
+  margin-left: 32px;
+}
+
+.back-icon {
+  margin-right: 24px;
+  color: #ffffff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* Hide the right arrow by default */
+.back-icon .icon-right {
+  display: none;
+  padding-left: 24px;
+}
+
+/* Hide left arrow and show right arrow when sidebar is collapsed */
+.sidebar.collapsed .back-icon .icon-left {
+  display: none;
+}
+
+.sidebar.collapsed .back-icon .icon-right {
+  display: inline;
+}
+
+/* === MENU === */
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-menu li {
+  display: flex;
+  align-items: center;
+  padding: 14px 0 12px 32px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  gap: 12px;
+  transition: all 0.2s ease;
+  border-radius: 12px;
+}
+
+.sidebar-menu li .icon {
+  color: #ffffff; /* Icon color */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+}
+
+.sidebar-menu li:hover {
+  background: rgba(73, 200, 251, 0.12);  /* Light blue hover */
+  padding-left: 24px;
+  margin: 4px 16px;
+  gap: 8px;
+}
+
+.sidebar-menu li .label {
+  color: #9E9E9E; /* Text color */
+  white-space: nowrap;
+}
+
+.sidebar-menu li:hover .label,
+.sidebar-menu li.active .label {
+  color: #38bdf8;
+}
+
+.sidebar-menu li:hover .icon,
+.sidebar-menu li.active .icon {
+  color: #fff;
+}
+
+/* === BOTTOM === */
+.sidebar-bottom {
+  margin-top: auto;
+}
+
+.sidebar-profile {
+  display: flex;
+  align-items: center;
+  background: #1e293b;
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin: 24px 16px 0;
+  gap: 16px;
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.3s ease;
+}
+
+.sidebar-profile:hover {
+  background: rgba(73, 200, 251, 0.12);
+}
+
+.sidebar-profile img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-info .name {
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.profile-info .email {
+  color: #808080;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* === TABLET === */
+@media (max-width: 900px) {
+  .sidebar {
+    width: 72px;
+  }
+
+  .logo-img,
+  .label,
+  .sidebar-logo span {
+    display: none;
+  }
+
+  .sidebar-logo {
+    justify-content: center;
+  }
+
+  .sidebar-menu li {
+    justify-content: center;
+    padding: 12px 0;
+  }
+
+  .sidebar-profile {
+    justify-content: center;
+    padding: 12px;
+  }
+
+  .profile-info {
+    display: none;
+  }
+
+  .sidebar-profile img {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+.mobile-toggle-btn {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  background: #111827;
+  border: none;
+  color: white;
+  padding: 8px;
+  border-radius: 6px;
+  z-index: 11000;
+  cursor: pointer;
+  display: none;
+}
+
+@media (max-width: 600px) {
+  .mobile-toggle-btn {
+    display: block;
+  }
+}
+
+
+/* === MOBILE === */
+
+@media (max-width: 600px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: -272px;
+    width: 272px;
+    height: 100vh;
+    background: #111827;
+    flex-direction: column;
+    padding: 0 0 24px 0;
+    box-sizing: border-box;
+    transition: left 0.3s ease;
+    z-index: 10000;
+    overflow-y: auto; /* Make sidebar scrollable vertically */
+  }
+
+  .sidebar.active {
+    left: 0;
+  }
+
+  .sidebar-menu {
+    flex-direction: column;
+    margin: 0;
+  }
+
+  .sidebar-menu li {
+    padding: 14px 32px;
+    justify-content: flex-start;
+  }
+
+  /* SHOW the label text on mobile */
+  .label {
+    display: inline;
+    color: #9E9E9E;
+  }
+
+  .sidebar-profile {
+    display: flex;
+    padding: 16px 32px;
+  }
+
+  /* Hide mobile toggle button when sidebar is active? (optional) */
+  .mobile-toggle-btn {
+    display: block; /* or toggle visibility via JS */
+  }
+}
+
