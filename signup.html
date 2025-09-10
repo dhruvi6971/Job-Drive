@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Jobdrive Sign Up</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="signup.css" />
+</head>
+<body>
+  <div class="container">
+    <!-- Left Side Image -->
+    <div class="left">
+      <img src="photo1.jpg" alt="Teamwork" />
+    </div>
+
+    <!-- Right Side Sign Up -->
+    <div class="right">
+      <div class="logo">
+        <img src="logo1.png" alt="Jobdrive Logo" />
+      </div>
+      <div class="welcome">WELCOME</div>
+      <div class="login-title">Create Your Account</div>
+
+      <form action="verification-sent.html" method="GET">
+        <div class="input-group">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            placeholder="johnsondoe@nomail.com"
+            required
+          />
+        </div>
+
+        <div class="input-group password-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="Password" required />
+          <span class="eye-icon">👁️</span>
+        </div>
+
+      <label class="checkbox-label">
+  <input type="checkbox" required />
+  I agree to terms and conditions
+</label>
+
+
+
+        <button class="login-btn" type="submit">Sign Up</button>
+      </form>
+
+      <div class="signup-link">
+        Already have an account? <a href="login.html">Log In</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function togglePassword() {
+      const pwd = document.getElementById("password");
+      pwd.type = pwd.type === "password" ? "text" : "password";
+    }
+  </script>
+</body>
+</html>

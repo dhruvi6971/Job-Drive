@@ -1,0 +1,365 @@
+/* Paste your login.css content here */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  background: #fff;
+}
+
+/* ---------- LAYOUT ---------- */
+.container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+}
+
+/* Left Side Image */
+.left {
+  flex: 1.2;
+  padding: 16px;
+  display: flex;
+}
+
+.left img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 16px;
+}
+
+/* Right Side (Sign Up Section) */
+.right {
+  flex: 1;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 60px;
+}
+
+/* Logo */
+.logo {
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+.logo img {
+  max-width: 180px;   /* adjust size */
+  height: auto;
+}
+
+/* Welcome + Title */
+.welcome {
+  color: #222;
+  font-family: Inter;
+  font-size: 12.8px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-bottom: 6px;
+}
+
+.login-title {
+  color: #222;
+  font-family: Inter;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  margin-bottom: 52px;
+}
+
+/* ---------- FORM ---------- */
+form {
+  width: 100%;
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+/* Container for checkbox + label text */
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;  /* space between checkbox and text */
+  color: #6B7280;
+  font-size: 14px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.eye-icon {
+  position: absolute;
+  top: 50%;
+  right: 10px; /* adjust as needed */
+  transform: translateY(-50%);
+  cursor: pointer;
+  user-select: none;
+}
+
+
+/* Style checkbox itself */
+.checkbox-label input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+
+.input-group {
+  position: relative;
+  margin-bottom: 8px;
+}
+
+/* Default floating label style */
+.input-group label {
+  position: absolute;
+  top: -12px;
+  left: 14px;
+  height: 16px;
+  background: #fff;
+  font-size: 12.8px;
+  font-weight: 400;
+  color: #BDBDBD;
+  line-height: 22.53px;
+  text-align: center;
+  pointer-events: none;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Email label */
+.input-group label[for="email"] {
+  width: 52px;
+  height: 23px; /* matches Figma */
+}
+
+/* Password label */
+.input-group label[for="password"] {
+  width: 72px;
+  height: 23px; /* wider for "Password" */
+}
+
+/* Label default state */
+.input-group label {
+  font-size: 14px;
+  margin-bottom: 6px;
+  color: #Bebebe;   /* default gray */
+  font-family: Inter;
+  font-weight: 400;
+  line-height: 20px;
+  transition: color 0.2s ease;
+}
+
+/* Input default */
+.input-group input {
+  width: 380px;
+  max-width: 100%;
+  height: 56px;
+  padding: 0 16px;
+  border: 1px solid #D1D5DB;
+  border-radius: 8px;
+  font-size: 16px;
+  background: #fff;
+  font-family: Inter;
+  line-height: 28.16px;
+  font-weight: 400;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+}
+
+/* When input is focused → border + label color both change */
+.input-group:focus-within input {
+  border-color: #424242;
+}
+
+.input-group:focus-within label {
+  color: #424242;
+}
+
+/* Mobile & Tablet adjustments */
+@media (max-width: 768px) {
+  .input-group input {
+    width: 100%;  /* take full width */
+    height: 52px; /* slightly smaller for mobile */
+  }
+}
+
+@media (max-width: 480px) {
+  .input-group input {
+    height: 48px; /* even smaller on small phones */
+    font-size: 14px;
+  }
+}
+
+label {
+  font-size: 12.8px;
+  font-weight: 400;
+  color: #6B7280;
+  margin-bottom: 4px;
+}
+
+input[type="email"]::placeholder,
+input[type="password"]::placeholder {
+  color: #9CA3AF;   /* gray placeholder */
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 28.16px;
+}
+
+.password-group {
+  position: relative; /* make sure parent is relative */
+}
+
+.toggle-password {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 18px;
+  color: #888;
+  padding: 4px;
+  display: block; /* ensure always visible */
+}
+
+/* Forgot password */
+/* We don't need this on signup, so not included */
+
+/* Error state for input */
+.input-group.error input {
+  border-color: #EF4444;   /* red border */
+}
+
+.input-group.error label {
+  color: #EF4444;          /* red label */
+}
+
+/* Error message below input */
+.error-message {
+  font-size: 12px;
+  color: #EF4444;
+  margin-top: 4px;
+  font-family: Inter, sans-serif;
+}
+
+/* Login Button */
+.login-btn {
+  background: #49C8FB;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 14px 0;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.2s;
+}
+
+.login-btn:hover {
+  background: #3bb6e0;
+}
+
+/* Sign Up link */
+.signup-link {
+  margin-top: 18px;
+  font-size: 14px;
+  text-align: center;
+  color: #333;
+}
+
+.signup-link a {
+  font-weight: 600;
+  color: #49C8FB;
+  text-decoration: none;
+}
+
+.signup-link a:hover {
+  color: #3bb6e0;
+}
+
+/* ---------- RESPONSIVE ---------- */
+
+/* Tablets (≤ 1024px) */
+@media (max-width: 1024px) {
+  .right {
+    padding: 30px 40px;
+  }
+}
+
+/* Mobiles (≤ 768px) */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    height: auto; /* let it grow naturally */
+  }
+
+  .left, .right {
+    width: 100%;
+    padding: 16px;
+  }
+
+  .left {
+    order: -1; /* image first */
+    padding: 0;
+  }
+
+  .left img {
+    border-radius: 16px;
+    height: 160px;
+    padding: 8px;
+  }
+  .login-title {
+  margin-bottom: 48px; /* was 52px, reduce gap */
+}
+
+form {
+  gap: 14px; /* was 18px */
+}
+
+.signup-link {
+  margin-top: 14px; /* was 18px */
+}
+
+  /* sign-up section comes immediately after image */
+  .right {
+    justify-content: flex-start;  /* align content from top of its box */
+    padding: 20px;                /* space around content */
+  }
+}
+
+/* Small Mobiles (≤ 480px) */
+@media (max-width: 480px) {
+  .logo {
+    font-size: 22px;
+  }
+  .login-title {
+    font-size: 18px;
+  }
+  input[type="email"], input[type="password"] {
+    font-size: 14px;
+    padding: 12px;
+  }
+  .login-btn {
+    font-size: 15px;
+  }
+}
