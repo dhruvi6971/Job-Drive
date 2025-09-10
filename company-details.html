@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Company Details - Jobdrive</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(to right, #f0faff, #ffffff);
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      color: #222;
+    }
+
+    .container {
+      max-width: 1000px;
+      width: 100%;
+      background: #fff;
+      padding: 48px 40px;
+      border-radius: 16px;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    h1 {
+      text-align: center;
+      font-weight: 600;
+      color: #49C8FB;
+      margin-bottom: 24px;
+      font-size: 28px;
+    }
+
+    p.info {
+      font-size: 15px;
+      color: #444;
+      margin-bottom: 32px;
+      text-align: center;
+      padding: 14px 20px;
+      border: 1px solid #49C8FB;
+      background-color: #f0faff;
+      border-radius: 8px;
+      line-height: 1.5;
+    }
+
+    form {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 500;
+      font-size: 14px;
+      color: #555;
+    }
+
+    input[type="text"],
+    input[type="tel"],
+    select {
+      width: 100%;
+      padding: 12px 14px;
+      font-size: 15px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background-color: #f9f9f9;
+      transition: border 0.2s ease;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #49C8FB;
+      outline: none;
+      background-color: #fff;
+    }
+
+    input::placeholder {
+      color: #aaa;
+      font-style: italic;
+    }
+
+    button {
+      grid-column: 1 / -1;
+      width: 100%;
+      background: #49C8FB;
+      border: none;
+      color: white;
+      padding: 16px;
+      font-weight: 600;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    button:hover {
+      background: #3bb6e0;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 32px 20px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      p.info {
+        font-size: 14px;
+      }
+
+      button {
+        font-size: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Company Details</h1>
+    <p class="info">
+      We need your company information because we send emails on your behalf to candidates for interviews. This helps candidates know about your company with accurate address and name in emails.
+    </p>
+    <form id="company-form">
+  <div>
+    <label for="companyName">Company Name</label>
+    <input type="text" id="companyName" name="companyName" required />
+  </div>
+
+  <div>
+    <label for="companySize">Company Size</label>
+    <select id="companySize" name="companySize" required>
+      <option value="" disabled selected>Select size</option>
+      <option value="1-10">1 - 10</option>
+      <option value="11-50">11 - 50</option>
+      <option value="51-200">51 - 200</option>
+      <option value="201-500">201 - 500</option>
+      <option value="500+">500+</option>
+    </select>
+  </div>
+
+  <!-- ✅ Phone number moved up here -->
+  <div>
+    <label for="phoneNumber">Phone Number</label>
+    <input type="tel" id="phoneNumber" name="phoneNumber" required pattern="[0-9\s\-\+\(\)]+" />
+  </div>
+
+  <div>
+    <label for="address1">Address Line 1</label>
+    <input type="text" id="address1" name="address1" required />
+  </div>
+
+  <div>
+    <label for="address2">Address Line 2 <span style="color: #999;">(Optional)</span></label>
+    <input type="text" id="address2" name="address2" placeholder="Apartment, suite, etc." />
+  </div>
+
+  <div>
+    <label for="city">City</label>
+    <input type="text" id="city" name="city" required />
+  </div>
+
+  <div>
+    <label for="state">State</label>
+    <input type="text" id="state" name="state" required />
+  </div>
+
+  <div>
+    <label for="country">Country</label>
+    <input type="text" id="country" name="country" required />
+  </div>
+
+  <div>
+    <label for="pinCode">Pin Code</label>
+    <input type="text" id="pinCode" name="pinCode" required />
+  </div>
+
+  <div>
+    <label for="hearAbout">How did you hear about us? <span style="color: #999;">(Optional)</span></label>
+    <input type="text" id="hearAbout" name="hearAbout" placeholder="e.g., referral, ad, social media" />
+  </div>
+
+  <button type="submit">Submit Company Details</button>
+</form>
+</div>
+
+  <script>
+    document.getElementById('company-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('✅ Company details submitted successfully!');
+      // Optionally redirect or handle data here
+    });
+  </script>
+</body>
+</html>
