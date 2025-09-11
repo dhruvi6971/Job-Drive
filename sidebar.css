@@ -145,7 +145,7 @@ body {
 
 .sidebar-menu li:hover .icon,
 .sidebar-menu li.active .icon {
-  color: #fff;
+  color: #38bdf8;
 }
 
 /* === BOTTOM === */
@@ -288,6 +288,54 @@ body {
     display: inline;
     color: #9E9E9E;
   }
+  .sidebar-bottom {
+    margin-top: 0;
+    padding-bottom: 16px; 
+    margin-bottom: 48px;/* optional */
+  }
+
+  .sidebar-profile {
+    margin: 16px 32px 0; /* reduce bottom margin */
+    padding: 12px 16px;  /* reduce padding */
+  }
+  .profile-info {
+    display: flex;  /* or block */
+    flex-direction: column;
+  }
+  .sidebar-profile {
+  display: flex;
+  align-items: center; /* Vertically center image and text */
+  background: #1e293b;
+  border-radius: 12px;
+  padding: 12px 16px; /* Slightly smaller padding to reduce space */
+  margin: 24px 16px 0;
+  gap: 8px; /* Reduce gap between image and text */
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.3s ease;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Vertically center the text relative to image */
+  gap: 2px; /* Reduce space between name and email */
+}
+
+.profile-info .name {
+  color: #ffffff;
+  font-size: 14px; /* Slightly bigger font, adjust as needed */
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+.profile-info .email {
+  color: #808080;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.1;
+}
+
 
   .sidebar-profile {
     display: flex;
