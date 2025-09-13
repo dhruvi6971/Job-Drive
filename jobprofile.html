@@ -102,7 +102,7 @@
   border: none;
   padding: 14px 20px;
   font-size: 16px;
-  border-radius: 8px;
+  border-radius: 12px;
   cursor: pointer;
 
   /* Fix alignment */
@@ -134,15 +134,6 @@
   background: rgba(0,0,0,0.5);
   justify-content: center; align-items: center;
   z-index: 2000;
-}
-
-.modal-content {
-  background: #fff;
-  padding: 24px;
-  border-radius: 12px;
-  width: 420px;
-  max-width: 90%;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
 .modal-content h2 {
@@ -187,6 +178,29 @@
   background: #e5e7eb;
   color: #111827;
 }
+.modal-content { 
+  background: #fff; 
+  padding: 20px 20px;
+  border-radius: 24px; 
+  width: 800px;
+   min-height: 20px; 
+   max-width: 95vw; 
+   box-shadow: 0 8px 32px rgba(0,0,0,0.22); 
+   font-size: 18px; 
+   display: flex; 
+   flex-direction: column; 
+   justify-content: center; } 
+   .modal-content h2 { margin-bottom: 40px; font-size: 20px; } 
+   .form-group label { font-size: 18px; } 
+   .form-group input, .form-group textarea 
+   { font-size: 20px; padding: 16px 18px; } 
+   .form-actions { gap: 16px; margin-top: 36px; } /* Make input fields and textarea big inside the modal */ 
+   .modal-content input, .modal-content textarea { font-size: 18px; padding: 28px 22px; border-radius: 12px; min-height: 56px; } 
+   .modal-content textarea { min-height: 90px; resize: vertical; } /* Make modal form buttons big */ 
+   .modal-content .btn { font-size: 20px; padding: 16px 32px; border-radius: 12px; } /* Make the description textarea much taller in the modal */
+   .modal-content textarea#jobDescText { min-height: 220px; font-size: 16px; padding: 18px 18px; border-radius: 12px; resize: vertical; } /* Make the Job Title input and File Upload input less tall in the modal */
+   .modal-content input#jobTitle, .modal-content input#jobDescFile { min-height: 64px; padding: 18px 18px; font-size: 16px;}
+
 
     /* === MOBILE === */
     .mobile-toggle-btn {
@@ -202,7 +216,178 @@
       .table-header { display: none; }
       .table-row { flex-direction: column; align-items: flex-start; padding: 16px; gap: 12px; }
       .profile-col, .drives-col, .actions-col { flex: unset; width: 100%; }
+
+  .drives-col, .actions-col {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    width: auto;
+    margin-right: 8px;
+    margin-bottom: 0;
+  }
+  .mobile-actions-row {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    width: 100%;
+    margin-top: 8px;
+  }
+
+}
+@media (max-width: 768px) {
+       .logo-img { margin-left: 66px; margin-top: -26px;}
+       .sidebar-menu{
+        padding-top: 0px;
+        margin-top: -12px;
+       }
+      .mobile-toggle-btn { display: block; }
+      .back-icon { display: none; } /* Hide collapse icon on mobile */
+      .sidebar { left: -272px; }
+      .sidebar.active { left: 0; }
+      .main-content { margin-left: 0; padding: 80px 16px 20px; }
+      .table-header { display: none; }
+      .table-row { flex-direction: column; align-items: flex-start; padding: 16px; gap: 12px; }
+      .sidebar-profile{
+        margin-bottom: 60px;
+      }
+      .profile-col, .drives-col, .actions-col { flex: unset; width: 100%; }
     }
+@media (max-width: 768px) {
+  .table-row {
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 16px;
+    gap: 12px;
+  }
+  .btn.view, .btn.edit, .btn.delete {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+}
+  .profile-col { width: 100%; }
+
+  /* Place drives and actions in a flex row together */
+  .drives-actions-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    width: 100%;
+    margin-top: 8px;
+  }
+  .drives-col, .actions-col {
+    width: auto;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+}
+.actions-all {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;   /* keeps them responsive on smaller screens */
+}
+.drives-col,
+.actions-col {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;  /* makes them responsive on small screens */
+}
+/* Modal responsive */
+@media (max-width: 768px) {
+  .modal-content {
+    width: 95%;        /* almost full width on mobile */
+    padding: 20px 16px;
+    border-radius: 16px;
+  }
+
+  .modal-content h2 {
+    font-size: 18px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .form-group label {
+    font-size: 16px;
+  }
+
+  .modal-content input,
+  .modal-content textarea {
+    font-size: 16px;
+    padding: 12px 14px;
+    min-height: 48px;
+  }
+
+  .modal-content textarea#jobDescText {
+    min-height: 140px; /* smaller than desktop */
+  }
+
+  .form-actions {
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  .form-actions .btn {
+    width: 100%;
+    text-align: center;
+    font-size: 16px;
+    padding: 12px 0;
+  }
+}
+/* Modal & table buttons responsive */
+@media (max-width: 768px) {
+  /* Modal buttons */
+  .modal-content .btn {
+    width: 100%;           /* full width */
+    padding: 14px 0;       /* taller for easier tapping */
+    font-size: 16px;       /* slightly smaller than desktop */
+  }
+/* Responsive modal buttons for mobile */
+  .form-actions {
+    flex-direction: column; /* stack buttons vertically */
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  .form-actions .btn {
+    width: 100%;           /* full width for easier tapping */
+    padding: 14px 0;       /* taller buttons */
+    font-size: 16px;       /* readable on mobile */
+    border-radius: 12px;   /* consistent with desktop style */
+    justify-content: center;
+  }
+
+
+  /* Table buttons */
+  .btn.view, .btn.edit, .btn.delete {
+    padding: 10px 12px;    /* smaller on mobile */
+    font-size: 14px;
+    flex: 1;                /* make them stretch to container width if needed */
+    justify-content: center;
+  }
+
+  /* Adjust Add Job Profile top bar button */
+  .add-profile-btn {
+    padding: 12px 16px;
+    font-size: 14px;
+  }
+}
+a.btn.view {
+  text-decoration: none; /* removes underline */
+  color: white;           /* keep button text color */
+  display: flex;           /* keep icon + text layout */
+  align-items: center;
+  gap: 8px;               /* space between icon and text */
+}
+
+
+
 
   </style>
 </head>
@@ -310,23 +495,26 @@
           <div class="col actions-col">ACTIONS</div>
         </div>
 
-        <div class="table-row">
-          <div class="col profile-col">
-            <strong>UI/UX Designer</strong>
-            <p class="summary">
-              Summary: Collect, clean, and analyze data to provide actionable insights...
-              <a href="#" class="read-more">Read More</a>
-            </p>
-          </div>
-          <div class="col drives-col">
-            <button class="btn view"><i data-feather="eye"></i> View Drive</button>
-          </div>
-          <div class="col actions-col">
-            <button class="btn edit"><i data-feather="edit-2"></i> Edit</button>
-            <button class="btn delete"><i data-feather="trash-2"></i> Delete</button>
-          </div>
-        </div>
-      </div>
+      <div class="table-row">
+  <div class="col profile-col">
+    <strong>UI/UX Designer</strong>
+    <p class="summary">
+      Summary: Collect, clean, and analyze data to provide actionable insights...
+      <a href="#" class="read-more">Read More</a>
+    </p>
+  </div>
+  <div class="col drives-col">
+    <a href="dashboard.html" class="btn view">
+  <i data-feather="eye"></i> View Drive
+</a>
+
+  </div>
+  <div class="col actions-col">
+    <button class="btn edit"><i data-feather="edit-2"></i></button>
+    <button class="btn delete"><i data-feather="trash-2"></i></button>
+  </div>
+</div>
+
 
       <div class="table-row">
     <div class="col profile-col">
@@ -340,8 +528,8 @@
       <button class="btn view"><i data-feather="eye"></i> View Drive</button>
     </div>
     <div class="col actions-col">
-      <button class="btn edit"><i data-feather="edit-2"></i> Edit</button>
-      <button class="btn delete"><i data-feather="trash-2"></i> Delete</button>
+      <button class="btn edit"><i data-feather="edit-2"></i></button>
+      <button class="btn delete"><i data-feather="trash-2"></i></button>
     </div>
   </div>
 </div>
@@ -454,26 +642,29 @@ form.addEventListener("submit", function(e) {
     `;
   } else {
     // --- ADD NEW ROW ---
-    const newRow = document.createElement("div");
-    newRow.classList.add("table-row");
-    newRow.innerHTML = `
-      <div class="col profile-col">
-        <strong>${title}</strong>
-        <p class="summary">
-          Summary: ${desc || "No description provided"}...
-          <a href="#" class="read-more">Read More</a>
-        </p>
-      </div>
-      <div class="col drives-col">
-        <button class="btn view"><i data-feather="eye"></i> View Drive</button>
-      </div>
-      <div class="col actions-col">
-        <button class="btn edit"><i data-feather="edit-2"></i> Edit</button>
-        <button class="btn delete"><i data-feather="trash-2"></i> Delete</button>
-      </div>
-    `;
-    tableContainer.appendChild(newRow);
-    attachRowEvents(newRow);
+   // ...existing code...
+newRow.innerHTML = `
+  <div class="col profile-col">
+    <strong>${title}</strong>
+    <p class="summary">
+      Summary: ${desc || "No description provided"}...
+      <a href="#" class="read-more">Read More</a>
+    </p>
+  </div>
+  <div class="col drives-col">
+    <button class="btn view"><i data-feather="eye"></i> View Drive</button>
+  </div>
+  <div class="col actions-col">
+    <button class="btn edit"><i data-feather="edit-2"></i> Edit</button>
+    <button class="btn delete"><i data-feather="trash-2"></i> Delete</button>
+  </div>
+`;
+
+tableContainer.appendChild(newRow);
+attachRowEvents(newRow);
+tableContainer.appendChild(newRow);
+attachRowEvents(newRow);
+// ...existing code...
   }
 
   modal.style.display = "none";
