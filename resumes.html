@@ -313,7 +313,7 @@
 .resume-table {
   width: 100%;
   border-collapse: collapse;
-  background: white;
+  background: #fff;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
@@ -328,12 +328,12 @@
 }
 
 .resume-table th {
-  background-color: #f9fafb;
+  background-color: #f1f5f9;
   font-weight: 600;
   color: #374151;
 }
 
-.small-input {
+.small-input {  
   width: 140px;
   padding: 8px 10px;
   border-radius: 6px;
@@ -382,25 +382,6 @@
   }
 }
 
-.table-header, .table-row { display: flex; align-items: center; padding: 12px; border-radius: 8px; }
-    .table-header { background: #f1f5f9; font-weight: 600; }
-    .table-row { background: #fff; border: 1px solid #e5e7eb; flex-wrap: wrap; }
-    .content-card {
-  background: #ffffff;
-  padding: 24px;
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-}
-.table-header {
-  background: #f1f5f9;
-  font-weight: 700;
-  font-size: 16px;
-  color: #111827;
-  text-transform: uppercase;
-}
-.table-header .col {
-  padding: 16px 12px;
-}
 .left-controls { 
   display: flex; 
   justify-content: space-between; 
@@ -438,7 +419,7 @@
   justify-content: flex-end; /* Align all content to the right */
   align-items: center;
   padding: 12px 16px;
-  border-bottom: 1px solid #d1d5db;
+ 
   background-color: #ffffff;
   gap: 10px; /* space between button and filters */
 }
@@ -461,27 +442,38 @@
     .content-card { background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
     
 .top-tabs {
-      display: flex;
-      gap: 0px;
-      margin-bottom: 20px;
-      height: 72px;
-    }
-    .top-tabs .tab {
-      flex: 1;
-      padding: 12px;
-      border: none;
-      background: #fff;
-      border-radius: 16px 0 0 16px;
-      font-weight: 500;
-      font-size: 20px;
-      cursor: pointer;
-      color: #475569;
-      transition: all 0.2s ease;
-    }
-    
-    .tab.active { background: rgba(73, 200, 251, 0.32); color: #222;
-      border-radius: 16px 0 0 16px;
-   }
+  display: flex;
+  justify-content: start;
+  gap: 10px;
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 5px;
+  margin-bottom: 20px;
+}
+
+.tab {
+  background-color: transparent;
+  border: none;
+  padding: 10px 20px;
+  margin-top: -24px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  color: #555;
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.tab:hover {
+  color: #000;
+  border-bottom: 3px solid #aaa;
+}
+
+.tab.active {
+  color: #007BFF;
+  border-bottom: 3px solid #007BFF;
+  font-weight: 600;
+}
+
 
     .modal {
     display: none; /* Hidden by default */
@@ -574,7 +566,30 @@
   font-size: 16px;
   background-color: #f8f9fb;
 }
+ .job-card {
+  background: linear-gradient(to right, #3b82f6, #06b6d4);
+  color: white;
+  padding: 20px;
+  border-radius: 15px;
+  width: 100%; /* ✅ Full width of the container */
+  max-width: 100%; /* ✅ Prevent overflow */
+  font-family: Arial, sans-serif;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin-bottom: 20px; /* Optional: adds space below */
+}
 
+
+    .job-card h2 {
+      margin: 0 0 8px 0;
+      font-size: 22px;
+    }
+
+    .job-card p {
+      margin: 4px 0;
+      font-size: 15px;
+    }
+
+    
   </style>
 </head>
 <body>
@@ -636,10 +651,11 @@
   </div>
   <!-- Main Content -->
    <div class="main-content">
-     <div class="top-tabs">
-    <button class="tab active" data-tab="interviews">Resumes</button>
-    <button class="tab" data-tab="jobdrives">Interviews</button>
+    <div class="job-card">
+    <h2>Job Drive: March 2025</h2>
+    <p><strong>Job Title:</strong> Data Analyst</p>
   </div>
+   
 
   <div class="resume-controls-bar">
   <!-- Left Side Controls (Filters) -->
@@ -658,6 +674,10 @@
   <!-- Right Side Button -->
   <button class="add-resume-btn">+ Add More Resumes</button>
 </div>
+  <div class="top-tabs">
+    <button class="tab active" data-tab="interviews">Resumes</button>
+    <button class="tab" data-tab="jobdrives">Interviews</button>
+  </div>
 
 <table class="resume-table">
   <thead>
