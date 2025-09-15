@@ -557,6 +557,24 @@
   }
 
   .save-btn:hover { background: #2563eb; }
+
+  .left-controls {
+  display: flex;
+  flex: 1; /* Allow left-controls to grow/shrink */
+  gap: 12px;
+}
+
+.search-bar {
+  flex: 1 1 auto; /* Grow and shrink with container */
+  min-width: 150px; /* Optional: don't shrink too small */
+  max-width: 100%;  /* Prevent overflow */
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid #d1d5db;
+  font-size: 16px;
+  background-color: #f8f9fb;
+}
+
   </style>
 </head>
 <body>
