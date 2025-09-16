@@ -386,8 +386,47 @@ a.btn.view {
   gap: 8px;               /* space between icon and text */
 }
 
+.close-feedback {
+  color: #555;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
 
+.close-feedback:hover {
+  color: #ff0000;
+}
 
+#feedbackText {
+  min-height: 120px;
+  font-size: 16px;
+  padding: 16px;
+  border: 1px solid #D1D5DB;
+  border-radius: 8px;
+  resize: vertical;
+}
+  .feedback-btn {
+    margin-right: 8px;
+    padding: 8px 12px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+
+  .feedback-btn:hover {
+    background-color: #e0e0e0;
+  }
+
+  textarea#feedbackText {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    margin-top: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    resize: vertical;
+  }
 
   </style>
 </head>
@@ -540,6 +579,34 @@ a.btn.view {
     </div>
   </div>
   
+<!-- Feedback Modal -->
+<div id="feedbackModal" class="modal">
+  <div class="modal-content" style="position: relative; width: 500px; max-width: 90%;">
+    <button class="close-feedback" style="position: absolute; top: 12px; right: 16px; background: none; border: none; font-size: 24px; cursor: pointer;">&times;</button>
+    
+    <h2 style="margin-bottom: 24px;">✅ Job Profile Added Successfully</h2>
+    
+    <!-- Feedback Buttons -->
+    <div id="feedbackButtons" style="margin-bottom: 16px;">
+      <button class="feedback-btn" data-text="Love this">❤️ Love this</button>
+      <button class="feedback-btn" data-text="Needs improvements">🛠 Needs improvements</button>
+      <button class="feedback-btn" data-text="Confusing">❓ Confusing</button>
+    </div>
+
+    <!-- Textarea -->
+    <div class="form-group">
+      <label for="feedbackText">We’d love your feedback:</label>
+      <textarea id="feedbackText" placeholder="Let us know what went well or what could be improved..."></textarea>
+    </div>
+
+    <!-- Actions -->
+    <div class="form-actions">
+      <button id="submitFeedback" class="btn save">Submit Feedback</button>
+      <button class="btn cancel close-feedback">Close</button>
+    </div>
+  </div>
+</div>
+
 
   <script>
     
@@ -598,6 +665,8 @@ document.querySelectorAll(".read-more").forEach(link => {
     );
   });
 });
+
+
 // Delete button functionality
 document.querySelectorAll(".btn.delete").forEach(btn => {
   btn.addEventListener("click", function () {
@@ -608,6 +677,8 @@ document.querySelectorAll(".btn.delete").forEach(btn => {
   });
 });
 
+
+
 const modal = document.getElementById("jobProfileModal");
 const addBtn = document.querySelector(".add-profile-btn");
 const cancelBtn = document.getElementById("cancelModal");
@@ -616,6 +687,8 @@ const tableContainer = document.querySelector(".table-container");
 
 let editMode = false;
 let currentRow = null;
+
+
 
 // Open modal for Add
 addBtn.addEventListener("click", () => {
@@ -704,7 +777,71 @@ form.addEventListener("submit", function (e) {
   // Close modal
   modal.style.display = "none";
   form.reset();
+
+  modal.style.display = "none";
+form.reset();
+showFeedbackModal(); // <-- SHOW SUCCESS MODAL
+
 });
+
+const feedbackModal = document.getElementById("feedbackModal");
+const feedbackCloseBtns = document.querySelectorAll(".close-feedback");
+const feedbackText = document.getElementById("feedbackText");
+const submitFeedbackBtn = document.getElementById("submitFeedback");
+
+// Show feedback modal after job is saved
+function showFeedbackModal() {
+  feedbackText.value = ''; // Reset any previous feedback
+  feedbackModal.style.display = "flex";
+}
+
+// Hide feedback modal
+function closeFeedbackModal() {
+  feedbackModal.style.display = "none";
+}
+
+// Close on clicking "×" or "Close"
+feedbackCloseBtns.forEach(btn => {
+  btn.addEventListener("click", closeFeedbackModal);
+});
+
+// Close when clicking outside modal content
+window.addEventListener("click", (e) => {
+  if (e.target === feedbackModal) {
+    closeFeedbackModal();
+  }
+});
+
+// Submit feedback handler
+submitFeedbackBtn.addEventListener("click", () => {
+  const feedback = feedbackText.value.trim();
+  if (feedback) {
+    alert("Thank you for your feedback:\n" + feedback); // You can send to server here
+  } else {
+    alert("Please enter your feedback before submitting.");
+    return;
+  }
+
+  closeFeedbackModal();
+});
+
+  // Add selected feedback to the textarea when a button is clicked
+  const feedbackButtons = document.querySelectorAll('.feedback-btn');
+
+  feedbackButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const feedback = button.getAttribute('data-text');
+
+      // If the feedback is not already in the textarea, add it
+      if (!feedbackText.value.includes(feedback)) {
+        if (feedbackText.value.trim() !== '') {
+          feedbackText.value += ', ' + feedback;
+        } else {
+          feedbackText.value = feedback;
+        }
+      }
+    });
+  });
 
 
   </script>
