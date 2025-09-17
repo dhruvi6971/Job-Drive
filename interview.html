@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Resumes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <script src="https://unpkg.com/feather-icons"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Inter", sans-serif; }
+    body { background: #f9fafb; display: flex; min-height: 100vh; }
+ 
+ .sidebar {
+      position: fixed; left: 0; top: 0;
+      width: 272px; height: 100vh;
+      background: #111827; display: flex; flex-direction: column;
+      justify-content: space-between; padding: 0 0 24px 0;
+      box-sizing: border-box; transition: width 0.3s ease, left 0.3s ease; z-index: 1000;
+    }
+     .mobile-toggle-btn {
+      position: fixed; top: 16px; left: 16px; background: #111827; border: none;
+      color: white; padding: 8px; border-radius: 6px; z-index: 11000; cursor: pointer;
+      display: none;
+    }
+   
+/* COLLAPSED SIDEBAR */
+.sidebar.collapsed .sidebar-logo .logo-img {
+  display: none; /* Hide logo */
+}
+
+.sidebar.collapsed .sidebar-menu li span.label {
+  display: none; /* Hide menu names */
+}
+
+.sidebar.collapsed .sidebar-profile {
+  display: none; /* Hide profile section entirely */
+}
+/* When sidebar is collapsed */
+.sidebar.collapsed .sidebar-menu li {
+  justify-content: center;   /* Center icons horizontally */
+  padding: 12px 0;           /* Equal padding top/bottom, no left padding */
+  gap: 0;                    /* Remove gap between icon and label (label hidden anyway) */
+}
+
+.sidebar.collapsed .back-icon {
+  justify-content: center;   /* Center toggle icon */
+  margin-left: 24px;
+}
+
+    .sidebar.collapsed { width: 72px; }
+    .sidebar-logo { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 32px 0 16px; margin: 8px 0; }
+    .logo-img { width: 140px; margin-left: 32px; }
+    .back-icon { margin-right: 24px; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .icon-left { display: inline; } 
+    .icon-right { display: none; }
+    .sidebar.collapsed .logo-img { display: none; }
+    .sidebar.collapsed .icon-left { display: none; }
+    .sidebar.collapsed .icon-right { display: inline; }
+
+    .sidebar-menu { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; }
+    .sidebar-menu li {
+      display: flex; align-items: center; padding: 14px 0 12px 32px;
+      font-size: 16px; font-weight: 600; cursor: pointer; gap: 12px; border-radius: 12px; transition: all 0.2s ease;
+    }
+    .sidebar-menu li .icon { color: #fff; display: flex; align-items: center; justify-content: center; min-width: 22px; }
+    .sidebar-menu li .label { color: #9E9E9E; white-space: nowrap; }
+    .sidebar-menu li:hover { background: rgba(73,200,251,0.12); padding-left: 24px; margin: 4px 16px; gap: 8px; }
+    .sidebar-menu li:hover .label, .sidebar-menu li.active .label { color: #38bdf8; }
+    .sidebar-menu li:hover .icon, .sidebar-menu li.active .icon { color: #38bdf8; }
+
+    .sidebar-bottom { margin-top: auto; }
+    .sidebar-profile {
+      display: flex; align-items: center; background: #1e293b; border-radius: 12px;
+      padding: 16px 20px; margin: 24px 16px 0; gap: 16px; text-decoration: none; color: inherit;
+      transition: background 0.3s ease;
+    }
+    .sidebar-profile:hover { background: rgba(73,200,251,0.12); }
+    .sidebar-profile img { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; }
+    .profile-info { display: flex; flex-direction: column; }
+    .profile-info .name { color: #fff; font-size: 13px; font-weight: 600; }
+    .profile-info .email { color: #808080; font-size: 12px; font-weight: 500; }
+
+.add-profile-btn { 
+  display: flex; 
+  align-items: center; 
+  gap: 8px; /* space between icon and text */ 
+  background: #38bdf8; 
+  color: white; 
+  border: none; 
+  padding: 14px 20px; 
+  border-radius: 12px; 
+  cursor: pointer; 
+  font-size: 16px; 
+}
+
+    .main-content { flex: 1; margin-left: 272px; padding: 20px; transition: margin-left 0.3s ease; }
+    .main-content.expanded { margin-left: 72px; }
+    .content-card { background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
+    .table-container { display: flex; flex-direction: column; gap: 12px; }
+    .table-header, .table-row { display: flex; align-items: center; padding: 12px; border-radius: 8px; }
+    .table-header { background: #f1f5f9; font-weight: 600; }
+    .table-row { background: #fff; border: 1px solid #e5e7eb; flex-wrap: wrap; }
+    .col { padding: 12px 8px; }
+    .drive-col { flex: 1.5; }
+    .title-col { flex: 2; }
+    .desc-col { flex: 3; }
+    .interviews-col, .resumes-col { flex: 1.5; display: flex; align-items: center; justify-content: flex-start; gap: 12px; }
+    .btn { border: none; padding: 10px 24px; border-radius: 10px; font-size: 16px; cursor: pointer; display: flex; align-items: center; gap: 8px; background: #38bdf8; color: #fff; font-weight: 600;}
+    .btn i { width: 18px; height: 18px; }
+    @media (max-width: 900px) {
+      .main-content { margin-left: 0; padding: 80px 8px 20px; }
+      .table-header { display: none; }
+      .table-row { flex-direction: column; align-items: flex-start; padding: 16px; gap: 12px; }
+      .col { width: 100%; }
+      .interviews-col, .resumes-col { width: 100%; justify-content: flex-start; }
+    }
+     @media (max-width: 768px) {
+       .logo-img { margin-left: 66px; margin-top: -26px;}
+       .sidebar-menu{
+        padding-top: 0px;
+        margin-top: -12px;
+       }
+      .mobile-toggle-btn { display: block; }
+      .back-icon { display: none; } /* Hide collapse icon on mobile */
+      .sidebar { left: -272px; }
+      .sidebar.active { left: 0; }
+      .main-content { margin-left: 0; padding: 80px 16px 20px; }
+      .table-header { display: none; }
+      .table-row { flex-direction: column; align-items: flex-start; padding: 16px; gap: 12px; }
+      .sidebar-profile{
+        margin-bottom: 60px;
+      }
+      .profile-col, .drives-col, .actions-col { flex: unset; width: 100%; }
+    }
+   /* === Improved Main Content === */
+.main-content {
+  flex: 1;
+  margin-left: 272px;
+  padding: 24px;
+  background: #f9fafb;
+  transition: margin-left 0.3s ease;
+}
+
+.header-info {
+  background: linear-gradient(to right, #3b82f6, #06b6d4);
+  color: white;
+  padding: 24px;
+  border-radius: 16px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.06);
+}
+.header-info h2 {
+  font-size: 24px;
+  margin-bottom: 6px;
+}
+.header-info p {
+  font-size: 16px;
+  margin: 2px 0;
+}
+
+/* Resume Controls */
+.resume-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+  background: #fff;
+  padding: 16px 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+.filter-select {
+  padding: 10px 14px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  background: #f1f5f9;
+}
+.add-resume-btn {
+  padding: 10px 16px;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.add-resume-btn:hover {
+  background-color: #2563eb;
+}
+
+/* === Resume Card UI Enhancement === */
+.resume-card {
+  background: #fff;
+  padding: 24px;
+  border-radius: 16px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border: 1px solid #e5e7eb;
+  transition: transform 0.2s ease;
+}
+.resume-card:hover {
+  transform: translateY(-2px);
+}
+
+.resume-top {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 16px;
+}
+.resume-top .field {
+  flex: 1 1 220px;
+}
+.resume-top .field label {
+  font-weight: 600;
+  color: #4b5563;
+  font-size: 14px;
+  margin-bottom: 4px;
+  display: block;
+}
+.resume-top .field span {
+  font-size: 15px;
+  color: #111827;
+  font-weight: 500;
+}
+
+.profile-link-input {
+  padding: 12px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  width: 100%;
+  font-size: 15px;
+  background: #f9fafb;
+}
+
+.resume-actions {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.resume-actions button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.send-invite {
+  background: #38bdf8;
+  color: #fff;
+}
+.send-invite:hover {
+  background: #38bdf8;
+}
+.invite-sent {
+  background: #e0e7ff;
+  color: #4f46e5;
+  cursor: default;
+}
+
+
+    @media (max-width: 768px) {
+      .main-content { margin-left: 0; padding: 80px 16px 20px; }
+      .resume-actions { flex-direction: column; }
+    }
+
+    .resume-controls-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  background: #fff;
+  padding: 16px 20px;
+  border-radius: 12px;
+  margin-bottom: 16px;
+ 
+}
+
+.left-controls {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.search-bar {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  font-size: 15px;
+  width: 850px;
+}
+
+
+.add-resume-btn {
+  padding: 10px 16px;
+  background-color: #38bdf8;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.resume-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.resume-table th,
+.resume-table td {
+  padding: 14px 12px;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 15px;
+}
+
+.resume-table th {
+  background-color: #f1f5f9;
+  font-weight: 600;
+  color: #374151;
+}
+
+.small-input {  
+  width: 140px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  font-size: 14px;
+}
+
+.interview-type-select {
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  font-size: 14px;
+}
+
+.send-invite-btn {
+  background-color: #38bdf8;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .resume-controls-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .left-controls {
+    width: 100%;
+    gap: 10px;
+  }
+
+  .resume-table th, .resume-table td {
+    font-size: 13px;
+    padding: 10px 8px;
+  }
+
+  .small-input,
+  .interview-type-select {
+    width: 100%;
+  }
+}
+
+.left-controls { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  margin-bottom: 20px; 
+  gap: 12px; 
+  flex-wrap: wrap; 
+}
+
+.search-bar { 
+  flex: 1; 
+  padding: 14px 16px; 
+  border: 1px solid #D1D5DB; 
+  border-radius: 12px; 
+  background-color: #F8F9FB; 
+  font-size: 16px;
+}
+.add-resume-btn {
+  background-color: #3dbff0;
+  color: #fff;
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  margin-bottom: 20px;
+  transition: background 0.3s ease;
+}
+
+.add-resume-btn:hover {
+  background-color: #0ea5e9;
+}
+.resume-controls-bar {
+  display: flex;
+  justify-content: flex-end; /* Align all content to the right */
+  align-items: center;
+  padding: 12px 16px;
+ 
+  background-color: #ffffff;
+  gap: 10px; /* space between button and filters */
+}
+
+.right-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.filter-select {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  font-size: 15px;
+}
+
+ .main-content { flex: 1; margin-left: 272px; padding: 20px; transition: margin-left 0.3s ease; }
+    .main-content.expanded { margin-left: 72px; }
+    .content-card { background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
+    
+.top-tabs {
+  display: flex;
+  justify-content: start;
+  gap: 10px;
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 5px;
+  margin-bottom: 20px;
+}
+
+.tab {
+  background-color: transparent;
+  border: none;
+  padding: 10px 20px;
+  margin-top: -24px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  color: #555;
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.tab:hover {
+  color: #000;
+  border-bottom: 3px solid #aaa;
+}
+
+.tab.active {
+  color: #007BFF;
+  border-bottom: 3px solid #007BFF;
+  font-weight: 600;
+}
+
+
+    .modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+  }
+
+  .modal-content {
+    background-color: #fff;
+    margin: 80px auto;
+    padding: 30px;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    position: relative;
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #374151;
+  }
+
+  .upload-box {
+    border: 2px dashed #cbd5e1;
+    border-radius: 12px;
+    padding: 40px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.3s ease;
+    margin-bottom: 20px;
+  }
+
+  .upload-box:hover {
+    border-color: #3b82f6;
+    background: #f0f9ff;
+  }
+
+  .upload-box input { display: none; }
+  .upload-box p { color: #6b7280; font-size: 14px; margin: 0; }
+
+  .file-list { margin: 15px 0; font-size: 14px; color: #374151; }
+  .file-list li {
+    background: #f3f4f6;
+    margin: 6px 0;
+    padding: 8px 12px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .save-btn {
+    background: #3b82f6;
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    font-size: 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.3s ease;
+  }
+
+  .save-btn:hover { background: #2563eb; }
+
+  .left-controls {
+  display: flex;
+  flex: 1; /* Allow left-controls to grow/shrink */
+  gap: 12px;
+}
+
+.search-bar {
+  flex: 1 1 auto; /* Grow and shrink with container */
+  min-width: 150px; /* Optional: don't shrink too small */
+  max-width: 100%;  /* Prevent overflow */
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid #d1d5db;
+  font-size: 16px;
+  background-color: #f8f9fb;
+}
+ .job-card {
+  background: linear-gradient(to right, #3b82f6, #06b6d4);
+  color: white;
+  padding: 20px;
+  border-radius: 12px;
+  width: 100%; /* ✅ Full width of the container */
+  max-width: 100%; /* ✅ Prevent overflow */
+  font-family: Arial, sans-serif;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin-bottom: 16px; /* Optional: adds space below */
+}
+
+
+    .job-card h2 {
+      margin: 0 0 8px 0;
+      font-size: 22px;
+    }
+
+/* Make row & header checkboxes larger */
+.resume-table input[type="checkbox"] {
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+  transform: scale(1.3); /* enlarge */
+  accent-color: #38bdf8; /* blue highlight */
+}
+
+/* Center align the checkbox column */
+.resume-table th:first-child,
+.resume-table td:first-child {
+  text-align: center;
+  width: 60px;
+}
+
+    
+  </style>
+</head>
+<body>
+ <button id="mobileToggle" class="mobile-toggle-btn"><i data-feather="menu"></i></button>
+
+  <div class="sidebar">
+    <!-- Top Section -->
+    <div>
+      <div class="sidebar-logo">
+        <img src="logo1.png" alt="Jobdrive Logo" class="logo-img" />
+        <span id="toggleSidebar" class="back-icon">
+          <i data-feather="chevron-left" class="icon-left"></i>
+          <i data-feather="chevron-right" class="icon-right"></i>
+        </span>
+      </div>
+      <ul class="sidebar-menu">
+        <li>
+          <a href="dashboard.html" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;">
+            <span class="icon"><i data-feather="home"></i></span>
+            <span class="label">Dashboard</span>
+          </a>
+        </li>
+        
+        <li class="active">
+          <a href="jobdrive.html" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;">
+            <span class="icon"><i data-feather="layers"></i></span>
+            <span class="label">Job Drives</span>
+          </a>
+        </li>
+        <li>
+          <a href="jobprofile.html" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;">
+            <span class="icon"><i data-feather="user"></i></span>
+            <span class="label">Job Profiles</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <!-- Bottom Section -->
+    <div class="sidebar-bottom">
+      <ul class="sidebar-menu">
+        <li><span class="icon"><i data-feather="zap"></i></span><span class="label">Suggest Idea</span></li>
+        <li><span class="icon"><i data-feather="settings"></i></span><span class="label">Settings</span></li>
+        <li><span class="icon"><i data-feather="help-circle"></i></span><span class="label">Help</span></li>
+        <li><span class="icon"><i data-feather="log-out"></i></span><span class="label">Sign Out</span></li>
+      </ul>
+      <a href="/profile" class="sidebar-profile">
+        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profile" />
+        <div class="profile-info">
+          <span class="name">Brooklyn Simmons</span>
+          <span class="email">brooklyn@simmons.com</span>
+        </div>
+      </a>
+    </div>
+  </div>
+  <!-- Main Content -->
+   <div class="main-content">
+    <div class="job-card">
+    <h2>Job Drive: March 2025 | Job Title: Data Analyst</h2>
+  </div>
+   
+<div id="resumes" class="tab-content">
+  <div class="resume-controls-bar">
+  <!-- Left Side Controls (Filters) -->
+  <div class="left-controls">
+    <input type="text" id="searchInput" class="search-bar" placeholder="Search candidates...">
+    
+    <select id="ratingFilter" class="filter-select">
+      <option value="">AI Rating</option>
+      <option value="Excellent">Excellent</option>
+      <option value="Good">Good</option>
+      <option value="Average">Average</option>
+      <option value="Poor">Poor</option>
+    </select>
+  </div>
+
+  <!-- Right Side Button -->
+  <button class="add-resume-btn">+ Add Resumes</button>
+</div>
+
+ <div class="top-tabs">
+  <button class="tab" onclick="window.location.href='resumes.html'">Resumes</button>
+  <button class="tab active" onclick="window.location.href='interview.html'">Interviews</button>
+</div>
+
+<div id="actionBar" style="display:none; margin-bottom:12px;">
+  <button id="exportCSV" class="btn">Export as CSV</button>
+  
+</div>
+
+<table class="resume-table">
+  <thead>
+    <tr>
+       <th><input type="checkbox" id="selectAll"></th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>AI Feedback</th>
+      <th>AI Rating</th>
+      <th>Time</th>
+      <th>Attempts</th>
+    </tr>
+  </thead>
+  <tbody id="resumeTableBody">
+
+    <tr data-rating="Good" data-status="pending" class="row1">
+      <td><input type="checkbox" class="rowCheckbox"></td>
+      <td onclick="window.location.href='one clicked interview.html'">Jane Doe</td>
+      <td onclick="window.location.href='one clicked interview.html'">jane@example.com</td>
+      <td onclick="window.location.href='one clicked interview.html'">Good Communication</td>
+      <td onclick="window.location.href='one clicked interview.html'">Good</td>
+      <td onclick="window.location.href='one clicked interview.html'">25 minute</td>
+      <td onclick="window.location.href='one clicked interview.html'">2</td>
+    </tr>
+
+    <tr data-rating="Good" data-status="pending">
+      <td><input type="checkbox" class="rowCheckbox"></td>
+      <td onclick="window.location.href='one clicked interview.html'">Jane Doe</td>
+      <td onclick="window.location.href='one clicked interview.html'">jane@example.com</td>
+      <td onclick="window.location.href='one clicked interview.html'">Good Communication</td>
+      <td onclick="window.location.href='one clicked interview.html'">Good</td>
+      <td onclick="window.location.href='one clicked interview.html'">25 minute</td>
+      <td onclick="window.location.href='one clicked interview.html'">2</td> 
+     
+    </tr>
+
+  </tbody>
+</table>
+</div>
+
+<div id="addResumeModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn">&times;</span>
+    <h2>Upload Resumes</h2>
+    <label class="upload-box">
+      <input type="file" id="resumeUpload" multiple>
+      <p>📂 Click or drag & drop files here<br>(Upload one or many at once)</p>
+    </label>
+    <ul class="file-list" id="fileList"></ul>
+    <button class="save-btn">Save Resumes</button>
+  </div>
+</div>
+</div>
+
+<div id="interviews" class="tab-content" style="display: none;">
+  <div class="resume-controls-bar">
+  <!-- Left Side Controls (Filters) -->
+  <div class="left-controls">
+    <input type="text" id="searchInput" class="search-bar" placeholder="Search candidates...">
+    
+    <select id="ratingFilter" class="filter-select">
+      <option value="">AI Rating</option>
+      <option value="Excellent">Excellent</option>
+      <option value="Good">Good</option>
+      <option value="Average">Average</option>
+      <option value="Poor">Poor</option>
+    </select>
+  </div>
+
+  <!-- Right Side Button -->
+  <button class="add-resume-btn">+ Add More Resumes</button>
+</div>
+  <div class="top-tabs">
+  <button class="tab active" onclick="showTab('resumes')">Resumes</button>
+  <button class="tab" onclick="showTab('interviews')">Interviews</button>
+</div>
+
+
+
+  <!-- Icons -->
+  <script>
+
+    
+function showTab(tab) {
+  // Hide all tabs
+  document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+
+  // Show the selected tab
+  document.getElementById(tab).style.display = 'block';
+  document.querySelector(`.tab[onclick="showTab('${tab}')"]`).classList.add('active');
+}
+feather.replace(); // re-render icons
+
+
+    const ratingFilter = document.getElementById("ratingFilter");
+  const rows = document.querySelectorAll("#resumeTableBody tr");
+
+  ratingFilter.addEventListener("change", () => {
+    const selectedRating = ratingFilter.value;
+
+    rows.forEach(row => {
+      const rowRating = row.getAttribute("data-rating");
+
+      if (!selectedRating || rowRating === selectedRating) {
+        row.style.display = "";
+      } else {
+        row.style.display = "none";
+      }
+    });
+  });
+
+  ratingFilter.addEventListener("change", () => {
+    const selectedRating = ratingFilter.value;
+
+    rows.forEach(row => {
+      const rowRating = row.getAttribute("data-rating");
+
+      if (!selectedRating || rowRating === selectedRating) {
+        row.style.display = "";
+      } else {
+        row.style.display = "none";
+      }
+    });
+  });
+    feather.replace();
+
+  
+  // Select All Checkbox
+const selectAll = document.getElementById("selectAll");
+const checkboxes = document.querySelectorAll(".rowCheckbox");
+
+selectAll.addEventListener("change", () => {
+  checkboxes.forEach(cb => cb.checked = selectAll.checked);
+});
+
+    feather.replace();
+
+    const sidebar = document.querySelector('.sidebar');
+    const toggleBtn = document.getElementById('toggleSidebar');
+    const mobileToggleBtn = document.getElementById('mobileToggle');
+    const mainContent = document.querySelector('.main-content');
+
+    // Desktop collapse
+    toggleBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('collapsed');
+      mainContent.classList.toggle('expanded');
+      feather.replace();
+    });
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const modal = document.getElementById("addResumeModal");
+    const openModalBtn = document.querySelector(".add-resume-btn");
+    const closeModalBtn = document.querySelector(".close-btn");
+
+    // Open modal
+    openModalBtn.addEventListener("click", () => {
+      modal.style.display = "block";
+    });
+
+    // Close modal on X
+    closeModalBtn.addEventListener("click", () => {
+      modal.style.display = "none";
+    });
+
+    // Close modal on outside click
+    window.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        modal.style.display = "none";
+      }
+    });
+
+    const checkboxes = document.querySelectorAll('.rowCheckbox');
+  const selectAll = document.getElementById('selectAll');
+  const actionBar = document.getElementById('actionBar');
+  
+  function toggleActionBar() {
+    const anyChecked = document.querySelectorAll('.rowCheckbox:checked').length > 0;
+    actionBar.style.display = anyChecked ? 'block' : 'none';
+  }
+
+  // Handle individual checkboxes
+  checkboxes.forEach(cb => {
+    cb.addEventListener('change', toggleActionBar);
+  });
+
+  // Handle "Select All"
+  selectAll.addEventListener('change', function() {
+    checkboxes.forEach(cb => cb.checked = this.checked);
+    toggleActionBar();
+  });
+
+  // Export CSV functionality
+  document.getElementById('exportCSV').addEventListener('click', function() {
+    const rows = [['Candidate Name', 'Email', 'AI Rating']]; // headers
+    
+    document.querySelectorAll('.rowCheckbox:checked').forEach(cb => {
+      const row = cb.closest('tr');
+      const cells = Array.from(row.querySelectorAll('td')).slice(1).map(td => td.innerText);
+      rows.push(cells);
+    });
+
+    let csvContent = "data:text/csv;charset=utf-8," 
+      + rows.map(e => e.join(",")).join("\n");
+
+    const link = document.createElement("a");
+    link.setAttribute("href", encodeURI(csvContent));
+    link.setAttribute("download", "selected_candidates.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  });
+
+    // File upload preview
+    const input = document.getElementById('resumeUpload');
+    const fileList = document.getElementById('fileList');
+
+    input.addEventListener('change', () => {
+      fileList.innerHTML = '';
+      [...input.files].forEach(file => {
+        const li = document.createElement('li');
+        li.textContent = file.name;
+        fileList.appendChild(li);
+      });
+    });
+
+    // Save button (placeholder)
+    const saveBtn = document.querySelector(".save-btn");
+    saveBtn.addEventListener("click", () => {
+      alert(`${input.files.length} resume(s) selected for upload!`);
+      modal.style.display = "none";
+      input.value = "";
+      fileList.innerHTML = "";
+    });
+  });
+
+  
+  
+    // Mobile toggle
+    mobileToggleBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('active');
+    });
+
+    const filterSelect = document.getElementById("filterSelect");
+    const resumeCards = document.querySelectorAll(".resume-card");
+
+    filterSelect.addEventListener("change", function () {
+      const selectedRating = this.value;
+
+      resumeCards.forEach(card => {
+        const cardRating = card.getAttribute("data-rating");
+
+        if (!selectedRating || cardRating === selectedRating) {
+          card.style.display = "flex";
+        } else {
+          card.style.display = "none";
+        }
+      });
+    });
+
+    
+    // Send Invite button toggle
+    document.querySelectorAll(".send-invite").forEach(button => {
+      button.addEventListener("click", () => {
+        button.classList.remove("send-invite");
+        button.classList.add("invite-sent");
+        button.textContent = "Already Sent Invite";
+        button.disabled = true;
+        button.style.background = "#e0e7ff";
+        button.style.color = "#4f46e5";
+        button.style.cursor = "default";
+      });
+    });
+ 
+
+
+  </script>
+</body>
+</html>
