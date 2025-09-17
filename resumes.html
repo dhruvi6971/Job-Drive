@@ -469,8 +469,8 @@
 }
 
 .tab.active {
-  color: #007BFF;
-  border-bottom: 3px solid #007BFF;
+  color: #38bdf8;
+  border-bottom: 3px solid #38bdf8;
   font-weight: 600;
 }
 
@@ -570,12 +570,12 @@
   background: linear-gradient(to right, #3b82f6, #06b6d4);
   color: white;
   padding: 20px;
-  border-radius: 15px;
+  border-radius: 12px;
   width: 100%; /* ✅ Full width of the container */
   max-width: 100%; /* ✅ Prevent overflow */
   font-family: Arial, sans-serif;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  margin-bottom: 20px; /* Optional: adds space below */
+  margin-bottom: 16px; /* Optional: adds space below */
 }
 
 
@@ -584,10 +584,58 @@
       font-size: 22px;
     }
 
-    .job-card p {
-      margin: 4px 0;
-      font-size: 15px;
-    }
+   /* Make row & header checkboxes larger */
+.resume-table input[type="checkbox"] {
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+  transform: scale(1.3); /* enlarge */
+  accent-color: #38bdf8; /* blue highlight */
+}
+
+/* Center align the checkbox column */
+.resume-table th:first-child,
+.resume-table td:first-child {
+  text-align: center;
+  width: 60px;
+}
+
+  #actionBar {
+    display: inline-flex;       /* side by side */
+    gap: 12px;           /* space between buttons */
+    margin-bottom: 12px;
+    flex-wrap: wrap;     /* wrap on smaller screens */
+  }
+
+  #actionBar .btn {
+    padding: 10px 16px;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+    transition: background 0.3s ease;
+  }
+
+  #exportCSV {
+    background-color: #38bdf8; /* blue */
+    color: white;
+  
+  }
+  #exportCSV:hover {
+    background-color: #0ea5e9;
+  }
+
+  #sendInvite {
+    background-color: #22c55e; /* green */
+    color: white;
+      
+  }
+  #sendInvite:hover {
+    background-color: #16a34a;
+  }
+
+
 
     
   </style>
@@ -612,12 +660,7 @@
             <span class="label">Dashboard</span>
           </a>
         </li>
-        <li>
-          <a href="interviews.html" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;">
-            <span class="icon"><i data-feather="phone"></i></span>
-            <span class="label">Interviews</span>
-          </a>
-        </li>
+        
         <li class="active">
           <a href="jobdrive.html" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;">
             <span class="icon"><i data-feather="layers"></i></span>
@@ -652,11 +695,10 @@
   <!-- Main Content -->
    <div class="main-content">
     <div class="job-card">
-    <h2>Job Drive: March 2025</h2>
-    <p><strong>Job Title:</strong> Data Analyst</p>
+   <h2>Job Drive: March 2025 | Job Title: Data Analyst</h2>
   </div>
    
-
+<div id="resumes" class="tab-content">
   <div class="resume-controls-bar">
   <!-- Left Side Controls (Filters) -->
   <div class="left-controls">
@@ -672,16 +714,27 @@
   </div>
 
   <!-- Right Side Button -->
-  <button class="add-resume-btn">+ Add More Resumes</button>
+  <button class="add-resume-btn">+ Add Resumes</button>
 </div>
-  <div class="top-tabs">
-    <button class="tab active" data-tab="interviews">Resumes</button>
-    <button class="tab" data-tab="jobdrives">Interviews</button>
+
+ <div class="top-tabs">
+  <button class="tab active" onclick="window.location.href='resumes.html'">Resumes</button>
+  <button class="tab" onclick="window.location.href='interview.html'">Interviews</button>
+</div>
+
+<div id="actionBar" style="display:none; margin-bottom:12px;">
+  <div style="display: flex; gap: 10px;">
+    <button id="sendInvite" class="btn" style="background-color: #22c55e;">Send Built Invite</button>
+    <button id="exportCSV" class="btn">Export as CSV</button>
   </div>
+</div>
+
+
 
 <table class="resume-table">
   <thead>
     <tr>
+      <th><input type="checkbox" id="selectAll"></th>
       <th>Name</th>
       <th>Email</th>
       <th>Phone</th>
@@ -694,6 +747,7 @@
   </thead>
   <tbody id="resumeTableBody">
     <tr data-rating="Good" data-status="pending">
+      <td><input type="checkbox" class="rowCheckbox"></td>
       <td>Jane Doe</td>
       <td>jane@example.com</td>
       <td>+1 234 567 8901</td>
@@ -709,6 +763,7 @@
       <td><button class="send-invite-btn">Send Invite</button></td>
     </tr>
     <tr data-rating="Excellent" data-status="completed">
+      <td><input type="checkbox" class="rowCheckbox"></td>
       <td>John Smith</td>
       <td>john@example.com</td>
       <td>+1 987 654 3210</td>
@@ -739,8 +794,27 @@
     <button class="save-btn">Save Resumes</button>
   </div>
 </div>
+</div>
+
+
+
   <!-- Icons -->
   <script>
+
+    
+function showTab(tab) {
+  // Hide all tabs
+  document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+
+  // Show the selected tab
+  document.getElementById(tab).style.display = 'block';
+  document.querySelector(`.tab[onclick="showTab('${tab}')"]`).classList.add('active');
+}
+feather.replace(); // re-render icons
+
+
+
     const ratingFilter = document.getElementById("ratingFilter");
   const rows = document.querySelectorAll("#resumeTableBody tr");
 
@@ -792,6 +866,65 @@
         modal.style.display = "none";
       }
     });
+
+     const checkboxes = document.querySelectorAll('.rowCheckbox');
+  const selectAll = document.getElementById('selectAll');
+  const actionBar = document.getElementById('actionBar');
+  
+  function toggleActionBar() {
+    const anyChecked = document.querySelectorAll('.rowCheckbox:checked').length > 0;
+    actionBar.style.display = anyChecked ? 'block' : 'none';
+  }
+
+  // Handle individual checkboxes
+  checkboxes.forEach(cb => {
+    cb.addEventListener('change', toggleActionBar);
+  });
+
+  // Handle "Select All"
+  selectAll.addEventListener('change', function() {
+    checkboxes.forEach(cb => cb.checked = this.checked);
+    toggleActionBar();
+  });
+
+  // Export CSV functionality
+  document.getElementById('exportCSV').addEventListener('click', function() {
+    const rows = [['Candidate Name', 'Email', 'AI Rating']]; // headers
+    
+    document.querySelectorAll('.rowCheckbox:checked').forEach(cb => {
+      const row = cb.closest('tr');
+      const cells = Array.from(row.querySelectorAll('td')).slice(1).map(td => td.innerText);
+      rows.push(cells);
+    });
+
+    let csvContent = "data:text/csv;charset=utf-8," 
+      + rows.map(e => e.join(",")).join("\n");
+
+    const link = document.createElement("a");
+    link.setAttribute("href", encodeURI(csvContent));
+    link.setAttribute("download", "selected_candidates.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  });
+
+  const sendInviteBtn = document.getElementById("sendInvite");
+
+sendInviteBtn.addEventListener("click", () => {
+  const selectedRows = document.querySelectorAll('.rowCheckbox:checked');
+  if(selectedRows.length === 0){
+    alert("Please select at least one candidate!");
+    return;
+  }
+
+  selectedRows.forEach(row => {
+    // Example action: mark invite as sent in table
+    row.style.backgroundColor = "#e0f7fa"; // optional visual feedback
+  });
+
+  alert(`${selectedRows.length} invite(s) sent successfully!`);
+});
+
 
     // File upload preview
     const input = document.getElementById('resumeUpload');
@@ -852,6 +985,26 @@
       });
     });
  
+const checkboxes = document.querySelectorAll('.rowCheckbox');
+const selectAll = document.getElementById('selectAll');
+const actionBar = document.getElementById('actionBar');
+
+function toggleActionBar() {
+  // Show action bar if any checkbox is checked
+  const anyChecked = document.querySelectorAll('.rowCheckbox:checked').length > 0;
+  actionBar.style.display = anyChecked ? 'flex' : 'none';
+}
+
+// Individual row checkboxes
+checkboxes.forEach(cb => {
+  cb.addEventListener('change', toggleActionBar);
+});
+
+// "Select All" checkbox
+selectAll.addEventListener('change', function() {
+  checkboxes.forEach(cb => cb.checked = this.checked);
+  toggleActionBar();
+});
 
 
   </script>
