@@ -634,7 +634,120 @@
   #sendInvite:hover {
     background-color: #16a34a;
   }
+   /* === Mobile Responsive CSS === */
+@media (max-width: 768px) {
+  /* Sidebar */
+  .sidebar {
+    left: -272px;
+    width: 240px;
+    transition: left 0.3s ease;
+  }
+  .sidebar.active {
+    left: 0;
+  }
+  .mobile-toggle-btn {
+    display: block;
+  }
+  .back-icon {
+    display: none; /* hide collapse icon on mobile */
+  }
 
+  /* Main content */
+  .main-content {
+    margin-left: 0;
+    padding: 16px 12px 20px;
+  }
+  .main-content.expanded {
+    margin-left: 0;
+  }
+
+  /* Job card */
+  .job-card {
+    padding: 16px;
+    font-size: 16px;
+  }
+
+  /* Tabs */
+  .top-tabs {
+    flex-direction: row;
+    gap: 8px;
+  }
+  .tab {
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    padding: 10px 0;
+  }
+
+  /* Resume controls bar */
+  .resume-controls-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 8px;
+  }
+
+  .left-controls {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .search-bar,
+  .filter-select {
+    width: 100%;
+  }
+
+  .add-resume-btn {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 12px;
+  }
+
+  /* Table */
+  .resume-table {
+    width: 100%;
+    font-size: 13px;
+  }
+
+  .resume-table th, 
+  .resume-table td {
+    padding: 8px 6px;
+  }
+
+  .resume-table tr {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid #e5e7eb;
+    margin-bottom: 12px;
+    padding: 8px;
+    border-radius: 12px;
+  }
+
+  .resume-table th:first-child,
+  .resume-table td:first-child {
+    text-align: left;
+  }
+
+  .resume-table td {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+  }
+
+  /* Modal */
+  .modal-content {
+    width: 95%;
+    padding: 20px;
+  }
+
+  /* Buttons */
+  .btn, .save-btn, .send-invite-btn {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+  }
+}
 
 
     
