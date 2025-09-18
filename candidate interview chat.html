@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Text Interview - JobDrive</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+
+  body { 
+    background: #f8f9fa; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    min-height: 100vh; 
+    padding: 10px;
+  }
+
+  .container { 
+    width: 100%;          
+    max-width: 600px; 
+    background: #fff; 
+    padding: 20px; 
+    border-radius: 12px; 
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1); 
+  }
+
+  .logo { 
+    text-align: center; 
+    margin-bottom: 10px; /* reduced height */
+  }
+
+  .logo img { 
+    height: 48px;   /* smaller header */
+    max-width: 70%;
+  }
+
+  .chat-box { 
+    height: 400px; 
+    max-height: 60vh;      
+    overflow-y: auto; 
+    padding: 10px; 
+    border: 1px solid #ddd; 
+    border-radius: 8px; 
+    margin-bottom: 15px; 
+    background: #fefefe; 
+  }
+
+  .message { 
+    margin-bottom: 10px; 
+    padding: 10px 12px; 
+    border-radius: 12px; 
+    display: block; 
+    width: fit-content; 
+    max-width: 80%; 
+    word-wrap: break-word; 
+    opacity: 1;
+    transition: opacity 0.6s ease; /* fade effect */
+  }
+
+  .fade-out {
+    opacity: 0;
+  }
+
+  .message.bot { 
+    background: #f0f0f0; 
+    color: #545151; 
+    text-align: left; 
+  }
+
+  .message.user { 
+    background: #eff6f8;  
+    color: #38bdf8; 
+    text-align: left; 
+    margin-left: auto; 
+  }
+
+  .input-group { 
+    display: flex; 
+    gap: 10px; 
+    flex-wrap: wrap;       
+  }
+
+  .input-group input { 
+    flex: 1 1 auto; 
+    padding: 16px;         /* bigger input */
+    font-size: 16px;       /* bigger text */
+    border-radius: 8px; 
+    border: 1px solid #ccc; 
+    min-width: 0;          
+  }
+
+  .input-group button { 
+    padding: 14px 20px;   /* bigger button */
+    font-size: 16px;
+    border: none; 
+    background: #007bff; 
+    color: #fff; 
+    border-radius: 8px; 
+    cursor: pointer; 
+    flex-shrink: 0;
+  }
+
+  .input-group button:hover { 
+    background: #0056b3; 
+  }
+
+  @media (max-width: 480px) {
+    .container {
+      padding: 15px;
+    }
+
+    .chat-box {
+      height: 300px;
+    }
+
+    .message {
+      max-width: 90%;    
+      font-size: 14px;
+    }
+
+    .input-group button {
+      width: 100%;       
+    }
+  }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="logo">
+      <img src="logo1.png" alt="JobDrive Logo">
+    </div>
+    <div class="chat-box" id="chatBox">
+      <div class="message bot">Write `Hi` to start the interview.</div>
+    </div>
+    <div class="input-group">
+      <input type="text" id="userInput" placeholder="Type your message..." 
+       onpaste="return false" oncopy="return false" oncut="return false">
+
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <script>
+    const chatBox = document.getElementById('chatBox');
+    const input = document.getElementById('userInput');
+
+    function sendMessage() {
+      const text = input.value.trim();
+      if(!text) return;
+
+      // User message
+      const userMsg = document.createElement('div');
+      userMsg.className = 'message user';
+      userMsg.textContent = text;
+      chatBox.appendChild(userMsg);
+
+      input.value = '';
+      chatBox.scrollTop = chatBox.scrollHeight;
+
+      // Bot response
+      setTimeout(() => {
+        const botMsg = document.createElement('div');
+        botMsg.className = 'message bot';
+        botMsg.textContent = 'Thanks for your response!';
+        chatBox.appendChild(botMsg);
+        chatBox.scrollTop = chatBox.scrollHeight;
+
+        // Fade out after 2 seconds
+        setTimeout(() => {
+          userMsg.classList.add('fade-out');
+          botMsg.classList.add('fade-out');
+          setTimeout(() => {
+            userMsg.remove();
+            botMsg.remove();
+          }, 600); // match transition duration
+        }, 2000);
+
+      }, 500);
+    }
+
+    // Send message on Enter key
+    input.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+
+
+// Disable copy, paste, cut
+['paste', 'copy', 'cut'].forEach(evt => {
+  input.addEventListener(evt, e => e.preventDefault());
+});
+
+  </script>
+
+</body>
+</html>
