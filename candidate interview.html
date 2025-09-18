@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Voice Interview - JobDrive</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+
+body { 
+  background: #f8f9fa; 
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  min-height: 100vh; 
+  padding: 10px;
+}
+
+.container { 
+  width: 100%;            
+  max-width: 500px; 
+  background: #fff; 
+  padding: 30px; 
+  border-radius: 16px; 
+  box-shadow: 0 6px 25px rgba(0,0,0,0.15); 
+  display: flex;
+  flex-direction: column;
+  text-align: center; 
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.timer {
+  font-weight: 700;
+  font-size: 24px;
+}
+
+.logo img {
+  height: 70px;
+  max-width: 90%;
+  margin-left: -26px;
+}
+
+.question {
+  font-size: 20px;
+  font-weight: 600;
+  text-align: left;
+  margin-bottom: 15px;
+  padding: 10px 0;
+  color: #333;
+}
+
+.record-btn { 
+  display: block; 
+  width: 100%; 
+  padding: 20px; 
+  background: #007bff; 
+  color: #fff; 
+  border: none; 
+  border-radius: 12px; 
+  font-size: 20px; 
+  cursor: pointer; 
+  transition: background 0.2s; 
+  margin-bottom: 20px;
+}
+
+.record-btn:hover { background: #0056b3; }
+.record-btn:disabled { background: #aaa; cursor: not-allowed; }
+
+.response-audio {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.loading {
+  font-size: 18px;
+  color: #555;
+  text-align: center;
+  margin-bottom: 20px;
+  display: none;
+}
+
+/* Responsive tweaks */
+@media (max-width: 480px) {
+  .container { padding: 20px; }
+  .timer { font-size: 20px; }
+  .question { font-size: 18px; margin-bottom: 12px; }
+  .record-btn { padding: 16px; font-size: 18px; margin-bottom: 15px; }
+  .response-audio audio { width: 100%; }
+  .loading { font-size: 16px; }
+  .logo img { height: 50px; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <div class="logo">
+      <img src="logo1.png" alt="JobDrive Logo">
+    </div>
+    <div class="timer" id="timer">00:00</div>
+  </div>
+
+  <div class="loading" id="loading">Loading...</div>
+
+  <div class="question" id="question">Question will appear here...</div>
+
+  <div class="response-audio" id="responseAudio"></div>
+
+  <button class="record-btn" id="recordBtn">Start Recording</button>
+</div>
+
+<script>
+const questions = [
+  "Tell us about yourself.",
+  "Why do you want to work at JobDrive?",
+  "What is your biggest strength?",
+  "Describe a challenging situation you handled at work."
+];
+
+let currentQuestionIndex = 0;
+const questionEl = document.getElementById('question');
+const responseAudioEl = document.getElementById('responseAudio');
+const loadingEl = document.getElementById('loading');
+const recordBtn = document.getElementById('recordBtn');
+
+questionEl.textContent = questions[currentQuestionIndex];
+
+let seconds = 0;
+const timerEl = document.getElementById('timer');
+let timerInterval;
+
+let mediaRecorder;
+let audioChunks = [];
+
+// Ask for microphone access
+navigator.mediaDevices.getUserMedia({ audio: true })
+  .then(stream => {
+    mediaRecorder = new MediaRecorder(stream);
+
+    mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+
+    mediaRecorder.onstop = () => {
+      const audioBlob = new Blob(audioChunks, { type: 'audio/mp3' });
+      audioChunks = [];
+
+      // Show recorded audio
+      responseAudioEl.innerHTML = '';
+      const audioURL = URL.createObjectURL(audioBlob);
+      const audioEl = document.createElement('audio');
+      audioEl.controls = true;
+      audioEl.src = audioURL;
+      responseAudioEl.appendChild(audioEl);
+
+      // Disable recording and show loading
+      recordBtn.disabled = true;
+      loadingEl.style.display = 'block';
+
+      setTimeout(() => {
+        currentQuestionIndex++;
+        loadingEl.style.display = 'none';
+        responseAudioEl.innerHTML = ''; // remove previous audio
+
+        if(currentQuestionIndex < questions.length) {
+          questionEl.textContent = questions[currentQuestionIndex];
+          recordBtn.disabled = false; // enable recording
+        } else {
+          questionEl.textContent = "Interview Completed ✅";
+        }
+      }, 2000);
+    };
+  })
+  .catch(err => {
+    alert("Microphone access denied or not available.");
+    console.error(err);
+    recordBtn.disabled = true;
+  });
+
+recordBtn.addEventListener('click', () => {
+  if(recordBtn.textContent === "Start Recording") {
+    recordBtn.textContent = "Stop Recording";
+    seconds = 0;
+    timerEl.textContent = "00:00";
+    mediaRecorder.start();
+
+    timerInterval = setInterval(() => {
+      seconds++;
+      const mins = String(Math.floor(seconds/60)).padStart(2,'0');
+      const secs = String(seconds % 60).padStart(2,'0');
+      timerEl.textContent = `${mins}:${secs}`;
+    }, 1000);
+
+  } else {
+    recordBtn.textContent = "Start Recording";
+    mediaRecorder.stop();
+    clearInterval(timerInterval);
+    timerEl.textContent = "00:00";
+  }
+});
+</script>
+
+</body>
+</html>
