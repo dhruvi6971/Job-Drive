@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Job Drives</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <script src="https://unpkg.com/feather-icons"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Inter", sans-serif; }
+    body { background: #f5f6f7; display: flex; min-height: 100vh; }
+
+ .sidebar {
+      position: fixed; left: 0; top: 0;
+      width: 272px; height: 100vh;
+      background: #111827; display: flex; flex-direction: column;
+      justify-content: space-between; padding: 0 0 24px 0;
+      box-sizing: border-box; transition: width 0.3s ease, left 0.3s ease; z-index: 1000;
+    }
+     .mobile-toggle-btn {
+      position: fixed; top: 16px; left: 16px; background: #111827; border: none;
+      color: white; padding: 8px; border-radius: 6px; z-index: 11000; cursor: pointer;
+      display: none;
+    }
+   
+/* COLLAPSED SIDEBAR */
+.sidebar.collapsed .sidebar-logo .logo-img {
+  display: none; /* Hide logo */
+}
+
+.sidebar.collapsed .sidebar-menu li span.label {
+  display: none; /* Hide menu names */
+}
+
+.sidebar.collapsed .sidebar-profile {
+  display: none; /* Hide profile section entirely */
+}
+/* When sidebar is collapsed */
+.sidebar.collapsed .sidebar-menu li {
+  justify-content: center;   /* Center icons horizontally */
+  padding: 12px 0;           /* Equal padding top/bottom, no left padding */
+  gap: 0;                    /* Remove gap between icon and label (label hidden anyway) */
+}
+
+.sidebar.collapsed .back-icon {
+  justify-content: center;   /* Center toggle icon */
+  margin-left: 24px;
+}
+
+    .sidebar.collapsed { width: 72px; }
+    .sidebar-logo { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 32px 0 16px; margin: 8px 0; }
+    .logo-img { width: 140px; margin-left: 32px; }
+    .back-icon { margin-right: 24px; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .icon-left { display: inline; } 
+    .icon-right { display: none; }
+    .sidebar.collapsed .logo-img { display: none; }
+    .sidebar.collapsed .icon-left { display: none; }
+    .sidebar.collapsed .icon-right { display: inline; }
+
+    .sidebar-menu { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; }
+    .sidebar-menu li {
+      display: flex; align-items: center; padding: 14px 0 12px 32px;
+      font-size: 16px; font-weight: 600; cursor: pointer; gap: 12px; border-radius: 12px; transition: all 0.2s ease;
+    }
+    .sidebar-menu li .icon { color: #fff; display: flex; align-items: center; justify-content: center; min-width: 22px; }
+    .sidebar-menu li .label { color: #9E9E9E; white-space: nowrap; }
+    .sidebar-menu li:hover { background: rgba(73,200,251,0.12); padding-left: 24px; margin: 4px 16px; gap: 8px; }
+    .sidebar-menu li:hover .label, .sidebar-menu li.active .label { color: #38bdf8; }
+    .sidebar-menu li:hover .icon, .sidebar-menu li.active .icon { color: #38bdf8; }
+
+    .sidebar-bottom { margin-top: auto; }
+    .sidebar-profile {
+      display: flex; align-items: center; background: #1e293b; border-radius: 12px;
+      padding: 16px 20px; margin: 24px 16px 0; gap: 16px; text-decoration: none; color: inherit;
+      transition: background 0.3s ease;
+    }
+    .sidebar-profile:hover { background: rgba(73,200,251,0.12); }
+    .sidebar-profile img { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; }
+    .profile-info { display: flex; flex-direction: column; }
+    .profile-info .name { color: #fff; font-size: 13px; font-weight: 600; }
+    .profile-info .email { color: #808080; font-size: 12px; font-weight: 500; }
+
+    /* === MAIN CONTENT === */
+     .top-bar { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  margin-bottom: 20px; 
+  gap: 12px; 
+  flex-wrap: wrap; 
+}
+
+.search-input { 
+  flex: 1; 
+  padding: 14px 16px; 
+  border: 1px solid #D1D5DB; 
+  border-radius: 12px; 
+  background-color: #F8F9FB; 
+  font-size: 16px;
+}
+
+.add-profile-btn { 
+  display: flex; 
+  align-items: center; 
+  gap: 8px; /* space between icon and text */ 
+  background: #38bdf8; 
+  color: white; 
+  border: none; 
+  padding: 14px 20px; 
+  border-radius: 12px; 
+  cursor: pointer; 
+  font-size: 16px; 
+}
+
+    .main-content { flex: 1; margin-left: 272px; padding: 20px; transition: margin-left 0.3s ease; }
+    .main-content.expanded { margin-left: 72px; }
+    .content-card { background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
+    .table-container { display: flex; flex-direction: column; gap: 12px; }
+    .table-header, .table-row { display: flex; align-items: center; padding: 12px; border-radius: 8px; }
+    .table-header { background: #f1f5f9; font-weight: 600; }
+    .table-row { background: #fff; border: 1px solid #e5e7eb; flex-wrap: wrap; }
+    .col { padding: 12px 8px; }
+    .drive-col { flex: 1.5; }
+    .title-col { flex: 2; }
+    .desc-col { flex: 3; }
+    .interviews-col, .resumes-col { flex: 1.5; display: flex; align-items: center; justify-content: flex-start; gap: 12px; }
+    .btn { border: none; padding: 10px 24px; border-radius: 10px; font-size: 16px; cursor: pointer; display: flex; align-items: center; gap: 8px; background: #38bdf8; color: #fff; font-weight: 600;}
+    .btn i { width: 18px; height: 18px; }
+    @media (max-width: 900px) {
+      .main-content { margin-left: 0; padding: 80px 8px 20px; }
+      .table-header { display: none; }
+      .table-row { flex-direction: column; align-items: flex-start; padding: 16px; gap: 12px; }
+      .col { width: 100%; }
+      .interviews-col, .resumes-col { width: 100%; justify-content: flex-start; }
+    }
+     @media (max-width: 768px) {
+       .logo-img { margin-left: 66px; margin-top: -26px;}
+       .sidebar-menu{
+        padding-top: 0px;
+        margin-top: -12px;
+       }
+      .mobile-toggle-btn { display: block; }
+      .back-icon { display: none; } /* Hide collapse icon on mobile */
+      .sidebar { left: -272px; }
+      .sidebar.active { left: 0; }
+      .main-content { margin-left: 0; padding: 80px 16px 20px; }
+      .table-header { display: none; }
+      .table-row { flex-direction: column; align-items: flex-start; padding: 16px; gap: 12px; }
+      .sidebar-profile{
+        margin-bottom: 60px;
+      }
+      .profile-col, .drives-col, .actions-col { flex: unset; width: 100%; }
+    }
+     .top-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      height: 72px;
+    }
+    .top-tabs .tab {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      background: #fff;
+      border-radius: 16px 16px 16px 16px;
+      font-weight: 500;
+      font-size: 20px;
+      cursor: pointer;
+      color: #475569;
+      transition: all 0.2s ease;
+    }
+    
+    .tab.active { background: rgba(73, 200, 251, 0.32); color: #222;
+      border-radius: 16px 16px 16px 16px;
+   }
+   
+.btn.delete {
+  background: #ffe6e6;
+  color: #e74c3c;
+}
+@media (max-width: 768px) {
+  .logo-img { margin-left: 66px; margin-top: -26px; }
+  .sidebar-menu { padding-top: 0px; margin-top: -12px; }
+  .mobile-toggle-btn { display: block; }
+  .back-icon { display: none; } /* Hide collapse icon on mobile */
+  .sidebar { left: -272px; }
+  .sidebar.active { left: 0; }
+  .main-content { margin-left: 0; padding: 80px 12px 20px; }
+
+  /* Hide desktop table headers */
+  .table-header { display: none; }
+
+  /* Make rows into card-like blocks */
+  .table-row {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px;
+    gap: 8px;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    margin-bottom: 12px;
+    width: 100%;
+  }
+
+  /* Add label before each column */
+  .table-row .col {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    font-size: 15px;
+    padding: 6px 0;
+    border-bottom: 1px solid #f3f4f6;
+  }
+
+  .table-row .col:last-child {
+    border-bottom: none;
+  }
+
+  .table-row .col::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #374151;
+    flex: 1;
+    text-align: left;
+  }
+
+  .table-row .col span,
+  .table-row .col button {
+    flex: 2;
+    text-align: right;
+  }
+
+  /* Make actions (like delete) align right */
+  .table-row .actions-col {
+    justify-content: flex-end;
+  }
+
+  /* Search + Job Drive button alignment */
+  .top-bar {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .search-input {
+    width: 100%;
+  }
+
+  .add-profile-btn {
+    width: 100%;
+    justify-content: center;
+    font-size: 15px;
+  }
+}
+@media (max-width: 768px) {
+  .table-row .col {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 15px;
+    padding: 6px 0;
+    border-bottom: 1px solid #f3f4f6;
+  }
+
+  .table-row .col:last-child {
+    border-bottom: none;
+  }
+
+  .table-row .col::before {
+    content: attr(data-label) ": ";
+    font-weight: 600;
+    color: #374151;
+    text-align: left;
+  }
+
+  .table-row .col span,
+  .table-row .col button {
+    text-align: right;
+    flex-grow: 1;
+  }
+}
+
+/* Interviews Table Row Styling */
+#interviewsTable .table-row {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px; /* spacing between columns */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  transition: transform 0.2s;
+}
+
+#interviewsTable .table-row:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+}
+
+#interviewsTable .col {
+  padding: 8px 12px;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex: 1 1 auto; /* allow flexible width */
+}
+
+#interviewsTable .drive-col { flex: 1.5; }
+#interviewsTable .title-col { flex: 2; }
+#interviewsTable .desc-col { flex: 2; }
+#interviewsTable .interviews-col { flex: 1.5; display: flex; justify-content: flex-start; }
+#interviewsTable .resumes-col { flex: 2; }
+#interviewsTable .col button.btn {
+  padding: 8px 16px;
+  font-size: 14px;
+  border-radius: 10px;
+}
+
+#interviewsTable .ai-feedback {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 250px; /* adjust as needed */
+}
+
+/* Mobile View */
+@media (max-width: 768px) {
+  #interviewsTable .table-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
+  }
+
+  #interviewsTable .col {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    padding: 6px 0;
+    border-bottom: 1px solid #f3f4f6;
+  }
+
+  #interviewsTable .col:last-child {
+    border-bottom: none;
+  }
+
+  #interviewsTable .col::before {
+    content: attr(data-label) ": ";
+    font-weight: 600;
+    color: #374151;
+  }
+
+  #interviewsTable .col span,
+  #interviewsTable .col button {
+    flex: 1;
+    text-align: right;
+  }
+}
+
+
+  </style>
+</head>
+<body>
+  <!-- Mobile Sidebar Toggle -->
+  <button id="mobileToggle" class="mobile-toggle-btn"><i data-feather="menu"></i></button>
+
+  <div class="sidebar">
+    <!-- Top Section -->
+    <div>
+      <div class="sidebar-logo">
+        <img src="logo1.png" alt="Jobdrive Logo" class="logo-img" />
+        <span id="toggleSidebar" class="back-icon">
+          <i data-feather="chevron-left" class="icon-left"></i>
+          <i data-feather="chevron-right" class="icon-right"></i>
+        </span>
+      </div>
+      <ul class="sidebar-menu">
+        <li  class="active">
+          <a href="dashboard.html" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;">
+            <span class="icon"><i data-feather="home"></i></span>
+            <span class="label">Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a href="jobdrive.html" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;">
+            <span class="icon"><i data-feather="layers"></i></span>
+            <span class="label">Job Drives</span>
+          </a>
+        </li>
+        <li>
+          <a href="jobprofile.html" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;">
+            <span class="icon"><i data-feather="user"></i></span>
+            <span class="label">Job Profiles</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <!-- Bottom Section -->
+    <div class="sidebar-bottom">
+      <ul class="sidebar-menu">
+        <li>
+           <a href="suggest_idea.html" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;">
+          <span class="icon"><i data-feather="zap"></i></span>
+          <span class="label">Suggest Idea</span>
+         </a>
+        </li>
+        <li>
+          <a href="settings.html" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;">
+          <span class="icon"><i data-feather="settings"></i></span>
+          <span class="label">Settings</span>
+        </a>
+        </li>
+        <li><span class="icon"><i data-feather="help-circle"></i></span><span class="label">Help</span></li>
+        <li><span class="icon"><i data-feather="log-out"></i></span><span class="label">Sign Out</span></li>
+      </ul>
+      <a href="/profile" class="sidebar-profile">
+        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profile" />
+        <div class="profile-info">
+          <span class="name">Brooklyn Simmons</span>
+          <span class="email">brooklyn@simmons.com</span>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Main content -->
+  <div class="main-content">
+     <div class="top-tabs">
+    <button class="tab" data-tab="interviews">Recent Interviews</button>
+    <button class="tab active" data-tab="jobdrives">Recent Job Drives</button>
+  </div>
+    <div class="content-card">
+      <div class="top-bar">
+        <input type="text" class="search-input" placeholder="Search" />
+       
+      </div>
+      
+     <div class="table-container" id="interviewsTable" style="display:none;">
+  <!-- Interviews table -->
+  <div class="table-header">
+    <div class="col drive-col">NAME</div>
+    <div class="col title-col">EMAIL</div>
+    <div class="col desc-col">PHONE</div>
+    <div class="col interviews-col">JOB DRIVE</div>
+    <div class="col resumes-col">AI FEEDBACK</div>
+    <div class="col desc-col">AI RATING</div>
+    <div class="col desc-col">DURATION</div>
+  </div>
+
+  <div class="table-row">
+    <div class="col drive-col">John Doe</div>
+    <div class="col title-col">johndoe123@gmail.com</div>
+    <div class="col desc-col">0123156478</div>
+
+    <!-- Job Drive button -->
+    <div class="col interviews-col">
+      <button class="btn">Drive A</button>
+    </div>
+
+    <!-- AI Feedback -->
+    <div class="col resumes-col ai-feedback">
+      John showed strong problem-solving skills but needs to improve clarity in communication...
+    </div>
+
+    <!-- AI Rating -->
+    <div class="col desc-col">
+      <span class="rating good">Good</span>
+    </div>
+
+    <!-- Duration -->
+    <div class="col desc-col">25 min</div>
+  </div>
+</div>
+
+
+
+<div class="table-container" id="jobDrivesTable">
+  <!-- Job Drives table -->
+  <div class="table-header">
+    <div class="col drive-col">JOB DRIVE</div>
+    <div class="col title-col">JOB TITLE</div>
+    <div class="col desc-col">JOB DESCRIPTION</div>
+    <div class="col interviews-col">INTERVIEWS</div>
+    <div class="col resumes-col">RESUMES</div>
+    <div class="col actions-col">ACTIONS</div>
+    
+  </div>
+  <div class="table-row">
+    <div class="col drive-col">March 2025</div>
+    <div class="col title-col">Backend Developer</div>
+    <div class="col desc-col">Node.js + Express + MongoDB ...</div>
+    <div class="col interviews-col">
+      <button class="btn" onclick="window.location.href='interview.html'"><i data-feather="eye"></i> Interviews</button>
+    </div>
+    <div class="col resumes-col">
+      <button class="btn" onclick="window.location.href='resumes.html'"><i data-feather="eye"></i> Resumes</button>
+    </div>
+    <div class="col actions-col">
+    <button class="btn delete"><i data-feather="trash-2"></i></button>
+                </div>
+  </div>
+</div>
+        
+  <!-- Add Job Drive Modal -->
+<div id="jobDriveModal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <span class="close-btn">&times;</span>
+    <h2>Add Job Drive</h2>
+    <form id="jobDriveForm">
+      <!-- Job Title Dropdown -->
+      <label for="jobTitle">Job Title</label>
+      <select id="jobTitle" name="jobTitle" required>
+        <option value="">Select Job Title</option>
+        <option value="frontend">Frontend Developer</option>
+        <option value="backend">Backend Developer</option>
+        <option value="fullstack">Fullstack Developer</option>
+        <option value="designer">Designer</option>
+      </select>
+
+      <!-- Job Drive Name -->
+      <label for="jobDriveName">Job Drive Name</label>
+      <input type="text" id="jobDriveName" name="jobDriveName" placeholder="Enter Job Drive Name" required />
+
+      <!-- Upload multiple resumes -->
+      <label for="multipleResumes">Upload Resumes (multiple)</label>
+      <input type="file" id="multipleResumes" name="multipleResumes" multiple />
+
+      <!-- Upload single resume -->
+      <label for="singleResume">Upload Resume (one)</label>
+      <input type="file" id="singleResume" name="singleResume" />
+
+      <button type="submit" class="add-profile-btn" style="margin-top:16px;">Submit</button>
+    </form>
+  </div>
+</div>
+ 
+<!-- Feedback Modal -->
+<div id="feedbackModal" class="modal" style="display: none;">
+
+  <div class="modal-content" style="position: relative; width: 500px; max-width: 90%;">
+    <button class="close-feedback" style="position: absolute; top: 12px; right: 16px; background: none; border: none; font-size: 24px; cursor: pointer;">&times;</button>
+    
+    <h2 style="margin-bottom: 24px;">✅ Job Profile Added Successfully</h2>
+    
+    <!-- Feedback Buttons -->
+    <div id="feedbackButtons" style="margin-bottom: 16px;">
+      <button class="feedback-btn" data-text="Love this">❤️ Love this</button>
+      <button class="feedback-btn" data-text="Needs improvements">🛠 Needs improvements</button>
+      <button class="feedback-btn" data-text="Confusing">❓ Confusing</button>
+    </div>
+
+    <!-- Textarea -->
+    <div class="form-group">
+      <label for="feedbackText">We’d love your feedback:</label>
+      <textarea id="feedbackText" placeholder="Let us know what went well or what could be improved..."></textarea>
+    </div>
+
+    <!-- Actions -->
+    <div class="form-actions">
+      <button id="submitFeedback" class="btn save">Submit Feedback</button>
+      <button class="btn cancel close-feedback">Close</button>
+    </div>
+  </div>
+</div>
+
+  <script>
+    feather.replace();
+    feather.replace();
+
+    const sidebar = document.querySelector('.sidebar');
+    const toggleBtn = document.getElementById('toggleSidebar');
+    const mobileToggleBtn = document.getElementById('mobileToggle');
+    const mainContent = document.querySelector('.main-content');
+
+    // Desktop collapse
+    toggleBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('collapsed');
+      mainContent.classList.toggle('expanded');
+      feather.replace();
+    });
+
+    // Mobile toggle
+    mobileToggleBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('active');
+    });
+
+
+  const tabs = document.querySelectorAll('.top-tabs .tab');
+  const interviewsTable = document.getElementById('interviewsTable');
+  const jobDrivesTable = document.getElementById('jobDrivesTable');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      // Remove active class from all tabs
+      tabs.forEach(t => t.classList.remove('active'));
+      // Add active to clicked tab
+      tab.classList.add('active');
+
+      // Show table based on clicked tab
+      if(tab.dataset.tab === 'interviews'){
+        interviewsTable.style.display = 'flex';
+        jobDrivesTable.style.display = 'none';
+      } else {
+        interviewsTable.style.display = 'none';
+        jobDrivesTable.style.display = 'flex';
+      }
+
+      feather.replace(); // re-render feather icons
+    });
+  });
+
+   document.addEventListener('click', (e) => {
+    if(e.target.closest('.btn.delete')) {
+      const row = e.target.closest('.table-row');
+      if(row) {
+        row.remove(); // deletes the row
+      }
+    }
+  });
+  </script>
+</body>
+</html>
