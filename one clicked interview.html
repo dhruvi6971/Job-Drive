@@ -347,6 +347,146 @@
       font-weight: 600;
     }
   
+.main-content { flex: 1; margin-left: 272px; padding: 20px; transition: margin-left 0.3s ease; }
+    .main-content.expanded { margin-left: 72px; }
+    .container { max-width: 1200px; margin: auto; background: #fff; border-radius: 12px; padding: 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+    .back-btn { display: inline-block; margin-bottom: 1.5rem; text-decoration: none; font-size: 0.9rem; color: #2563eb; font-weight: 600; }
+    .header { display: flex; justify-content: space-between; align-items: flex-start; gap: 2rem; flex-wrap: wrap; margin-bottom: 2rem; }
+    .candidate h2 { margin-bottom: 0.5rem; font-size: 1.5rem; font-weight: 700; color: #0f172a; }
+    .field { margin-bottom: 1rem; }
+    .field label { font-weight: 600; margin-bottom: 0.25rem; display: block; font-size: 0.85rem; color: #475569; }
+    .field p { font-size: 0.95rem; color: #111827; }
+
+    /* AI Review */
+    .ai-review { background: #e0f2fe; padding: 1rem; border-radius: 12px; min-width: 250px; flex-shrink: 0; }
+    .ai-review h3 { margin-bottom: 0.5rem; font-size: 1rem; font-weight: 600; color: #1e3a8a; }
+    .ai-review p { font-size: 0.9rem; margin: 0.25rem 0; }
+
+    /* Job Details */
+    .section { margin-bottom: 2rem; }
+    .section h3 { font-size: 1.2rem; font-weight: 600; margin-bottom: 1rem; color: #334155; }
+    .job-description { background: #f8fafc; padding: 16px; border-radius: 12px; font-size: 0.95rem; color: #111827; position: relative; }
+    .job-description a.read-more { color: #2563eb; cursor: pointer; display: inline-block; margin-top: 8px; }
+
+    /* Q&A Scrollable */
+    .qa-container { max-height: 450px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; padding-right: 8px; }
+    .qa { display: flex; flex-direction: column; gap: 6px; }
+    .question { background: #e2e8f0; padding: 0.6rem 1rem; border-radius: 8px; font-weight: 500; }
+    .answer { background: #e0f2fe; padding: 0.6rem 1rem; border-radius: 8px; color: #1e293b; }
+
+    /* Scrollbar styles */
+    .qa-container::-webkit-scrollbar { width: 6px; }
+    .qa-container::-webkit-scrollbar-thumb { background-color: #38bdf8; border-radius: 3px; }
+    .qa-container::-webkit-scrollbar-track { background: #f1f5f9; }
+
+    /* Mobile */
+    @media(max-width:768px){
+      .main-content { margin-left: 0; padding: 20px 16px; }
+      .header { flex-direction: column; }
+      .ai-review { width: 100%; }
+      .job-description { font-size: 0.9rem; }
+    }
+    /* AI Review Card - Bigger version */
+/* AI Review Card - Medium size */
+.ai-review {
+  background: #e0f2fe;
+  padding: 1rem 1.5rem;       /* Medium padding */
+  border-radius: 12px;
+  max-width: 400px;           /* Medium width */
+  flex: 1 1 auto;
+  box-sizing: border-box;
+}
+
+.ai-review h3 {
+  margin: 0 0 0.5rem 0;       /* Slight spacing */
+  font-size: 1.1rem;          /* Medium title */
+  font-weight: 600;
+  color: #1e3a8a;
+}
+
+.ai-review p {
+  font-size: 0.95rem;         /* Medium text */
+  color: #1e293b;
+  margin: 0.25rem 0;
+  line-height: 1.4;           /* Comfortable reading */
+}
+
+/* On mobile, make it full width */
+@media (max-width: 768px) {
+  .ai-review {
+    width: 100%;
+    margin-top: 1rem;
+  }
+}
+/* === MOBILE UI IMPROVEMENTS === */
+@media (max-width: 768px) {
+  /* Container padding for small screens */
+  .main-content .container {
+    padding: 16px;
+  }
+
+  /* Stack header sections */
+  .header {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  /* Candidate info & AI review take full width */
+  .candidate, .ai-review {
+    width: 100%;
+  }
+
+  /* Medium AI box */
+  .ai-review {
+    max-width: 100%;
+    padding: 16px;
+    border-radius: 12px;
+  }
+
+  /* Job Details section full width */
+  .section {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+
+  /* Job description */
+  #jobDescription {
+    line-height: 1.5;
+    font-size: 0.95rem;
+  }
+
+  /* Q&A Scrollable */
+  .section.qa-section {
+    max-height: 300px;  /* scroll if too many questions */
+    overflow-y: auto;
+    padding-right: 8px;
+  }
+
+  /* Question & answer stacked */
+  .qa {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+
+  .question, .answer {
+    width: 100%;
+    display: block;
+  }
+
+}
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+    padding: 50px 16px 20px; /* increased top padding for toggle button */
+  }
+
+  .container {
+    margin-top: 20px; /* optional extra spacing inside container */
+  }
+}
+
 
   </style>
 </head>
@@ -409,62 +549,43 @@
 
   <!-- Main content -->
   <div class="main-content">
-     <div class="container">
-    <a href="interview.html" class="back-btn">← Back</a>
+      <div class="container">
+      <a href="interview.html" class="back-btn">← Back</a>
 
-    <div class="header">
-      <div class="candidate">
-        <h2 id="candidateName">John Doe</h2>
-        <div class="field">
-          <label>Email</label>
-          <p id="candidateEmail">john123@gmail.com</p>
+      <div class="header">
+        <div class="candidate">
+          <h2 id="candidateName">John Doe</h2>
+          <div class="field"><label>Email</label><p id="candidateEmail">john123@gmail.com</p></div>
+          <div class="field"><label>Phone</label><p id="candidatePhone">0123456789</p></div>
         </div>
-        <div class="field">
-          <label>Phone</label>
-          <p id="candidatePhone">0123456789</p>
+
+        <div class="ai-review">
+          <h3>AI Review</h3>
+          <p><strong>AI Rating:</strong> <span id="aiRating">Good</span></p>
+          <p><strong>AI Feedback:</strong></p>
+          <p id="aiFeedback">We power dance event and education tricks and connect them to consumers with our specialized software...</p>
         </div>
       </div>
 
-      <div class="ai-review">
-        <h3>AI Review</h3>
-        <p><strong>AI Rating:</strong> <span id="aiRating">Good</span></p>
-        <p><strong>AI Feedback:</strong></p>
-        <p id="aiFeedback">We power dance event and education tricks and connect them to consumers with our specialized software...</p>
-      </div>
-    </div>
-
-    <!-- Job Details -->
-    <div class="section">
-      <h3>Job Details</h3>
-      <div class="field">
-        <label>Job Title</label>
-        <p id="jobTitle">Frontend Developer</p>
-      </div>
-      <div class="field">
-        <label>Job Description</label>
-        <p id="jobDescription">
+      <div class="section">
+        <h3>Job Details</h3>
+        <div class="job-description" id="jobDescription">
           Danceplace Digital is the leading technology platform for the dance industry. We power dance event and education tricks...
-        </p>
+          <a href="#" class="read-more">Read More</a>
+        </div>
       </div>
-    </div>
 
-    <!-- Q&A -->
-    <div class="section">
-      <h3>Interview QAs</h3>
-      <div class="qa">
-        <div class="question">How are you?</div>
-        <div class="answer">I am fine, thank you. Excited to be here!</div>
-      </div>
-      <div class="qa">
-        <div class="question">Why should we hire you?</div>
-        <div class="answer">Because I bring creativity, technical skills, and collaboration experience...</div>
-      </div>
-      <div class="qa">
-        <div class="question">What is your strength?</div>
-        <div class="answer">Problem solving and UI/UX design execution under tight deadlines.</div>
+      <div class="section">
+        <h3>Interview QAs</h3>
+        <div class="qa-container">
+          <!-- Example Q&A; repeat for 20 questions -->
+          <div class="qa"><div class="question">How are you?</div><div class="answer">I am fine, thank you.</div></div>
+          <div class="qa"><div class="question">Why should we hire you?</div><div class="answer">Because I bring creativity, technical skills...</div></div>
+          <div class="qa"><div class="question">What is your strength?</div><div class="answer">Problem solving and UI/UX design execution...</div></div>
+          <!-- add remaining Q&A similarly -->
+        </div>
       </div>
     </div>
-  </div>
   </div>
   
 
@@ -489,6 +610,18 @@
     // Mobile toggle
     mobileToggleBtn.addEventListener('click', () => {
       sidebar.classList.toggle('active');
+    });
+
+    const jobDesc = document.getElementById("jobDescription");
+    const fullText = "Danceplace Digital is the leading technology platform for the dance industry. We power dance event and education tricks and connect them to consumers with our specialized software. Skills Required: UI/UX Design, Wireframing, Prototyping, Figma, User Research. Responsibilities: Collaborate with product managers, create user flows, conduct usability testing.";
+    jobDesc.querySelector(".read-more").addEventListener("click", function(e){
+      e.preventDefault();
+      if(this.textContent === "Read More"){
+        jobDesc.innerHTML = fullText + ' <a href="#" class="read-more">Show Less</a>';
+      } else {
+        jobDesc.innerHTML = fullText.substring(0,150) + "... <a href='#' class='read-more'>Read More</a>";
+      }
+      jobDesc.querySelector(".read-more").addEventListener("click", arguments.callee);
     });
 
     // Read More toggle
