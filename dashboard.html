@@ -361,6 +361,398 @@
     text-align: right;
   }
 }
+/* Interviews Table Row Styling */
+#interviewsTable .table-header,
+#interviewsTable .table-row {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  border-radius: 8px;
+}
+
+#interviewsTable .table-header {
+  background: #f1f5f9;
+  font-weight: 600;
+}
+
+#interviewsTable .table-row {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  transition: transform 0.2s;
+}
+
+#interviewsTable .table-row:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+}
+
+/* Column widths — match header and row */
+#interviewsTable .col {
+  padding: 8px 12px;
+  font-size: 15px;
+  flex: 1; /* default flexible column */
+}
+
+#interviewsTable .drive-col   { flex: 1.2; }
+#interviewsTable .title-col   { flex: 1.8; }
+#interviewsTable .desc-col    { flex: 1.5; }
+#interviewsTable .interviews-col { flex: 1.5; display: flex; justify-content: flex-start; }
+#interviewsTable .resumes-col { flex: 2; }
+#interviewsTable .rating-col  { flex: 1; }
+#interviewsTable .duration-col{ flex: 1; }
+
+/* Buttons inside */
+#interviewsTable .col button.btn {
+  padding: 8px 16px;
+  font-size: 14px;
+  border-radius: 10px;
+  margin-right: 70px;
+  margin-left: 0px;
+}
+
+#interviewsTable .desc-col    { 
+  margin-left: -20px;
+  
+}
+
+
+/* Feedback text ellipsis */
+#interviewsTable .ai-feedback {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 220px;
+  margin-right: 30px;
+  margin-left: 0px;
+}
+/* 🌐 Base styles are same as before (desktop view) */
+#interviewsTable .table-header,
+#interviewsTable .table-row {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  border-radius: 8px;
+}
+
+#interviewsTable .table-header {
+  background: #f1f5f9;
+  font-weight: 600;
+}
+
+#interviewsTable .table-row {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  transition: transform 0.2s;
+}
+
+#interviewsTable .table-row:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+}
+
+#interviewsTable .col {
+  padding: 12px 16px;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex: 1; /* all columns get equal space */
+  min-width: 100px; /* optional: prevent very small columns */
+}
+
+/* Buttons inside */
+#interviewsTable .col button.btn {
+  padding: 8px 16px;
+  font-size: 14px;
+  border-radius: 10px;
+  margin: 0; /* remove extra margins */
+}
+
+/* Remove fixed max-width for AI feedback */
+#interviewsTable .ai-feedback {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Optional: slightly increase spacing between columns */
+#interviewsTable .table-row .col + .col {
+  margin-left: 8px;
+}
+#interviewsTable .title-col   { 
+  margin-left: 0px;
+}
+/* 📱 Mobile view */
+@media (max-width: 768px) {
+  /* Hide table header on mobile */
+  #interviewsTable .table-header,
+  #jobDrivesTable .table-header {
+    display: none;
+  }
+
+  /* Make rows into cards */
+  #interviewsTable .table-row,
+  #jobDrivesTable .table-row {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px;
+    margin-bottom: 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+
+  /* Each col becomes a row with label + value */
+  #interviewsTable .col,
+  #jobDrivesTable .col {
+    flex: none;
+    width: 100%;
+    padding: 6px 0;
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+  }
+
+  /* Add label before each col */
+  #interviewsTable .col::before,
+  #jobDrivesTable .col::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #475569;
+    margin-right: 8px;
+  }
+
+  /* Buttons full width for touch */
+  #interviewsTable .col button.btn,
+  #jobDrivesTable .col button.btn {
+    width: 100%;
+    margin-top: 8px;
+    font-size: 15px;
+    padding: 10px;
+    border-radius: 8px;
+  }
+
+  /* Rating / Duration center align */
+  #interviewsTable .rating-col,
+  #interviewsTable .duration-col,
+  #jobDrivesTable .rating-col,
+  #jobDrivesTable .duration-col {
+    justify-content: flex-start;
+  }
+
+  /* AI feedback expands full width */
+  #interviewsTable .ai-feedback {
+    max-width: 100%;
+    white-space: normal;
+  }
+}
+/* Desktop: same as now */
+#interviewsTable .table-header,
+#jobDrivesTable .table-header {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  font-weight: 600;
+  background: #f1f5f9;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  /* Show header separately */
+  #interviewsTable .table-header,
+  #jobDrivesTable .table-header {
+    display: block;
+    background: none;
+    padding: 0;
+    font-size: 16px;
+    font-weight: 700;
+    margin: 12px 0;
+  }
+
+  /* Convert rows into cards */
+  #interviewsTable .table-row,
+  #jobDrivesTable .table-row {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px;
+    margin-bottom: 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+
+  /* Each col inside card */
+  #interviewsTable .col,
+  #jobDrivesTable .col {
+    flex: none;
+    width: 100%;
+    padding: 6px 0;
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+  }
+
+  /* Add labels (column names) */
+  #interviewsTable .col::before,
+  #jobDrivesTable .col::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #475569;
+    margin-right: 8px;
+  }
+
+  /* Buttons take full width */
+  #interviewsTable .col button.btn,
+  #jobDrivesTable .col button.btn {
+    width: 100%;
+    margin-top: 8px;
+    font-size: 15px;
+    padding: 10px;
+    border-radius: 8px;
+  }
+
+  /* Feedback expands full width */
+  #interviewsTable .ai-feedback {
+    max-width: 100%;
+    white-space: normal;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Hide big header row */
+  #interviewsTable .table-header,
+  #jobDrivesTable .table-header {
+    display: none;
+  }
+
+  /* Each row is a card */
+  #interviewsTable .table-row,
+  #jobDrivesTable .table-row {
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    margin-bottom: 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+
+  /* Each field = one horizontal row */
+  #interviewsTable .col,
+  #jobDrivesTable .col {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  /* Remove border on last item */
+  #interviewsTable .col:last-child,
+  #jobDrivesTable .col:last-child {
+    border-bottom: none;
+  }
+
+  /* Header/Label (left side) */
+  #interviewsTable .col::before,
+  #jobDrivesTable .col::before {
+    content: attr(data-label);
+    flex: 1;
+    font-weight: 600;
+    color: #475569;
+    text-align: left;
+  }
+
+  /* Value/Data (right side) */
+  #interviewsTable .col span,
+  #jobDrivesTable .col span {
+    flex: 1;
+    text-align: right;
+    font-weight: 400;
+    color: #1e293b;
+  }
+
+  /* Buttons aligned right */
+  #interviewsTable .col button.btn,
+  #jobDrivesTable .col button.btn {
+    width: auto;      /* don’t force full width */
+    margin-left: 8px; /* spacing between buttons */
+    padding: 8px 14px;
+    font-size: 14px;
+    border-radius: 8px;
+  }
+
+  /* Actions row = buttons aligned to right */
+  #interviewsTable .actions-col,
+  #jobDrivesTable .actions-col {
+    justify-content: flex-end;
+  }
+}
+@media (max-width: 768px) {
+  /* Table rows become cards */
+  #jobDrivesTable .table-row {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px;
+    margin-bottom: 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    width: 100%; /* fit screen */
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+
+  /* Each col becomes a row with label + value */
+  #jobDrivesTable .col {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    font-size: 14px;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  #jobDrivesTable .col:last-child {
+    border-bottom: none;
+  }
+
+  #jobDrivesTable .col::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #475569;
+    flex: 1;
+    text-align: left;
+  }
+
+  #jobDrivesTable .col span {
+    flex: 1;
+    text-align: right;
+    align-items: right;
+  }
+  
+
+  /* Search + Add button full width */
+  .top-bar {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .search-input,
+  .add-profile-btn {
+    width: 100%;
+  }
+}
+/* Desktop - Even spacing for Interviews Table */
+
 
 
   </style>
@@ -441,42 +833,25 @@
       </div>
       
      <div class="table-container" id="interviewsTable" style="display:none;">
-  <!-- Interviews table -->
-  <div class="table-header">
-    <div class="col drive-col">NAME</div>
-    <div class="col title-col">EMAIL</div>
-    <div class="col desc-col">PHONE</div>
-    <div class="col interviews-col">JOB DRIVE</div>
-    <div class="col resumes-col">AI FEEDBACK</div>
-    <div class="col desc-col">AI RATING</div>
-    <div class="col desc-col">DURATION</div>
-  </div>
-
-  <div class="table-row">
-    <div class="col drive-col">John Doe</div>
-    <div class="col title-col">johndoe123@gmail.com</div>
-    <div class="col desc-col">0123156478</div>
-
-    <!-- Job Drive button -->
-    <div class="col interviews-col">
-      <button class="btn">Drive A</button>
-    </div>
-
-    <!-- AI Feedback -->
-    <div class="col resumes-col ai-feedback">
-      John showed strong problem-solving skills but needs to improve clarity in communication...
-    </div>
-
-    <!-- AI Rating -->
-    <div class="col desc-col">
-      <span class="rating good">Good</span>
-    </div>
-
-    <!-- Duration -->
-    <div class="col desc-col">25 min</div>
-  </div>
+ <div class="table-header">
+  <div class="col drive-col">NAME</div>
+  <div class="col title-col">EMAIL</div>
+  <div class="col desc-col">PHONE</div>
+  <div class="col interviews-col">JOB DRIVE</div>
+  <div class="col resumes-col">AI FEEDBACK</div>
+  <div class="col rating-col">AI RATING</div>
+  <div class="col duration-col">DURATION</div>
 </div>
-
+<div class="table-row">
+  <div class="col drive-col" data-label="Name"><span>John Doe</span></div>
+  <div class="col title-col" data-label="Email"><span>johndoe123@gmail.com</span></div>
+  <div class="col title-col" data-label="Phone"><span>0123456789</span></div>
+  <div class="col interviews-col" data-label="Job Drive"><span><button class="btn">Drive</button></span></div>
+  <div class="col title-col" data-label="AI Feedback"><span>Good Communication</span></div>
+  <div class="col title-col" data-label="AI Rating"><span>Good</span></div>
+  <div class="col title-col" data-label="Duration"><span>25 min</span></div>
+</div>
+</div>
 
 
 <div class="table-container" id="jobDrivesTable">
@@ -488,23 +863,17 @@
     <div class="col interviews-col">INTERVIEWS</div>
     <div class="col resumes-col">RESUMES</div>
     <div class="col actions-col">ACTIONS</div>
-    
   </div>
+
   <div class="table-row">
-    <div class="col drive-col">March 2025</div>
-    <div class="col title-col">Backend Developer</div>
-    <div class="col desc-col">Node.js + Express + MongoDB ...</div>
-    <div class="col interviews-col">
-      <button class="btn" onclick="window.location.href='interview.html'"><i data-feather="eye"></i> Interviews</button>
-    </div>
-    <div class="col resumes-col">
-      <button class="btn" onclick="window.location.href='resumes.html'"><i data-feather="eye"></i> Resumes</button>
-    </div>
-    <div class="col actions-col">
-    <button class="btn delete"><i data-feather="trash-2"></i></button>
-                </div>
-  </div>
+  <div class="col drive-col" data-label="Job Drive"><span>March 2025</span></div>
+  <div class="col title-col" data-label="Job Title"><span>Backend Developer</span></div>
+  <div class="col desc-col" data-label="Job Description"><span>Node.js + Express + MongoDB</span></div>
+  <div class="col interviews-col" data-label="Interviews"><span><button class="btn">Interviews</button></span></div>
+  <div class="col resumes-col" data-label="Resumes"><span> <button class="btn">Resumes</button></span></div>
+  <div class="col actions-col" data-label="Actions"><span> <button class="btn">Delete</button></span></div>
 </div>
+
         
   <!-- Add Job Drive Modal -->
 <div id="jobDriveModal" class="modal" style="display:none;">
