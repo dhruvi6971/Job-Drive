@@ -747,10 +747,169 @@
     padding: 10px;
     font-size: 14px;
   }
+  
+  
 }
 
+/* Desktop styles remain unchanged */
+table.resume-table {
+  width: 100%;
+  border-collapse: collapse;
+}
 
+table.resume-table th,
+table.resume-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+
+/* Mobile responsive: header: data layout */
+@media screen and (max-width: 768px) {
+  table.resume-table thead {
+    display: none; /* hide table headers on mobile */
+  }
+
+  table.resume-table, 
+  table.resume-table tbody, 
+  table.resume-table tr, 
+  table.resume-table td {
+    display: block;
+    width: 100%;
+  }
+
+  table.resume-table tr {
+    margin-bottom: 12px;
+    border: 1px solid #ddd;
+    padding: 8px;
+    border-radius: 8px;
+  }
+
+  table.resume-table td {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border: none;
+  }
+
+  table.resume-table td::before {
+    content: attr(data-label); /* get header from data-label */
+    font-weight: 600;
+    width: 40%;
+  }
+
+  table.resume-table td > * {
+    width: 60%;
+    text-align: right;
+  }
+}
+@media screen and (max-width: 768px) {
+  table.resume-table thead {
+    display: none; /* hide table headers on mobile */
+  }
+
+  table.resume-table, 
+  table.resume-table tbody, 
+  table.resume-table tr, 
+  table.resume-table td {
+    display: block;
+    width: 100%;
+  }
+
+  table.resume-table tr {
+    margin-bottom: 12px;
+    border: 1px solid #ddd;
+    padding: 8px;
+    border-radius: 8px;
+  }
+
+  table.resume-table td {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border: none;
+    align-items: center;
+  }
+
+  table.resume-table td::before {
+    content: attr(data-label); /* get header from data-label */
+    font-weight: 600;
+    width: 40%;
+  }
+
+  /* Right side data styling */
+  table.resume-table td > * {
+    width: 60%;
+    text-align: right;
+  }
+
+  /* Limit input, select, and button width */
+  table.resume-table td input,
+  table.resume-table td select,
+  table.resume-table td button {
+    width: 60%; /* medium width */
+    max-width: 200px; /* optional max width */
+    min-width: 100px; /* optional min width */
+    box-sizing: border-box;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  table.resume-table td button.send-invite-btn {
+    width: 60%;           /* medium width */
+    max-width: 200px;     /* optional */
+    min-width: 100px;     /* optional */
+    padding: 6px 12px;    /* make button text centered and not cramped */
+    text-align: center;   /* center text */
+    display: inline-block; /* ensures text centering works */
+  }
+}
+@media screen and (max-width: 768px) {
+  /* Make the select box smaller */
+  select.interview-type-select {
+    width: 45%;      /* smaller width */
+    max-width: 120px;
+    padding: 3px 6px;
+    font-size: 13px;
+  }
+
+  /* Make the dropdown options smaller */
+  select.interview-type-select option {
+    font-size: 13px;  /* smaller text inside options */
+    padding: 4px 6px; /* optional: spacing inside dropdown */
+  }
+}
+
+@media (max-width: 768px) {
+       .logo-img { margin-left: 66px; margin-top: -26px;}
+       .sidebar-menu{
+        padding-top: 0px;
+        margin-top: -12px;
+       }
+      .mobile-toggle-btn { display: block; }
+      .back-icon { display: none; } /* Hide collapse icon on mobile */
+      .sidebar { left: -272px; }
+      .sidebar.active { left: 0; }
+      .main-content { margin-left: 0; padding: 80px 16px 20px; }
+      .table-header { display: none; }
+      .table-row { flex-direction: column; align-items: flex-start; padding: 16px; gap: 12px; }
+      .sidebar-profile{
+        margin-bottom: 60px;
+      }
+      .profile-col, .drives-col, .actions-col { flex: unset; width: 100%; }
+    }
+    @media (max-width: 768px) {
+  .sidebar-profile {
+    gap: 4px; /* slightly smaller gap for mobile */
+  }
+  .profile-info .name {
+    font-size: 13px;
     
+  }
+  .profile-info .email {
+    font-size: 11px;
+    padding-top: 4px;
+  }}
   </style>
 </head>
 <body>
@@ -859,39 +1018,41 @@
     </tr>
   </thead>
   <tbody id="resumeTableBody">
-    <tr data-rating="Good" data-status="pending">
-      <td><input type="checkbox" class="rowCheckbox"></td>
-      <td>Jane Doe</td>
-      <td>jane@example.com</td>
-      <td>+1 234 567 8901</td>
-      <td>3 Years</td>
-      <td>Good</td>
-      <td><input type="text" class="small-input" placeholder="Link"></td>
-      <td>
-        <select class="interview-type-select">
-          <option value="voice">Voice</option>
-          <option value="text">Text</option>
-        </select>
-      </td>
-      <td><button class="send-invite-btn">Send Invite</button></td>
-    </tr>
-    <tr data-rating="Excellent" data-status="completed">
-      <td><input type="checkbox" class="rowCheckbox"></td>
-      <td>John Smith</td>
-      <td>john@example.com</td>
-      <td>+1 987 654 3210</td>
-      <td>5 Years</td>
-      <td>Excellent</td>
-      <td><input type="text" class="small-input" placeholder="Link"></td>
-      <td>
-        <select class="interview-type-select">
-          <option value="voice">Voice</option>
-          <option value="text">Text</option>
-        </select>
-      </td>
-      <td><button class="send-invite-btn">Send Invite</button></td>
-    </tr>
-  </tbody>
+  <tr data-rating="Good" data-status="pending">
+    <td data-label="Select"><input type="checkbox" class="rowCheckbox"></td>
+    <td data-label="Name">Jane Doe</td>
+    <td data-label="Email">jane@example.com</td>
+    <td data-label="Phone">+1 234 567 8901</td>
+    <td data-label="Experience">3 Years</td>
+    <td data-label="AI Rating">Good</td>
+    <td data-label="Profile Link"><input type="text" class="small-input" placeholder="Link"></td>
+    <td data-label="Interview Type">
+      <select class="interview-type-select">
+        <option value="voice">Voice</option>
+        <option value="text">Text</option>
+      </select>
+    </td>
+    <td data-label="Action"><button class="send-invite-btn">Send Invite</button></td>
+  </tr>
+
+  <tr data-rating="Excellent" data-status="completed">
+    <td data-label="Select"><input type="checkbox" class="rowCheckbox"></td>
+    <td data-label="Name">John Smith</td>
+    <td data-label="Email">john@example.com</td>
+    <td data-label="Phone">+1 987 654 3210</td>
+    <td data-label="Experience">5 Years</td>
+    <td data-label="AI Rating">Excellent</td>
+    <td data-label="Profile Link"><input type="text" class="small-input" placeholder="Link"></td>
+    <td data-label="Interview Type">
+      <select class="interview-type-select">
+        <option value="voice">Voice</option>
+        <option value="text">Text</option>
+      </select>
+    </td>
+    <td data-label="Action"><button class="send-invite-btn">Send Invite</button></td>
+  </tr>
+</tbody>
+
 </table>
 </div>
 
