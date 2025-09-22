@@ -327,40 +327,7 @@
   max-width: 250px; /* adjust as needed */
 }
 
-/* Mobile View */
-@media (max-width: 768px) {
-  #interviewsTable .table-row {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-    padding: 16px;
-  }
 
-  #interviewsTable .col {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    font-size: 14px;
-    padding: 6px 0;
-    border-bottom: 1px solid #f3f4f6;
-  }
-
-  #interviewsTable .col:last-child {
-    border-bottom: none;
-  }
-
-  #interviewsTable .col::before {
-    content: attr(data-label) ": ";
-    font-weight: 600;
-    color: #374151;
-  }
-
-  #interviewsTable .col span,
-  #interviewsTable .col button {
-    flex: 1;
-    text-align: right;
-  }
-}
 /* Interviews Table Row Styling */
 #interviewsTable .table-header,
 #interviewsTable .table-row {
@@ -486,81 +453,7 @@
 #interviewsTable .title-col   { 
   margin-left: 0px;
 }
-/* 📱 Mobile view */
-@media (max-width: 768px) {
-  /* Hide table header on mobile */
-  #interviewsTable .table-header,
-  #jobDrivesTable .table-header {
-    display: none;
-  }
 
-  /* Make rows into cards */
-  #interviewsTable .table-row,
-  #jobDrivesTable .table-row {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 16px;
-    margin-bottom: 16px;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-  }
-
-  /* Each col becomes a row with label + value */
-  #interviewsTable .col,
-  #jobDrivesTable .col {
-    flex: none;
-    width: 100%;
-    padding: 6px 0;
-    display: flex;
-    justify-content: space-between;
-    font-size: 14px;
-  }
-
-  /* Add label before each col */
-  #interviewsTable .col::before,
-  #jobDrivesTable .col::before {
-    content: attr(data-label);
-    font-weight: 600;
-    color: #475569;
-    margin-right: 8px;
-  }
-
-  /* Buttons full width for touch */
-  #interviewsTable .col button.btn,
-  #jobDrivesTable .col button.btn {
-    width: 100%;
-    margin-top: 8px;
-    font-size: 15px;
-    padding: 10px;
-    border-radius: 8px;
-  }
-
-  /* Rating / Duration center align */
-  #interviewsTable .rating-col,
-  #interviewsTable .duration-col,
-  #jobDrivesTable .rating-col,
-  #jobDrivesTable .duration-col {
-    justify-content: flex-start;
-  }
-
-  /* AI feedback expands full width */
-  #interviewsTable .ai-feedback {
-    max-width: 100%;
-    white-space: normal;
-  }
-}
-/* Desktop: same as now */
-#interviewsTable .table-header,
-#jobDrivesTable .table-header {
-  display: flex;
-  align-items: center;
-  padding: 12px 20px;
-  font-weight: 600;
-  background: #f1f5f9;
-  border-radius: 8px;
-  margin-bottom: 12px;
-}
 
 /* Mobile */
 @media (max-width: 768px) {
@@ -573,40 +466,6 @@
     font-size: 16px;
     font-weight: 700;
     margin: 12px 0;
-  }
-
-  /* Convert rows into cards */
-  #interviewsTable .table-row,
-  #jobDrivesTable .table-row {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 16px;
-    margin-bottom: 16px;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-    background: #fff;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-  }
-
-  /* Each col inside card */
-  #interviewsTable .col,
-  #jobDrivesTable .col {
-    flex: none;
-    width: 100%;
-    padding: 6px 0;
-    display: flex;
-    justify-content: space-between;
-    font-size: 14px;
-  }
-
-  /* Add labels (column names) */
-  #interviewsTable .col::before,
-  #jobDrivesTable .col::before {
-    content: attr(data-label);
-    font-weight: 600;
-    color: #475569;
-    margin-right: 8px;
   }
 
   /* Buttons take full width */
@@ -624,9 +483,7 @@
     max-width: 100%;
     white-space: normal;
   }
-}
 
-@media (max-width: 768px) {
   /* Hide big header row */
   #interviewsTable .table-header,
   #jobDrivesTable .table-header {
@@ -696,8 +553,7 @@
   #jobDrivesTable .actions-col {
     justify-content: flex-end;
   }
-}
-@media (max-width: 768px) {
+
   /* Table rows become cards */
   #jobDrivesTable .table-row {
     display: flex;
@@ -738,22 +594,7 @@
     text-align: right;
     align-items: right;
   }
-  
-
-  /* Search + Add button full width */
-  .top-bar {
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .search-input,
-  .add-profile-btn {
-    width: 100%;
-  }
 }
-/* Desktop - Even spacing for Interviews Table */
-
-
 
   </style>
 </head>
@@ -869,11 +710,16 @@
   <div class="col drive-col" data-label="Job Drive"><span>March 2025</span></div>
   <div class="col title-col" data-label="Job Title"><span>Backend Developer</span></div>
   <div class="col desc-col" data-label="Job Description"><span>Node.js + Express + MongoDB</span></div>
-  <div class="col interviews-col" data-label="Interviews"><span><button class="btn">Interviews</button></span></div>
-  <div class="col resumes-col" data-label="Resumes"><span> <button class="btn">Resumes</button></span></div>
-  <div class="col actions-col" data-label="Actions"><span> <button class="btn">Delete</button></span></div>
+<div class="col interviews-col" data-label="Interviews"><span>
+  <button class="btn" onclick="window.location.href='interview.html'">Interviews</button>
+  </span>
 </div>
-
+<div class="col resumes-col" data-label="Resumes"><span>
+  <button class="btn" onclick="window.location.href='resumes.html'">Resumes</button>
+  </span>
+</div>
+  <div class="col actions-col" data-label="Actions"><span> <button class="btn" style="background-color:#e63946; color:white;">Delete</button></span></div>
+</div>
         
   <!-- Add Job Drive Modal -->
 <div id="jobDriveModal" class="modal" style="display:none;">
@@ -907,35 +753,7 @@
     </form>
   </div>
 </div>
- 
-<!-- Feedback Modal -->
-<div id="feedbackModal" class="modal" style="display: none;">
 
-  <div class="modal-content" style="position: relative; width: 500px; max-width: 90%;">
-    <button class="close-feedback" style="position: absolute; top: 12px; right: 16px; background: none; border: none; font-size: 24px; cursor: pointer;">&times;</button>
-    
-    <h2 style="margin-bottom: 24px;">✅ Job Profile Added Successfully</h2>
-    
-    <!-- Feedback Buttons -->
-    <div id="feedbackButtons" style="margin-bottom: 16px;">
-      <button class="feedback-btn" data-text="Love this">❤️ Love this</button>
-      <button class="feedback-btn" data-text="Needs improvements">🛠 Needs improvements</button>
-      <button class="feedback-btn" data-text="Confusing">❓ Confusing</button>
-    </div>
-
-    <!-- Textarea -->
-    <div class="form-group">
-      <label for="feedbackText">We’d love your feedback:</label>
-      <textarea id="feedbackText" placeholder="Let us know what went well or what could be improved..."></textarea>
-    </div>
-
-    <!-- Actions -->
-    <div class="form-actions">
-      <button id="submitFeedback" class="btn save">Submit Feedback</button>
-      <button class="btn cancel close-feedback">Close</button>
-    </div>
-  </div>
-</div>
 
   <script>
     feather.replace();
