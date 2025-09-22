@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Interview Confirmation</title>
+  <style>
+    body {
+      font-family: "Inter", sans-serif;
+      background: linear-gradient(135deg, #eef2ff, #f9fbff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      padding: 16px;
+    }
+
+    .confirmation-card {
+      background: #fff;
+      padding: 48px 40px;
+      border-radius: 24px;
+      box-shadow: 0 10px 32px rgba(0, 0, 0, 0.12);
+      text-align: center;
+      width: 100%;
+      max-width: 560px; /* Bigger box */
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .logo {
+      width: 180px;   /* 🔥 Bigger logo */
+      margin-bottom: 16px;
+    }
+
+    .confirmation-card h2 {
+      margin-bottom: 16px;
+      font-size: 26px;
+      font-weight: 700;
+      color: #1e293b;
+    }
+
+    .confirmation-card p {
+      margin: 8px 0;
+      font-size: 16px;
+      color: #475569;
+      line-height: 1.5;
+    }
+
+    .confirmation-card p strong {
+      color: #0f172a;
+      font-weight: 600;
+    }
+
+    .details {
+      margin: 24px 0;
+      padding: 20px;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      background: #f8fafc;
+      text-align: left;
+    }
+
+    .details p {
+      margin: 8px 0;
+      font-size: 15px;
+    }
+
+    .confirm-btn {
+      margin-top: 28px;
+      padding: 16px 28px;
+      background: #2563eb;
+      border: none;
+      border-radius: 12px;
+      color: #fff;
+      font-size: 17px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      max-width: 300px;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .confirm-btn:hover {
+      background: #1d4ed8;
+      transform: translateY(-2px);
+    }
+
+    .contact-hr {
+      margin-top: 28px;
+      font-size: 14px;
+      color: #64748b;
+      background: #f1f5f9;
+      padding: 12px 16px;
+      border-radius: 8px;
+    }
+
+    .contact-hr a {
+      color: #d32f2f;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .contact-hr a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="confirmation-card">
+    <img src="logo1.png" alt="Company Logo" class="logo" />
+    <h2>Interview Confirmation</h2>
+    <p>Please confirm if the details below belong to you:</p>
+
+    <div class="details">
+      <p><strong>Name:</strong> John Doe</p>
+      <p><strong>Email:</strong> john@example.com</p>
+      <p><strong>Job Position:</strong> Software Engineer</p>
+      <p><strong>Company:</strong> JobDrive</p>
+    </div>
+
+    <button class="confirm-btn" onclick="redirectToChat()">Yes, this is me</button>
+
+    <div class="contact-hr">
+      Not you? Please contact HR at 
+      <a href="mailto:hr@jobdrive.com">hr@jobdrive.com</a>
+    </div>
+  </div>
+
+  <script>
+    function redirectToChat() {
+      window.location.href = "candidate interview.html";
+    }
+  </script>
+</body>
+</html>
