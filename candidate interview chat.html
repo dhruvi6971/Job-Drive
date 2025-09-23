@@ -18,21 +18,22 @@ body {
 
 .container { 
   width: 100%;            
-  max-width: 800px; /* wider horizontally */
-  min-height: 600px; /* taller vertically */
+  max-width: 800px;
+  min-height: 500px;
   background: #fff; 
-  padding: 50px; /* more padding */
+  padding: 40px;
   border-radius: 20px; 
   box-shadow: 0 10px 35px rgba(0,0,0,0.2); 
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px; /* bigger spacing */
+  margin-bottom: 25px;
 }
 
 .timer {
@@ -41,34 +42,22 @@ body {
 }
 
 .logo img {
-  height: 70px;
+  height: 60px;
   max-width: 90%;
 }
 
 .question {
-  font-size: 28px; /* bigger question */
+  font-size: 26px;
   font-weight: 600;
-  text-align: left;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
   color: #333;
 }
 
-.chat-box {
-  flex-grow: 1;
-  margin-bottom: 30px;
-  text-align: left;
-  min-height: 200px;
-  max-height: 500px;
-  overflow-y: auto;
-  padding-right: 10px;
-}
-
-.chat-box p {
+.answer {
   background: #e1f0ff;
-  padding: 22px 28px;
-  border-radius: 28px;
-  font-size: 24px; /* bigger answers */
-  max-width: 95%;
+  padding: 20px 26px;
+  border-radius: 24px;
+  font-size: 22px;
   margin-bottom: 15px;
   word-wrap: break-word;
   opacity: 0;
@@ -76,32 +65,37 @@ body {
   transition: all 0.4s ease;
 }
 
-.chat-box p.show {
+.answer.show {
   opacity: 1;
   transform: translateY(0);
+}
+
+.loading-gif {
+  width: 70px;
+  margin: 15px auto;
+  display: block;
 }
 
 .input-container {
   display: flex;
   gap: 12px;
+  margin-top: 15px;
 }
 
 .input-container textarea {
   flex: 1;
-  padding: 20px 25px;
-  font-size: 22px; /* bigger input */
-  border-radius: 16px;
+  padding: 18px 22px;
+  font-size: 20px;
+  border-radius: 14px;
   border: 1px solid #ccc;
   resize: none;
-  min-height: 70px;
-  max-height: 180px;
-  overflow-y: auto;
+  min-height: 60px;
 }
 
 .input-container button {
-  padding: 20px 28px;
-  font-size: 22px;
-  border-radius: 16px;
+  padding: 18px 25px;
+  font-size: 20px;
+  border-radius: 14px;
   border: none;
   background: #007bff;
   color: #fff;
@@ -112,33 +106,52 @@ body {
 .input-container button:hover { background: #0056b3; }
 .input-container button:disabled { background: #aaa; cursor: not-allowed; }
 
-.loading {
-  font-size: 22px;
-  color: #555;
-  text-align: center;
-  margin-bottom: 25px;
-  display: none;
-}
-
 /* Responsive tweaks */
 @media (max-width: 768px) {
-  .container { padding: 35px; max-width: 90%; min-height: 500px; }
-  .question { font-size: 24px; margin-bottom: 20px; }
-  .chat-box { min-height: 180px; max-height: 400px; }
-  .chat-box p { font-size: 20px; padding: 18px 22px; }
-  .input-container textarea, .input-container button { font-size: 18px; padding: 16px 20px; }
-  .loading { font-size: 20px; }
-  .logo img { height: 60px; }
+  .container { padding: 25px; min-height: 450px; }
+  .question { font-size: 22px; }
+  .input-container textarea, .input-container button { font-size: 18px; padding: 14px 18px; }
+  .answer { font-size: 20px; padding: 16px 20px; }
 }
 
 @media (max-width: 480px) {
-  .container { padding: 25px; min-height: 400px; }
-  .question { font-size: 22px; margin-bottom: 15px; }
-  .chat-box { min-height: 150px; max-height: 300px; }
-  .chat-box p { font-size: 18px; padding: 16px 20px; }
-  .input-container textarea, .input-container button { font-size: 16px; padding: 12px 15px; }
-  .loading { font-size: 18px; }
-  .logo img { height: 50px; }
+  .container { padding: 20px; min-height: 400px; }
+  .question { font-size: 20px; }
+  .input-container { flex-direction: column; }
+  .input-container textarea, .input-container button { font-size: 16px; padding: 12px 14px; width: 100%; }
+  .answer { font-size: 18px; padding: 14px 18px; }
+}
+body { 
+  background: #f0f2f5; 
+  display: flex; 
+  justify-content: center;   /* center horizontally */
+  align-items: center;       /* center vertically */
+  min-height: 100vh; 
+  padding: 10px;
+}
+
+.container { 
+  width: 100%;            
+  max-width: 800px;
+  background: #fff; 
+  padding: 20px;
+  border-radius: 20px; 
+  box-shadow: 0 10px 35px rgba(0,0,0,0.2); 
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  height: auto;  
+}
+
+.content-area {
+  flex: 1;              /* this pushes input-container to bottom */
+}
+
+.input-container {
+  display: flex;
+  gap: 12px;
+  margin-top: auto;     /* stays at bottom inside box */
 }
 
 </style>
@@ -153,12 +166,15 @@ body {
     <div class="timer" id="timer">00:00</div>
   </div>
 
-  <div class="loading" id="loading">Loading...</div>
-
   <div class="question" id="question">Question will appear here...</div>
 
-  <div class="chat-box" id="chatBox"></div>
+  <!-- Answer will appear just under question -->
+  <div id="answerArea"></div>
 
+  <!-- Loading gif appears under answer -->
+  <div id="gifArea"></div>
+
+  <!-- Input at the bottom -->
   <div class="input-container">
     <textarea id="userInput" placeholder="Type your answer..."></textarea>
     <button id="submitBtn">Send</button>
@@ -175,8 +191,8 @@ const questions = [
 
 let currentQuestionIndex = 0;
 const questionEl = document.getElementById('question');
-const chatBox = document.getElementById('chatBox');
-const loadingEl = document.getElementById('loading');
+const answerArea = document.getElementById('answerArea');
+const gifArea = document.getElementById('gifArea');
 const submitBtn = document.getElementById('submitBtn');
 const userInput = document.getElementById('userInput');
 const timerEl = document.getElementById('timer');
@@ -213,32 +229,42 @@ function sendAnswer() {
 
   stopTimer();
 
-  // Show answer in chat
-  chatBox.innerHTML = ''; // clear previous answer
-  const p = document.createElement('p');
-  p.textContent = answer;
-  chatBox.appendChild(p);
-  setTimeout(() => p.classList.add('show'), 50);
+  // Clear old answer + gif
+  answerArea.innerHTML = '';
+  gifArea.innerHTML = '';
 
-  // Disable input and show loading
+  // Show answer under question
+  const ans = document.createElement('div');
+  ans.className = 'answer';
+  ans.textContent = answer;
+  answerArea.appendChild(ans);
+  setTimeout(() => ans.classList.add('show'), 50);
+
+  // Show loading gif under answer
+  const loadingGif = document.createElement('img');
+  loadingGif.src = "gif1.gif"; // replace with your GIF
+  loadingGif.className = "loading-gif";
+  gifArea.appendChild(loadingGif);
+
+  // Disable input
   userInput.disabled = true;
   submitBtn.disabled = true;
-  loadingEl.style.display = 'block';
 
   setTimeout(() => {
     currentQuestionIndex++;
-    loadingEl.style.display = 'none';
+    gifArea.innerHTML = ''; // remove GIF
+
     userInput.value = '';
     userInput.disabled = false;
     submitBtn.disabled = false;
 
     if(currentQuestionIndex < questions.length) {
       questionEl.textContent = questions[currentQuestionIndex];
-      chatBox.innerHTML = ''; // remove previous answer
+      answerArea.innerHTML = ''; 
       startTimer();
     } else {
       questionEl.textContent = "Interview Completed ✅";
-      chatBox.innerHTML = '';
+      answerArea.innerHTML = '';
       userInput.disabled = true;
       submitBtn.disabled = true;
     }
@@ -255,7 +281,7 @@ userInput.addEventListener('keydown', (e) => {
   }
 });
 
-// Start timer for first question
+// Start timer
 startTimer();
 </script>
 
