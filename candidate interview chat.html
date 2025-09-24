@@ -120,6 +120,16 @@ body {
   .input-container { flex-direction: column; }
   .input-container textarea, .input-container button { font-size: 16px; padding: 12px 14px; width: 100%; }
   .answer { font-size: 18px; padding: 14px 18px; }
+  .input-container textarea {
+  flex: 1;
+  padding: 18px 22px;
+  font-size: 20px;
+  border-radius: 14px;
+  border: 1px solid #ccc;
+  resize: none;
+  min-height: 100px;  /* increased from 60px to 100px for ~4 lines */
+}
+
 }
 body { 
   background: #f0f2f5; 
@@ -153,6 +163,39 @@ body {
   gap: 12px;
   margin-top: auto;     /* stays at bottom inside box */
 }
+.input-container {
+  display: flex;
+  flex-direction: column; /* stack textarea and button vertically */
+  gap: 12px;
+  margin-top: auto; 
+}
+
+.input-container textarea,
+.input-container button {
+  width: 100%; /* full width */
+}
+
+/* Optional: adjust button padding for desktop */
+.input-container button {
+  padding: 18px 0;
+  font-size: 20px;
+}
+.container { 
+  width: 100%;            
+  max-width: 900px;      /* can increase width */
+  min-height: 300px;     /* smaller height */
+  background: #fff; 
+  padding: 20px;         /* adjust padding for compact height */
+  border-radius: 20px; 
+  box-shadow: 0 10px 35px rgba(0,0,0,0.2); 
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  height: auto;  
+}
+
+
 
 </style>
 </head>
@@ -176,14 +219,14 @@ body {
 
   <!-- Input at the bottom -->
   <div class="input-container">
-    <textarea id="userInput" placeholder="Type your answer..."></textarea>
+    <textarea id="userInput" placeholder="Type your answer..." rows="4"></textarea>
     <button id="submitBtn">Send</button>
   </div>
 </div>
 
 <script>
 const questions = [
-  "Tell us about yourself.",
+  "Thank you for providing your resume. However, the job description you shared previously is for an Accountant position, while your resume outlines your qualifications in Digital Marketing. This poses a mismatch between your experience and the role requirements. To proceed, I'll still ask questions based on the Accountant position in the job description provided. Please share if you have experience that can relate to it, or specify any changes you would like to make, to ensure the interview aligns with your background. Ready? Let’s start with question **(1/20)**. Can you describe your experience with managing financial records or any relevant accounting tasks?",
   "Why do you want to work at JobDrive?",
   "What is your biggest strength?",
   "Describe a challenging situation you handled at work."
