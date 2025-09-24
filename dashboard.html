@@ -595,6 +595,40 @@
     align-items: right;
   }
 }
+.search-filter-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+#searchInput {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+#ratingFilter {
+  padding: 12px 14px;   /* increased height */
+  font-size: 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+}
+@media (max-width: 768px) {
+  .search-filter-container {
+    justify-content: space-between; /* push search left, filter right */
+    align-items: right;
+    gap: 8px;
+  }
+  #ratingFilter {
+    width: auto;   /* shrink to fit content */
+    flex: unset;
+    position: relative; 
+    left: 120px;  /* remove flex so it stays at natural width */
+  }
+}
+
 
   </style>
 </head>
@@ -671,6 +705,13 @@
       <div class="top-bar">
         <input type="text" class="search-input" placeholder="Search" />
        
+   <select id="ratingFilter" onchange="filterTable()">
+    <option value="">All Ratings</option>
+    <option value="Excellent">Excellent</option>
+    <option value="Good">Good</option>
+    <option value="Average">Average</option>
+    <option value="Poor">Poor</option>
+  </select>
       </div>
       
      <div class="table-container" id="interviewsTable" style="display:none;">
@@ -775,6 +816,38 @@
     mobileToggleBtn.addEventListener('click', () => {
       sidebar.classList.toggle('active');
     });
+
+document.addEventListener("DOMContentLoaded", function () {
+  const searchInput = document.getElementById("searchInput");
+  const ratingFilter = document.getElementById("ratingFilter");
+  const table = document.getElementById("interviewsTable");
+
+  function filterRows() {
+    const searchText = searchInput ? searchInput.value.toLowerCase() : "";
+    const selectedRating = ratingFilter ? ratingFilter.value.toLowerCase() : "";
+
+    const rows = table.querySelectorAll(".table-row");
+    rows.forEach(row => {
+      const text = row.innerText.toLowerCase();
+      let show = true;
+
+      // Search filter
+      if (searchText && !text.includes(searchText)) {
+        show = false;
+      }
+
+      // Rating filter (Good, Excellent, Average etc.)
+      if (selectedRating && !text.includes(selectedRating)) {
+        show = false;
+      }
+
+      row.style.display = show ? "flex" : "none";
+    });
+  }
+
+  if (searchInput) searchInput.addEventListener("input", filterRows);
+  if (ratingFilter) ratingFilter.addEventListener("change", filterRows);
+});
 
 
   const tabs = document.querySelectorAll('.top-tabs .tab');
