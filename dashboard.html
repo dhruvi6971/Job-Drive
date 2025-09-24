@@ -281,20 +281,6 @@
   }
 }
 
-/* Interviews Table Row Styling */
-#interviewsTable .table-row {
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 16px 20px;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 16px; /* spacing between columns */
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-  transition: transform 0.2s;
-}
-
 #interviewsTable .table-row:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0,0,0,0.08);
@@ -309,11 +295,6 @@
   flex: 1 1 auto; /* allow flexible width */
 }
 
-#interviewsTable .drive-col { flex: 1.5; }
-#interviewsTable .title-col { flex: 2; }
-#interviewsTable .desc-col { flex: 2; }
-#interviewsTable .interviews-col { flex: 1.5; display: flex; justify-content: flex-start; }
-#interviewsTable .resumes-col { flex: 2; }
 #interviewsTable .col button.btn {
   padding: 8px 16px;
   font-size: 14px;
@@ -342,13 +323,6 @@
   font-weight: 600;
 }
 
-#interviewsTable .table-row {
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  margin-bottom: 12px;
-  transition: transform 0.2s;
-}
 
 #interviewsTable .table-row:hover {
   transform: translateY(-2px);
@@ -362,26 +336,12 @@
   flex: 1; /* default flexible column */
 }
 
-#interviewsTable .drive-col   { flex: 1.2; }
-#interviewsTable .title-col   { flex: 1.8; }
-#interviewsTable .desc-col    { flex: 1.5; }
-#interviewsTable .interviews-col { flex: 1.5; display: flex; justify-content: flex-start; }
-#interviewsTable .resumes-col { flex: 2; }
-#interviewsTable .rating-col  { flex: 1; }
-#interviewsTable .duration-col{ flex: 1; }
 
 /* Buttons inside */
 #interviewsTable .col button.btn {
   padding: 8px 16px;
   font-size: 14px;
   border-radius: 10px;
-  margin-right: 70px;
-  margin-left: 0px;
-}
-
-#interviewsTable .desc-col    { 
-  margin-left: -20px;
-  
 }
 
 
@@ -629,6 +589,26 @@
   }
 }
 
+#interviewsTable .col {
+  padding: 8px 12px;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex: 1; /* default */
+  min-width: 100px; /* prevents columns from shrinking too much */
+}
+
+/* Adjust column widths */
+#interviewsTable .drive-col { flex: 1; }      /* NAME */
+#interviewsTable .title-col { flex: 2; }        /* EMAIL */
+#interviewsTable .desc-col  { flex: 1; }      /* PHONE */
+#interviewsTable .interviews-col { flex: 1.5; justify-content: center; } /* JOB DRIVE */
+#interviewsTable .resumes-col { flex: 2; }      /* AI FEEDBACK */
+#interviewsTable .rating-col  { flex: 1; }      /* AI RATING */
+#interviewsTable .duration-col{ flex: 1; }      /* DURATION */
+
+
 
   </style>
 </head>
@@ -727,11 +707,11 @@
 <div class="table-row">
   <div class="col drive-col" data-label="Name"><span>John Doe</span></div>
   <div class="col title-col" data-label="Email"><span>johndoe123@gmail.com</span></div>
-  <div class="col title-col" data-label="Phone"><span>0123456789</span></div>
+  <div class="col desc-col" data-label="Phone"><span>0123456789</span></div>
   <div class="col interviews-col" data-label="Job Drive"><span><button class="btn">Drive</button></span></div>
-  <div class="col title-col" data-label="AI Feedback"><span>Good Communication</span></div>
-  <div class="col title-col" data-label="AI Rating"><span>Good</span></div>
-  <div class="col title-col" data-label="Duration"><span>25 min</span></div>
+  <div class="col resumes-col" data-label="AI Feedback"><span>Good Communication</span></div>
+  <div class="col rating-col" data-label="AI Rating"><span>Good</span></div>
+  <div class="col duration-col" data-label="Duration"><span>25 min</span></div>
 </div>
 </div>
 
