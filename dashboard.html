@@ -502,7 +502,7 @@
   #interviewsTable .col button.btn,
   #jobDrivesTable .col button.btn {
     width: auto;      /* don’t force full width */
-    margin-left: 8px; /* spacing between buttons */
+    margin-left: 80px; /* spacing between buttons */
     padding: 8px 14px;
     font-size: 14px;
     border-radius: 8px;
@@ -555,6 +555,7 @@
     align-items: right;
   }
 }
+
 .search-filter-container {
   display: flex;
   align-items: center;
@@ -585,8 +586,10 @@
     width: auto;   /* shrink to fit content */
     flex: unset;
     position: relative; 
-    left: 120px;  /* remove flex so it stays at natural width */
+    left: 100px; 
+    border-radius: 10px; 
   }
+ 
 }
 
 #interviewsTable .col {
@@ -599,16 +602,28 @@
   min-width: 100px; /* prevents columns from shrinking too much */
 }
 
-/* Adjust column widths */
-#interviewsTable .drive-col { flex: 1; }      /* NAME */
-#interviewsTable .title-col { flex: 2; }        /* EMAIL */
-#interviewsTable .desc-col  { flex: 1; }      /* PHONE */
-#interviewsTable .interviews-col { flex: 1.5; justify-content: center; } /* JOB DRIVE */
-#interviewsTable .resumes-col { flex: 2; }      /* AI FEEDBACK */
-#interviewsTable .rating-col  { flex: 1; }      /* AI RATING */
-#interviewsTable .duration-col{ flex: 1; }      /* DURATION */
+/* Make all action buttons same width and center text */
+#jobDrivesTable .interviews-col button,
+#jobDrivesTable .resumes-col button,
+#jobDrivesTable .actions-col button {
+  width: 120px;        /* same width for all */
+  min-width: 100px;    /* optional */
+  text-align: center;  /* centers text horizontally */
+  display: inline-flex; /* ensures flex works inside button */
+  justify-content: center; /* centers text horizontally */
+  align-items: center; /* centers text vertically */
+  flex-shrink: 0;      /* prevent shrinking on mobile */
+  margin-left: 0;      /* remove extra left margin */
+}
 
-
+/* Optional: smaller buttons on very small screens */
+@media (max-width: 480px) {
+  #jobDrivesTable .interviews-col button,
+  #jobDrivesTable .resumes-col button,
+  #jobDrivesTable .actions-col button {
+    width: 100px;
+  }
+}
 
   </style>
 </head>
