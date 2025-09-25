@@ -571,7 +571,197 @@ a.btn.view {
 .new-modal-content .close-btn:hover {
   color: #ef4444;
 }
+/* Mobile view for Add Job Profile button */
+@media (max-width: 768px) {
+  #openFormBtn {
+    width: 100%;          /* Full width on mobile */
+    text-align: center;   /* Center the text and icon */
+    padding: 12px 0;      /* Vertical padding for touch comfort */
+    font-size: 16px;      /* Readable font */
+    display: flex;        /* Use flex to center icon + text */
+    align-items: center;  /* Vertically center icon + text */
+    justify-content: center; /* Horizontally center */
+    gap: 8px;             /* Space between icon and text */
+    border-radius: 8px;   /* Rounded corners */
+  }
+}
 
+@media (max-width: 768px) {
+  .table-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+
+  /* View Drive button */
+  .table-row .drives-col .view {
+    flex: 2; /* wider than edit/delete */
+    text-align: center;
+    padding: 8px 16px;
+  }
+
+  /* Edit & Delete buttons */
+  .table-row .actions-col {
+    display: flex;
+    flex: 1; /* take remaining space */
+    gap: 10px;
+    margin-left: -10px;
+  }
+
+  .table-row .actions-col .edit,
+  .table-row .actions-col .delete {
+    flex: 1;               /* equal width */
+    text-align: center;
+    padding: 8px 0;
+  }
+}
+
+/* Mobile View Feedback Buttons */
+@media (max-width: 768px) {
+  #feedbackButtons {
+    display: flex;
+    flex-direction: column; /* stack vertically on mobile */
+    gap: 10px; /* spacing between buttons */
+    margin-bottom: 16px;
+  }
+
+  .feedback-btn {
+    width: 100%; /* full width of container */
+    padding: 12px 16px; /* slightly bigger for touch */
+    font-size: 16px; /* easier to read on mobile */
+    border-radius: 10px;
+    text-align: center;
+    background-color: #f0f0f0;
+    transition: all 0.2s ease;
+  }
+
+  .feedback-btn:hover {
+    background-color: #e0e0e0;
+    transform: translateY(-1px);
+  }
+
+  .feedback-btn:active {
+    transform: translateY(0);
+    background-color: #dcdcdc;
+  }
+
+  .feedback-btn.selected {
+    background-color: #4CAF50;
+    color: white;
+  }
+}
+
+@media (max-width: 768px) {
+  .form-actions {
+    display: flex;
+    flex-direction: column; /* stack buttons vertically */
+    gap: 10px;             /* spacing between buttons */
+    align-items: stretch;  /* full width buttons */
+    margin-top: 16px;
+  }
+
+  .form-actions .btn {
+    width: 100%;          /* full width */
+    padding: 12px 0;      /* vertical padding */
+    font-size: 16px;      
+    border-radius: 8px;
+    text-align: center;   /* horizontal centering */
+    display: flex;        /* flex for vertical centering */
+    justify-content: center; /* horizontal centering */
+    align-items: center;     /* vertical centering */
+  }
+
+  .form-actions .btn.save1 {
+    background-color: #4CAF50;
+    color: white;
+  }
+
+  .form-actions .btn.cancel {
+    background-color: #f0f0f0;
+    color: #333;
+  }
+}
+.form-actions {
+  display: flex;
+  flex-direction: row; /* side by side */
+  gap: 16px;           /* space between buttons */
+  justify-content: flex-start; /* align buttons to left, can change to center if needed */
+  margin-top: 20px;
+}
+
+.form-actions .btn {
+  padding: 12px 24px;  /* vertical and horizontal padding */
+  font-size: 16px;
+  border-radius: 8px;
+  text-align: center;  /* horizontal centering */
+  display: flex;       /* flex for vertical centering */
+  justify-content: center; /* horizontal centering */
+  align-items: center;     /* vertical centering */
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.form-actions .btn.save1 {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+}
+
+.form-actions .btn.cancel {
+  background-color: #f0f0f0;
+  color: #333;
+  border: none;
+}
+
+/* Optional: hover effect */
+.form-actions .btn:hover {
+  opacity: 0.9;
+}
+
+#feedbackButtons {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.feedback-btn {
+  flex: 1;
+  padding: 10px 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  background-color: #f0f0f0;
+}
+
+.feedback-btn:hover {
+  background-color: #e0e0e0;
+  transform: translateY(-2px);
+}
+
+.feedback-btn:active {
+  transform: translateY(0);
+  background-color: #dcdcdc;
+}
+
+/* Highlight selected button */
+.feedback-btn.selected {
+  background-color: #4CAF50;
+  color: white;
+}
+
+/* Textarea */
+#feedbackText {
+  width: 100%;
+  min-height: 80px;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  resize: vertical;
+} 
   </style>
 </head>
 <body>
@@ -748,7 +938,7 @@ a.btn.view {
 
     <!-- Actions -->
     <div class="form-actions">
-      <button id="submitFeedback" class="btn save">Submit Feedback</button>
+      <button id="submitFeedback" class="btn save1">Submit Feedback</button>
       <button class="btn cancel close-feedback">Close</button>
     </div>
   </div>
@@ -1143,11 +1333,6 @@ function attachRowButtons(row) {
 
 // Initialize existing rows
 document.querySelectorAll('.table-row').forEach(row => attachRowButtons(row));
-
-
-
-
-
   </script>
 </body>
 </html>
