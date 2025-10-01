@@ -552,10 +552,6 @@ a.btn.view {
         <!-- <div class="form-group"><label for="name">Full Name</label><input type="text" id="name" value="Dhruvi Dhanani"/></div> -->
                  <div class="form-group"><label for="company">Company Name</label><input type="text" id="company" /></div>
         <div class="form-group"><label for="email">Email Address</label><input type="email" id="email" readonly/></div>
-       <div class="form-group">
-  <label for="password">Password</label>
-  <input type="password" id="password" placeholder="Enter your password" required />
-</div>
  <div class="form-group">
   <label for="phone">Phone</label>
   <input type="tel" id="phone" value="+91 9876543210" pattern="[0-9+ ]+" />
@@ -576,17 +572,73 @@ a.btn.view {
         <div class="form-group"><label for="industry">Industry Type</label><input type="text" id="industry" /></div>
         <div class="form-group"><label for="country">Country</label><input type="text" id="country" /></div>
         <div class="actions">
-          <button type="button" class="btn btn-save" onclick="saveProfile()">Save Changes</button>
-          <button type="button" class="btn btn-password" onclick="changePassword()">Change Password</button>
-          <button type="button" class="btn btn-delete" onclick="deleteAccount()">Delete Account</button>
-        </div>
+           <div class="form-group" style="position: relative; width: 0;">
+        <label for="password">Password</label>
+        <input type="password" id="password" value="********" readonly />
+        <!-- Eye icon -->
+        <button type="button" class="icon-btn" id="togglePassword" style="position:absolute; right:10px; top:36px;">👁️</button>
+        <!-- Pencil icon -->
+        <button type="button" class="icon-btn" id="editPassword" style="position:absolute; right:40px; top:36px;">✏️</button>
+      </div>
+       <div class="actions" style="margin-top: 12px; display: flex; gap: 10px;">
+    <button type="button" class="btn btn-save" onclick="saveProfile()">Save Changes</button>
+    <button type="button" class="btn btn-delete" onclick="deleteAccount()">Delete Account</button>
+  </div>
+</div>
       </form>
     </div>
 </div>
 
 
+
   <script>
     
+    const passwordInput = document.getElementById("password");
+  const togglePassword = document.getElementById("togglePassword");
+  const editPassword = document.getElementById("editPassword");
+
+  // Show/Hide password
+  togglePassword.addEventListener("click", () => {
+    if (passwordInput.type === "password") {
+      passwordInput.type = "text";
+      togglePassword.textContent = "🙈";
+    } else {
+      passwordInput.type = "password";
+      togglePassword.textContent = "👁️";
+    }
+  });
+
+  // Enable editing
+  editPassword.addEventListener("click", () => {
+    passwordInput.removeAttribute("readonly");
+    passwordInput.value = ""; // clear stars
+    passwordInput.focus();
+  });
+
+  // Save Profile (including password if changed)
+  function saveProfile() {
+    let newPassword = passwordInput.value.trim();
+    if (!passwordInput.readOnly && newPassword === "") {
+      alert("⚠️ Please enter a valid password.");
+      return;
+    }
+
+    alert("✅ Profile saved!\nNew Password: " + (newPassword ? newPassword : "No Change"));
+    passwordInput.setAttribute("readonly", true);
+    passwordInput.type = "password";
+    passwordInput.value = newPassword ? newPassword : "********";
+    togglePassword.textContent = "👁️";
+  }
+
+  function changePassword() {
+    editPassword.click(); // reuse edit logic
+  }
+
+  function deleteAccount() {
+    if (confirm("Are you sure you want to delete your account?")) {
+      alert("❌ Account deleted");
+    }
+  }
     feather.replace();
 document.getElementById("phone").addEventListener("input", function(e) {
     this.value = this.value.replace(/[^0-9+ ]/g, ""); 
