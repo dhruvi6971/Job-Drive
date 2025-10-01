@@ -678,7 +678,7 @@
         </a>
         </li>
         <li><span class="icon"><i data-feather="help-circle"></i></span><span class="label">Help</span></li>
-        <li><span class="icon"><i data-feather="log-out"></i></span><span class="label">Sign Out</span></li>
+        <li><span class="icon"><i data-feather="log-out"></i></span><span id="signOutBtn" class="label">Sign Out</span></li>
       </ul>
       <a href="/profile" class="sidebar-profile">
         <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profile" />
@@ -794,6 +794,15 @@
   <script>
     feather.replace();
     feather.replace();
+
+    document.getElementById("signOutBtn").addEventListener("click", function(e) {
+    e.preventDefault(); // stop default link
+    const confirmLogout = confirm("Are you sure you want to sign out?");
+    if (confirmLogout) {
+      // redirect to login page
+      window.location.href = "login.html";
+    }
+  });
 
     const sidebar = document.querySelector('.sidebar');
     const toggleBtn = document.getElementById('toggleSidebar');
