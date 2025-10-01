@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Job Profiles</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <script src="https://unpkg.com/feather-icons"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Inter", sans-serif; }
+    body { background: #f5f6f7; display: flex; min-height: 100vh; }
+
+    /* === SIDEBAR === */
+    .sidebar {
+      position: fixed; left: 0; top: 0;
+      width: 272px; height: 100vh;
+      background: #111827; display: flex; flex-direction: column;
+      justify-content: space-between; padding: 0 0 24px 0;
+      box-sizing: border-box; transition: width 0.3s ease, left 0.3s ease; z-index: 1000;
+    }
+/* COLLAPSED SIDEBAR */
+.sidebar.collapsed .sidebar-logo .logo-img {
+  display: none; /* Hide logo */
+}
+
+.sidebar.collapsed .sidebar-menu li span.label {
+  display: none; /* Hide menu names */
+}
+
+.sidebar.collapsed .sidebar-profile {
+  display: none; /* Hide profile section entirely */
+}
+/* When sidebar is collapsed */
+.sidebar.collapsed .sidebar-menu li {
+  justify-content: center;   /* Center icons horizontally */
+  padding: 12px 0;           /* Equal padding top/bottom, no left padding */
+  gap: 0;                    /* Remove gap between icon and label (label hidden anyway) */
+}
+
+.sidebar.collapsed .back-icon {
+  justify-content: center;   /* Center toggle icon */
+  margin-left: 24px;
+}
+
+    .sidebar.collapsed { width: 72px; }
+    .sidebar-logo { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 32px 0 16px; margin: 8px 0; }
+    .logo-img { width: 140px; margin-left: 32px; }
+    .back-icon { margin-right: 24px; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .icon-left { display: inline; } 
+    .icon-right { display: none; }
+    .sidebar.collapsed .logo-img { display: none; }
+    .sidebar.collapsed .icon-left { display: none; }
+    .sidebar.collapsed .icon-right { display: inline; }
+
+    .sidebar-menu { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; }
+    .sidebar-menu li {
+      display: flex; align-items: center; padding: 14px 0 12px 32px;
+      font-size: 16px; font-weight: 600; cursor: pointer; gap: 12px; border-radius: 12px; transition: all 0.2s ease;
+    }
+    .sidebar-menu li .icon { color: #fff; display: flex; align-items: center; justify-content: center; min-width: 22px; }
+    .sidebar-menu li .label { color: #9E9E9E; white-space: nowrap; }
+    .sidebar-menu li:hover { background: rgba(73,200,251,0.12); padding-left: 24px; margin: 4px 16px; gap: 8px; }
+    .sidebar-menu li:hover .label, .sidebar-menu li.active .label { color: #38bdf8; }
+    .sidebar-menu li:hover .icon, .sidebar-menu li.active .icon { color: #38bdf8; }
+
+    .sidebar-bottom { margin-top: auto; }
+    .sidebar-profile {
+      display: flex; align-items: center; background: #1e293b; border-radius: 12px;
+      padding: 16px 20px; margin: 24px 16px 0; gap: 16px; text-decoration: none; color: inherit;
+      transition: background 0.3s ease;
+    }
+    .sidebar-profile:hover { background: rgba(73,200,251,0.12); }
+    .sidebar-profile img { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; }
+    .profile-info { display: flex; flex-direction: column; }
+    .profile-info .name { color: #fff; font-size: 13px; font-weight: 600; }
+    .profile-info .email { color: #808080; font-size: 12px; font-weight: 500; }
+
+    /* === MAIN CONTENT === */
+    .main-content { flex: 1; margin-left: 272px; padding: 20px; transition: margin-left 0.3s ease; }
+    .main-content.expanded { margin-left: 72px; }
+    .content-card { background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
+    .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; gap: 12px; flex-wrap: wrap; }
+    .search-input { flex: 1; padding: 14px 16px; border: 1px solid #D1D5DB; border-radius: 12px; background-color: #F8F9FB; font-size: 16px;}
+    .add-profile-btn { background: #38bdf8; color: white; border: none; padding: 14px 20px; border-radius: 12px; cursor: pointer; font-size: 16px; }
+    .table-container { display: flex; flex-direction: column; gap: 12px; }
+    .table-header, .table-row { display: flex; align-items: center; padding: 12px; border-radius: 8px; }
+    .table-header { background: #f1f5f9; font-weight: 600; }
+    .table-row { background: #fff; border: 1px solid #e5e7eb; flex-wrap: wrap; }
+    .col { padding: 6px 8px; }
+    .profile-col { flex: 3; }
+    .drives-col { flex: 1.5; display: flex; align-items: center; justify-content: flex-start; }
+    .actions-col { flex: 1.5; display: flex; align-items: center; justify-content: flex-start; gap: 8px; flex-wrap: wrap; }
+    .btn { border: none; padding: 8px 12px; border-radius: 6px; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+    .btn.view { background: #38bdf8; color: white;}
+    .btn.edit { background: rgba(73, 200, 251, 0.16); color: #38bdf8 }
+    .btn.delete { background: rgba(251, 73, 76, 0.16); color: #FB494C; }
+    .summary { font-size: 14px; color: #555; margin-top: 6px; }
+    .summary a { color: #2563eb; cursor: pointer; display: inline-block; margin-top: 6px; }
+.add-profile-btn {
+  background: #38bdf8;
+  color: white;
+  border: none;
+  padding: 14px 20px;
+  font-size: 16px;
+  border-radius: 12px;
+  cursor: pointer;
+
+  /* Fix alignment */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;   /* space between icon and text */
+}
+.btn {
+  border: none;
+  padding: 10px 16px;      /* 16px vertical, 10px horizontal */
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;                /* spacing between icon and text */
+}
+
+/* Smaller icons inside buttons */
+.btn i {
+  width: 16px;   /* a bit smaller */
+  height: 16px;
+}
+/* Modal styles */
+.modal {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.5);
+  justify-content: center; align-items: center;
+  z-index: 2000;
+}
+
+.modal-content h2 {
+  margin-bottom: 16px;
+  font-size: 20px;
+  color: #111827;
+}
+
+.form-group {
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  font-size: 14px;
+  color: #374151;
+}
+
+.form-group input,
+.form-group textarea {
+  padding: 10px 12px;
+  border: 1px solid #D1D5DB;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.btn.save {
+  background: #38bdf8;
+  color: white;
+}
+
+.btn.cancel {
+  background: #e5e7eb;
+  color: #111827;
+}
+.modal-content { 
+  background: #fff; 
+  padding: 20px 20px;
+  border-radius: 24px; 
+  width: 800px;
+   min-height: 20px; 
+   max-width: 95vw; 
+   box-shadow: 0 8px 32px rgba(0,0,0,0.22); 
+   font-size: 18px; 
+   display: flex; 
+   flex-direction: column; 
+   justify-content: center; } 
+   .modal-content h2 { margin-bottom: 40px; font-size: 20px; } 
+   .form-group label { font-size: 18px; } 
+   .form-group input, .form-group textarea 
+   { font-size: 20px; padding: 16px 18px; } 
+   .form-actions { gap: 16px; margin-top: 36px; } /* Make input fields and textarea big inside the modal */ 
+   .modal-content input, .modal-content textarea { font-size: 18px; padding: 28px 22px; border-radius: 12px; min-height: 56px; } 
+   .modal-content textarea { min-height: 90px; resize: vertical; } /* Make modal form buttons big */ 
+   .modal-content .btn { font-size: 20px; padding: 16px 32px; border-radius: 12px; } /* Make the description textarea much taller in the modal */
+   .modal-content textarea#jobDescText { min-height: 220px; font-size: 16px; padding: 18px 18px; border-radius: 12px; resize: vertical; } /* Make the Job Title input and File Upload input less tall in the modal */
+   .modal-content input#jobTitle, .modal-content input#jobDescFile { min-height: 64px; padding: 18px 18px; font-size: 16px;}
+
+
+    /* === MOBILE === */
+    .mobile-toggle-btn {
+      position: fixed; top: 16px; left: 16px; background: #111827; border: none;
+      color: white; padding: 8px; border-radius: 6px; z-index: 11000; cursor: pointer;
+      display: none;
+    }
+    @media (max-width: 768px) {
+      .mobile-toggle-btn { display: block; }
+      .sidebar { left: -272px; }
+      .sidebar.active { left: 0; }
+      .main-content { margin-left: 0; padding: 80px 16px 20px; }
+      .table-header { display: none; }
+      .table-row { flex-direction: column; align-items: flex-start; padding: 16px; gap: 12px; }
+      .profile-col, .drives-col, .actions-col { flex: unset; width: 100%; }
+
+  .drives-col, .actions-col {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    width: auto;
+    margin-right: 8px;
+    margin-bottom: 0;
+  }
+  .mobile-actions-row {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    width: 100%;
+    margin-top: 8px;
+  }
+
+}
+@media (max-width: 768px) {
+       .logo-img { margin-left: 66px; margin-top: -26px;}
+       .sidebar-menu{
+        padding-top: 0px;
+        margin-top: -12px;
+       }
+      .mobile-toggle-btn { display: block; }
+      .back-icon { display: none; } /* Hide collapse icon on mobile */
+      .sidebar { left: -272px; }
+      .sidebar.active { left: 0; }
+      .main-content { margin-left: 0; padding: 80px 16px 20px; }
+      .table-header { display: none; }
+      .table-row { flex-direction: column; align-items: flex-start; padding: 16px; gap: 12px; }
+      .sidebar-profile{
+        margin-bottom: 60px;
+      }
+      .profile-col, .drives-col, .actions-col { flex: unset; width: 100%; }
+    }
+@media (max-width: 768px) {
+  .table-row {
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 16px;
+    gap: 12px;
+  }
+  .btn.view, .btn.edit, .btn.delete {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+}
+  .profile-col { width: 100%; }
+
+  /* Place drives and actions in a flex row together */
+  .drives-actions-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    width: 100%;
+    margin-top: 8px;
+  }
+  .drives-col, .actions-col {
+    width: auto;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+}
+.actions-all {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;   /* keeps them responsive on smaller screens */
+}
+.drives-col,
+.actions-col {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;  /* makes them responsive on small screens */
+}
+/* Modal responsive */
+@media (max-width: 768px) {
+  .modal-content {
+    width: 95%;        /* almost full width on mobile */
+    padding: 20px 16px;
+    border-radius: 16px;
+  }
+
+  .modal-content h2 {
+    font-size: 18px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .form-group label {
+    font-size: 16px;
+  }
+
+  .modal-content input,
+  .modal-content textarea {
+    font-size: 16px;
+    padding: 12px 14px;
+    min-height: 48px;
+  }
+
+  .modal-content textarea#jobDescText {
+    min-height: 140px; /* smaller than desktop */
+  }
+
+  .form-actions {
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  .form-actions .btn {
+    width: 100%;
+    text-align: center;
+    font-size: 16px;
+    padding: 12px 0;
+  }
+}
+/* Modal & table buttons responsive */
+@media (max-width: 768px) {
+  /* Modal buttons */
+  .modal-content .btn {
+    width: 100%;           /* full width */
+    padding: 14px 0;       /* taller for easier tapping */
+    font-size: 16px;       /* slightly smaller than desktop */
+  }
+/* Responsive modal buttons for mobile */
+  .form-actions {
+    flex-direction: column; /* stack buttons vertically */
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  .form-actions .btn {
+    width: 100%;           /* full width for easier tapping */
+    padding: 14px 0;       /* taller buttons */
+    font-size: 16px;       /* readable on mobile */
+    border-radius: 12px;   /* consistent with desktop style */
+    justify-content: center;
+  }
+
+
+  /* Table buttons */
+  .btn.view, .btn.edit, .btn.delete {
+    padding: 10px 12px;    /* smaller on mobile */
+    font-size: 14px;
+    flex: 1;                /* make them stretch to container width if needed */
+    justify-content: center;
+  }
+
+  /* Adjust Add Job Profile top bar button */
+  .add-profile-btn {
+    padding: 12px 16px;
+    font-size: 14px;
+  }
+}
+a.btn.view {
+  text-decoration: none; /* removes underline */
+  color: white;           /* keep button text color */
+  display: flex;           /* keep icon + text layout */
+  align-items: center;
+  gap: 8px;               /* space between icon and text */
+}
+
+.close-feedback {
+  color: #555;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.close-feedback:hover {
+  color: #ff0000;
+}
+
+#feedbackText {
+  min-height: 120px;
+  font-size: 16px;
+  padding: 16px;
+  border: 1px solid #D1D5DB;
+  border-radius: 8px;
+  resize: vertical;
+}
+  .feedback-btn {
+    margin-right: 8px;
+    padding: 8px 12px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+
+  .feedback-btn:hover {
+    background-color: #e0e0e0;
+  }
+
+  textarea#feedbackText {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    margin-top: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    resize: vertical;
+  }
+.main-content { flex: 1; margin-left: 272px; padding: 20px; transition: margin-left 0.3s ease; }
+    .main-content.expanded { margin-left: 72px; }
+    .profile-container { width: 100%; max-width: 950px; background: #fff; border-radius: 20px; padding: 30px 40px; margin: 0 auto; box-shadow: 0 8px 24px rgba(0,0,0,0.08); display: flex; flex-direction: column; gap: 28px; }
+    .profile-header { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }
+    .profile-header h2 { font-size: 28px; font-weight: 700; color: #0f172a; }
+    form { display: flex; flex-wrap: wrap; gap: 20px; }
+    .form-group { flex: 1 1 calc(50% - 20px); display: flex; flex-direction: column; }
+    .form-group label { font-size: 14px; font-weight: 600; margin-bottom: 6px; color: #374151; }
+    .form-group input, .form-group select, .form-group textarea { padding: 14px 16px; border: 1px solid #d1d5db; border-radius: 10px; font-size: 16px; background: #f9fafb; transition: all 0.2s ease; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #38bdf8; background: #fff; box-shadow: 0 0 0 3px rgba(56,189,248,0.2); }
+    .actions { margin-top: 20px; display: flex; flex-wrap: wrap; gap: 16px; justify-content: flex-end; }
+    .btn { padding: 14px 22px; border-radius: 10px; border: none; cursor: pointer; font-weight: 600; font-size: 16px; transition: all 0.2s ease; }
+    .btn-save { background: #38bdf8; color: #fff; }
+    .btn-save:hover { background: #0ea5e9; }
+    .btn-password { background: #facc15; color: #111; }
+    .btn-password:hover { background: #eab308; }
+    .btn-delete { background: #ef4444; color: #fff; }
+    .btn-delete:hover { background: #dc2626; }
+
+    @media (max-width: 768px) {
+      .mobile-toggle-btn { display: block; }
+      .sidebar { left: -272px; width: 220px; }
+      .sidebar.active { left: 0; }
+      .main-content { margin-left: -4px; padding: 80px 12px 20px; }
+      .profile-container { margin: 0 8px; padding: 24px 16px; border-radius: 16px; }
+      
+    }
+    @media (max-width: 768px) {
+  .actions {
+    justify-content: flex-start; /* aligns buttons to the left */
+    flex-direction: column;      /* optional: stack vertically */
+    gap: 12px;                   /* spacing between buttons */
+  }
+
+  /* If you want buttons side by side but left-aligned */
+  .actions {
+    flex-direction: row;         /* keep in row */
+    flex-wrap: wrap;             /* wrap if too many buttons */
+    justify-content: flex-start; /* left-align */
+    gap: 12px;                   /* spacing between buttons */
+  }
+
+  .actions .btn {
+    width: auto;                 /* let buttons fit content */
+    text-align: center;          /* optional */
+  }
+}
+
+  </style>
+</head>
+<body>
+
+  <!-- Mobile Sidebar Toggle -->
+  <button id="mobileToggle" class="mobile-toggle-btn"><i data-feather="menu"></i></button>
+
+  <div class="sidebar">
+    <!-- Top Section -->
+    <div>
+      <div class="sidebar-logo">
+        <img src="logo1.png" alt="Jobdrive Logo" class="logo-img" />
+        <span id="toggleSidebar" class="back-icon">
+          <i data-feather="chevron-left" class="icon-left"></i>
+          <i data-feather="chevron-right" class="icon-right"></i>
+        </span>
+      </div>
+
+     <ul class="sidebar-menu">
+  <li>
+    <a href="dashboard" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;">
+      <span class="icon"><i data-feather="home"></i></span>
+      <span class="label">Dashboard</span>
+    </a>
+  </li>
+  <li>
+    <a href="jobdrives" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;">
+      <span class="icon"><i data-feather="layers"></i></span>
+      <span class="label">Job Drives</span>
+    </a>
+  </li>
+  <li>
+    <a href="jobprofiles" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;">
+      <span class="icon"><i data-feather="user"></i></span>
+      <span class="label">Job Profiles</span>
+    </a>
+  </li>
+</ul>
+    </div>
+
+    <!-- Bottom Section -->
+    <div class="sidebar-bottom">
+      <ul class="sidebar-menu">
+        <li>
+           <a href="suggest_idea" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;">
+          <span class="icon"><i data-feather="zap"></i></span>
+          <span class="label">Suggest Idea</span>
+         </a>
+        </li>
+        <li class="active">
+          <a href="settings" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;">
+          <span class="icon"><i data-feather="settings"></i></span>
+          <span class="label">Settings</span>
+        </a>
+        </li>
+        <!-- <li><span class="icon"><i data-feather="help-circle"></i></span><span class="label">Help</span></li> -->
+        <!-- <li><span class="icon"><i data-feather="log-out"></i></span><span class="label">Sign Out</span></li> -->
+              <li id="signOutBtn" style="cursor:pointer;"><span class="icon"><i data-feather="log-out"></i></span><span class="label">Sign Out</span></li>
+      </ul>
+      <a class="sidebar-profile">
+        <!-- <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profile" /> -->
+        <div class="profile-info">
+          <span class="name"></span>
+          <span class="email"></span>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Main content -->
+  <div class="main-content">
+    <div class="profile-container">
+      <div class="profile-header"><h2>Settings</h2></div>
+      <form id="profileForm">
+        <!-- <div class="form-group"><label for="name">Full Name</label><input type="text" id="name" value="Dhruvi Dhanani"/></div> -->
+                 <div class="form-group"><label for="company">Company Name</label><input type="text" id="company" /></div>
+        <div class="form-group"><label for="email">Email Address</label><input type="email" id="email" readonly/></div>
+       <div class="form-group">
+  <label for="password">Password</label>
+  <input type="password" id="password" placeholder="Enter your password" required />
+</div>
+ <div class="form-group">
+  <label for="phone">Phone</label>
+  <input type="tel" id="phone" value="+91 9876543210" pattern="[0-9+ ]+" />
+</div>
+
+        <div class="form-group"><label for="address">Address</label><textarea id="address"></textarea></div>
+        <div class="form-group"><label for="zip">ZIP Code</label><input type="text" id="zip" /></div>
+        <div class="form-group"><label for="size">Company Size</label>
+          <select id="size">
+  <option value="1-10">1-10</option>
+  <option value="11-50" selected>11-50</option>
+  <option value="51-200">51-200</option>
+  <option value="201-500">201-500</option>
+  <option value="500+">500+</option>
+</select>
+        </div>
+        <div class="form-group"><label for="state">State</label><input type="text" id="state" /></div>
+        <div class="form-group"><label for="industry">Industry Type</label><input type="text" id="industry" /></div>
+        <div class="form-group"><label for="country">Country</label><input type="text" id="country" /></div>
+        <div class="actions">
+          <button type="button" class="btn btn-save" onclick="saveProfile()">Save Changes</button>
+          <button type="button" class="btn btn-password" onclick="changePassword()">Change Password</button>
+          <button type="button" class="btn btn-delete" onclick="deleteAccount()">Delete Account</button>
+        </div>
+      </form>
+    </div>
+</div>
+
+
+  <script>
+    
+    feather.replace();
+document.getElementById("phone").addEventListener("input", function(e) {
+    this.value = this.value.replace(/[^0-9+ ]/g, ""); 
+  });
+    const sidebar = document.querySelector('.sidebar');
+    const toggleBtn = document.getElementById('toggleSidebar');
+    const mobileToggleBtn = document.getElementById('mobileToggle');
+    const mainContent = document.querySelector('.main-content');
+
+    // Desktop collapse
+    toggleBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('collapsed');
+      mainContent.classList.toggle('expanded');
+      feather.replace();
+    });
+
+    // Mobile toggle
+    mobileToggleBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('active');
+    });
+
+function escapeHtml(str) {
+    if (str == null) return '';
+    return String(str)
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;')
+      .replaceAll('"', '&quot;')
+      .replaceAll("'", '&#39;');
+  }
+async function loadAdminProfile() {
+  try {
+    const res = await fetch('/api/admin-profile');
+    if (!res.ok) throw new Error('Failed to fetch admin profile');
+    const profile = await res.json();
+    const profileEl = document.querySelector('.sidebar-profile .profile-info');
+    if (profileEl) {
+      profileEl.innerHTML = `
+        <span class="name">${escapeHtml(profile.company_name || profile.name)}</span>
+        <span class="email">${escapeHtml(profile.email)}</span>
+      `;
+    }
+  } catch (err) {
+    console.error('Failed to load admin profile', err);
+  }
+}
+async function loadFullAdminProfile() {
+  try {
+    const res = await fetch('/api/full-admin-profile');
+    if (!res.ok) throw new Error('Failed to fetch admin profile');
+    const profile = await res.json();
+
+      // // Sidebar update
+      // const profileEl = document.querySelector('.sidebar-profile .profile-info');
+      // if (profileEl) {
+      //   profileEl.innerHTML = `
+      //     <span class="name">${escapeHtml(profile.company_name || 'No Company')}</span>
+      //     <span class="email">${escapeHtml(profile.email)}</span>
+      //   `;
+      // }
+
+    // Fill settings form
+    // document.getElementById('name').value = escapeHtml(profile.name || '');
+    document.getElementById('email').value = profile.email || '';
+    document.getElementById('phone').value = profile.phone || '';
+    document.getElementById('company').value = profile.company_name || '';
+    document.getElementById('address').value =
+      `${profile.address_line1 || ''} ${profile.address_line2 || ''}`.trim();
+    document.getElementById('zip').value = profile.pincode || '';
+    document.getElementById('size').value = profile.company_size || '';
+    document.getElementById('state').value = profile.state || '';
+    document.getElementById('industry').value = profile.industry_type || '';
+    document.getElementById('country').value = profile.country || '';
+
+  } catch (err) {
+    console.error('Failed to load admin profile', err);
+  }
+}
+async function saveProfile() {
+  const data = {
+    // name: document.getElementById('name').value.trim(),
+    email: document.getElementById('email').value.trim(),
+    phone: document.getElementById('phone').value.trim(),
+    company_size: document.getElementById('size').value,
+    state: document.getElementById('state').value.trim(),
+    industry: document.getElementById('industry').value.trim(),
+    country: document.getElementById('country').value.trim(),
+    address_line1: document.getElementById('address').value.trim(),
+    pincode: document.getElementById('zip').value.trim(),
+    company_name: document.getElementById('company').value.trim(),
+
+  };
+
+  try {
+    const res = await fetch('/api/admin-profile', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+
+    if (!res.ok) throw new Error('Failed to update profile');
+    alert('✅ Profile details updated successfully!');
+  } catch (err) {
+    console.error(err);
+    alert('❌ Error updating profile');
+  }
+}
+async function changePassword() {
+  const newPass = prompt("Enter your new password:");
+  if (!newPass) return;
+const email = document.getElementById("email").value;
+  try {
+    const res = await fetch('/api/admin-profile/password', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: newPass, email : email })
+    });
+
+    if (!res.ok) throw new Error('Failed to change password');
+    alert('🔑 Password changed successfully!');
+  } catch (err) {
+    console.error(err);
+    alert('❌ Error changing password');
+  }
+}
+async function deleteAccount() {
+  if (!confirm("⚠️ Are you sure you want to delete your account? This action cannot be undone.")) return;
+    const email= document.getElementById('email').value.trim();
+
+  try {
+    const res = await fetch('/api/admin-profile', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body:JSON.stringify({email:email}) });
+    if (!res.ok) throw new Error('Failed to delete account');
+    if(res.ok){
+    alert('❌ Your account has been deleted.');
+sessionStorage.clear();
+      localStorage.clear();
+
+      // Redirect to login page
+      window.location.href = '/login';
+        }
+  } catch (err) {
+    console.error(err);
+    alert('❌ Error deleting account');
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const signOutBtn = document.querySelector('#signOutBtn');
+if (signOutBtn) {
+  signOutBtn.addEventListener('click', async () => {
+    try {
+      // Call backend logout endpoint
+      const res = await fetch('/api/logout', { method: 'POST', credentials: 'include' });
+
+      if (!res.ok) throw new Error('Logout failed');
+if(res.ok){
+      // Clear local storage/session storage if you use tokens
+      sessionStorage.clear();
+      localStorage.clear();
+
+      // Redirect to login page
+      window.location.href = '/login';
+}
+    } catch (err) {
+      alert('Failed to sign out: ' + err.message);
+      console.error('Sign out error:', err);
+      // Fallback: redirect anyway
+      // window.location.href = '/login';
+    }
+  });
+}
+
+loadAdminProfile();
+loadFullAdminProfile();
+});
+
+  </script>
+</body>
+</html>
