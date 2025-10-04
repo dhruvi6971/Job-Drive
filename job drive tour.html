@@ -1,0 +1,1800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Resumes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <script src="https://unpkg.com/feather-icons"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Inter", sans-serif; }
+    body { background: #f9fafb; display: flex; min-height: 100vh; }
+ 
+ .sidebar {
+      position: fixed; left: 0; top: 0;
+      width: 272px; height: 100vh;
+      background: #111827; display: flex; flex-direction: column;
+      justify-content: space-between; padding: 0 0 24px 0;
+      box-sizing: border-box; transition: width 0.3s ease, left 0.3s ease; z-index: 1000;
+    }
+     .mobile-toggle-btn {
+      position: fixed; top: 16px; left: 16px; background: #111827; border: none;
+      color: white; padding: 8px; border-radius: 6px; z-index: 11000; cursor: pointer;
+      display: none;
+    }
+   
+/* COLLAPSED SIDEBAR */
+.sidebar.collapsed .sidebar-logo .logo-img {
+  display: none; /* Hide logo */
+}
+
+.sidebar.collapsed .sidebar-menu li span.label {
+  display: none; /* Hide menu names */
+}
+
+.sidebar.collapsed .sidebar-profile {
+  display: none; /* Hide profile section entirely */
+}
+/* When sidebar is collapsed */
+.sidebar.collapsed .sidebar-menu li {
+  justify-content: center;   /* Center icons horizontally */
+  padding: 12px 0;           /* Equal padding top/bottom, no left padding */
+  gap: 0;                    /* Remove gap between icon and label (label hidden anyway) */
+}
+
+.sidebar.collapsed .back-icon {
+  justify-content: center;   /* Center toggle icon */
+  margin-left: 24px;
+}
+
+    .sidebar.collapsed { width: 72px; }
+    .sidebar-logo { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 32px 0 16px; margin: 8px 0; }
+    .logo-img { width: 140px; margin-left: 32px; }
+    .back-icon { margin-right: 24px; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .icon-left { display: inline; } 
+    .icon-right { display: none; }
+    .sidebar.collapsed .logo-img { display: none; }
+    .sidebar.collapsed .icon-left { display: none; }
+    .sidebar.collapsed .icon-right { display: inline; }
+
+    .sidebar-menu { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; }
+    .sidebar-menu li {
+      display: flex; align-items: center; padding: 14px 0 12px 32px;
+      font-size: 16px; font-weight: 600; cursor: pointer; gap: 12px; border-radius: 12px; transition: all 0.2s ease;
+    }
+    .sidebar-menu li .icon { color: #fff; display: flex; align-items: center; justify-content: center; min-width: 22px; }
+    .sidebar-menu li .label { color: #9E9E9E; white-space: nowrap; }
+    .sidebar-menu li:hover { background: rgba(73,200,251,0.12); padding-left: 24px; margin: 4px 16px; gap: 8px; }
+    .sidebar-menu li:hover .label, .sidebar-menu li.active .label { color: #38bdf8; }
+    .sidebar-menu li:hover .icon, .sidebar-menu li.active .icon { color: #38bdf8; }
+
+    .sidebar-bottom { margin-top: auto; }
+    .sidebar-profile {
+      display: flex; align-items: center; background: #1e293b; border-radius: 12px;
+      padding: 16px 20px; margin: 24px 16px 0; gap: 16px; text-decoration: none; color: inherit;
+      transition: background 0.3s ease;
+    }
+    .sidebar-profile:hover { background: rgba(73,200,251,0.12); }
+    .sidebar-profile img { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; }
+    .profile-info { display: flex; flex-direction: column; }
+    .profile-info .name { color: #fff; font-size: 13px; font-weight: 600; }
+    .profile-info .email { color: #808080; font-size: 12px; font-weight: 500; }
+
+.add-profile-btn { 
+  display: flex; 
+  align-items: center; 
+  gap: 8px; /* space between icon and text */ 
+  background: #38bdf8; 
+  color: white; 
+  border: none; 
+  padding: 14px 20px; 
+  border-radius: 12px; 
+  cursor: pointer; 
+  font-size: 16px; 
+}
+
+    .main-content { flex: 1; margin-left: 272px; padding: 20px; transition: margin-left 0.3s ease; }
+    .main-content.expanded { margin-left: 72px; }
+    .content-card { background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
+    .table-container { display: flex; flex-direction: column; gap: 12px; }
+    .table-header, .table-row { display: flex; align-items: center; padding: 12px; border-radius: 8px; }
+    .table-header { background: #f1f5f9; font-weight: 600; }
+    .table-row { background: #fff; border: 1px solid #e5e7eb; flex-wrap: wrap; }
+    .col { padding: 12px 8px; }
+    .drive-col { flex: 1.5; }
+    .title-col { flex: 2; }
+    .desc-col { flex: 3; }
+    .interviews-col, .resumes-col { flex: 1.5; display: flex; align-items: center; justify-content: flex-start; gap: 12px; }
+    .btn { border: none; padding: 10px 24px; border-radius: 10px; font-size: 16px; cursor: pointer; display: flex; align-items: center; gap: 8px; background: #38bdf8; color: #fff; font-weight: 600;}
+    .btn i { width: 18px; height: 18px; }
+    @media (max-width: 900px) {
+      .main-content { margin-left: 0; padding: 80px 8px 20px; }
+      .table-header { display: none; }
+      .table-row { flex-direction: column; align-items: flex-start; padding: 16px; gap: 12px; }
+      .col { width: 100%; }
+      .interviews-col, .resumes-col { width: 100%; justify-content: flex-start; }
+    }
+     @media (max-width: 768px) {
+       .logo-img { margin-left: 66px; margin-top: -26px;}
+       .sidebar-menu{
+        padding-top: 0px;
+        margin-top: -12px;
+       }
+      .mobile-toggle-btn { display: block; }
+      .back-icon { display: none; } /* Hide collapse icon on mobile */
+      .sidebar { left: -272px; }
+      .sidebar.active { left: 0; }
+      .main-content { margin-left: 0; padding: 80px 16px 20px; }
+      .table-header { display: none; }
+      .table-row { flex-direction: column; align-items: flex-start; padding: 16px; gap: 12px; }
+      .sidebar-profile{
+        margin-bottom: 60px;
+      }
+      .profile-col, .drives-col, .actions-col { flex: unset; width: 100%; }
+    }
+   /* === Improved Main Content === */
+.main-content {
+  flex: 1;
+  margin-left: 272px;
+  padding: 24px;
+  background: #f9fafb;
+  transition: margin-left 0.3s ease;
+}
+
+.header-info {
+  background: linear-gradient(to right, #3b82f6, #06b6d4);
+  color: white;
+  padding: 24px;
+  border-radius: 16px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.06);
+}
+.header-info h2 {
+  font-size: 24px;
+  margin-bottom: 6px;
+}
+.header-info p {
+  font-size: 16px;
+  margin: 2px 0;
+}
+
+/* Resume Controls */
+.resume-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+  background: #fff;
+  padding: 16px 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+.filter-select {
+  padding: 10px 14px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  background: #f1f5f9;
+}
+.add-resume-btn {
+  padding: 10px 16px;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.add-resume-btn:hover {
+  background-color: #2563eb;
+}
+
+/* === Resume Card UI Enhancement === */
+.resume-card {
+  background: #fff;
+  padding: 24px;
+  border-radius: 16px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border: 1px solid #e5e7eb;
+  transition: transform 0.2s ease;
+}
+.resume-card:hover {
+  transform: translateY(-2px);
+}
+
+.resume-top {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 16px;
+}
+.resume-top .field {
+  flex: 1 1 220px;
+}
+.resume-top .field label {
+  font-weight: 600;
+  color: #4b5563;
+  font-size: 14px;
+  margin-bottom: 4px;
+  display: block;
+}
+.resume-top .field span {
+  font-size: 15px;
+  color: #111827;
+  font-weight: 500;
+}
+
+.profile-link-input {
+  padding: 12px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  width: 100%;
+  font-size: 15px;
+  background: #f9fafb;
+}
+
+.resume-actions {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.resume-actions button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.send-invite {
+  background: #10b981;
+  color: #fff;
+}
+.send-invite:hover {
+  background: #059669;
+}
+.invite-sent {
+  background: #e0e7ff;
+  color: #4f46e5;
+  cursor: default;
+}
+
+
+    @media (max-width: 768px) {
+      .main-content { margin-left: 0; padding: 80px 16px 20px; }
+      .resume-actions { flex-direction: column; }
+    }
+
+    .resume-controls-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  background: #fff;
+  padding: 16px 20px;
+  border-radius: 12px;
+  margin-bottom: 16px;
+ 
+}
+
+.left-controls {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.search-bar {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  font-size: 15px;
+  width: 600px;
+}
+
+
+.add-resume-btn {
+  padding: 10px 16px;
+  background-color: #38bdf8;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.resume-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.resume-table th,
+.resume-table td {
+  padding: 14px 12px;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 15px;
+}
+
+.resume-table th {
+  background-color: #f1f5f9;
+  font-weight: 600;
+  color: #374151;
+}
+
+.small-input {  
+  width: 140px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  font-size: 14px;
+}
+
+.interview-type-select {
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  font-size: 14px;
+}
+
+.send-invite-btn {
+  background-color: #10b981;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .resume-controls-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .left-controls {
+    width: 100%;
+    gap: 10px;
+  }
+
+  .resume-table th, .resume-table td {
+    font-size: 13px;
+    padding: 10px 8px;
+  }
+
+  .small-input,
+  .interview-type-select {
+    width: 100%;
+  }
+}
+
+.left-controls { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  margin-bottom: 20px; 
+  gap: 12px; 
+  flex-wrap: wrap; 
+}
+
+.search-bar { 
+  flex: 1; 
+  padding: 14px 16px; 
+  border: 1px solid #D1D5DB; 
+  border-radius: 12px; 
+  background-color: #F8F9FB; 
+  font-size: 16px;
+}
+.add-resume-btn {
+  background-color: #3dbff0;
+  color: #fff;
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  margin-bottom: 20px;
+  transition: background 0.3s ease;
+}
+
+.add-resume-btn:hover {
+  background-color: #0ea5e9;
+}
+.resume-controls-bar {
+  display: flex;
+  justify-content: flex-end; /* Align all content to the right */
+  align-items: center;
+  padding: 12px 16px;
+ 
+  background-color: #ffffff;
+  gap: 10px; /* space between button and filters */
+}
+
+.right-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.filter-select {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  font-size: 15px;
+}
+
+ .main-content { flex: 1; margin-left: 272px; padding: 20px; transition: margin-left 0.3s ease; }
+    .main-content.expanded { margin-left: 72px; }
+    .content-card { background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
+    
+.top-tabs {
+  display: flex;
+  justify-content: start;
+  gap: 10px;
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 5px;
+  margin-bottom: 20px;
+}
+
+.tab {
+  background-color: transparent;
+  border: none;
+  padding: 10px 20px;
+  margin-top: -24px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  color: #555;
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.tab:hover {
+  color: #000;
+  border-bottom: 3px solid #aaa;
+}
+
+.tab.active {
+  color: #38bdf8;
+  border-bottom: 3px solid #38bdf8;
+  font-weight: 600;
+}
+
+
+    .modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+  }
+
+  .modal-content {
+    background-color: #fff;
+    margin: 80px auto;
+    padding: 30px;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    position: relative;
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #374151;
+  }
+
+  .upload-box {
+    border: 2px dashed #cbd5e1;
+    border-radius: 12px;
+    padding: 40px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.3s ease;
+    margin-bottom: 20px;
+  }
+
+  .upload-box:hover {
+    border-color: #3b82f6;
+    background: #f0f9ff;
+  }
+
+  .upload-box input { display: none; }
+  .upload-box p { color: #6b7280; font-size: 14px; margin: 0; }
+
+  .file-list { margin: 15px 0; font-size: 14px; color: #374151; }
+  .file-list li {
+    background: #f3f4f6;
+    margin: 6px 0;
+    padding: 8px 12px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .save-btn {
+    background: #3b82f6;
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    font-size: 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.3s ease;
+  }
+
+  .save-btn:hover { background: #2563eb; }
+
+  .left-controls {
+  display: flex;
+  flex: 1; /* Allow left-controls to grow/shrink */
+  gap: 12px;
+}
+
+.search-bar {
+  flex: 1 1 auto; /* Grow and shrink with container */
+  min-width: 150px; /* Optional: don't shrink too small */
+  max-width: 100%;  /* Prevent overflow */
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid #d1d5db;
+  font-size: 16px;
+  background-color: #f8f9fb;
+}
+ .job-card {
+  background: linear-gradient(to right, #3b82f6, #06b6d4);
+  color: white;
+  padding: 20px;
+  border-radius: 12px;
+  width: 100%; /* ✅ Full width of the container */
+  max-width: 100%; /* ✅ Prevent overflow */
+  font-family: Arial, sans-serif;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin-bottom: 16px; /* Optional: adds space below */
+}
+
+
+    .job-card h2 {
+      margin: 0 0 8px 0;
+      font-size: 22px;
+    }
+
+   /* Make row & header checkboxes larger */
+.resume-table input[type="checkbox"] {
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+  transform: scale(1.3); /* enlarge */
+  accent-color: #38bdf8; /* blue highlight */
+}
+
+/* Center align the checkbox column */
+.resume-table th:first-child,
+.resume-table td:first-child {
+  text-align: center;
+  width: 60px;
+}
+
+  #actionBar {
+    display: inline-flex;       /* side by side */
+    gap: 12px;           /* space between buttons */
+    margin-bottom: 12px;
+    flex-wrap: wrap;     /* wrap on smaller screens */
+  }
+
+  #actionBar .btn {
+    padding: 10px 16px;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+    transition: background 0.3s ease;
+  }
+
+  #exportCSV {
+    background-color: #38bdf8; /* blue */
+    color: white;
+  
+  }
+  #exportCSV:hover {
+    background-color: #0ea5e9;
+  }
+
+  #sendInvite {
+    background-color: #22c55e; /* green */
+    color: white;
+      
+  }
+  #sendInvite:hover {
+    background-color: #16a34a;
+  }
+   /* === Mobile Responsive CSS === */
+@media (max-width: 768px) {
+  /* Sidebar */
+  .sidebar {
+    left: -272px;
+    width: 240px;
+    transition: left 0.3s ease;
+  }
+  .sidebar.active {
+    left: 0;
+  }
+  .mobile-toggle-btn {
+    display: block;
+  }
+  .back-icon {
+    display: none; /* hide collapse icon on mobile */
+  }
+
+  /* Main content */
+  .main-content {
+    margin-left: 0;
+    padding: 16px 12px 20px;
+  }
+  .main-content.expanded {
+    margin-left: 0;
+  }
+
+  /* Resume controls bar */
+  .resume-controls-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 8px;
+  }
+
+  .left-controls {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .search-bar,
+  .filter-select {
+    width: 100%;
+  }
+
+  .add-resume-btn {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 12px;
+
+  }
+
+  /* Table */
+  .resume-table {
+    width: 100%;
+    font-size: 13px;
+  }
+
+  .resume-table th, 
+  .resume-table td {
+    padding: 8px 6px;
+  }
+
+  .resume-table tr {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid #e5e7eb;
+    margin-bottom: 12px;
+    padding: 8px;
+    border-radius: 12px;
+  }
+
+  .resume-table th:first-child,
+  .resume-table td:first-child {
+    text-align: left;
+  }
+
+  .resume-table td {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+  }
+
+  /* Modal */
+  .modal-content {
+    width: 95%;
+    padding: 20px;
+  }
+
+  /* Buttons */
+  .btn, .save-btn, .send-invite-btn {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+  }
+  
+  
+}
+
+/* Desktop styles remain unchanged */
+table.resume-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table.resume-table th,
+table.resume-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+
+/* Mobile responsive: header: data layout */
+@media screen and (max-width: 768px) {
+  table.resume-table thead {
+    display: none; /* hide table headers on mobile */
+  }
+
+
+  table.resume-table tr {
+    margin-bottom: 12px;
+    border: 1px solid #ddd;
+    padding: 8px;
+    border-radius: 8px;
+  }
+
+  table.resume-table td {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border: none;
+  }
+
+  table.resume-table td::before {
+    content: attr(data-label); /* get header from data-label */
+    font-weight: 600;
+    width: 40%;
+  }
+}
+@media screen and (max-width: 768px) {
+  table.resume-table thead {
+    display: none; /* hide table headers on mobile */
+  }
+
+
+  table.resume-table tr {
+    margin-bottom: 12px;
+    border: 1px solid #ddd;
+    padding: 8px;
+    border-radius: 8px;
+  }
+
+  table.resume-table td {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border: none;
+    align-items: center;
+  }
+
+  table.resume-table td::before {
+    content: attr(data-label); /* get header from data-label */
+    font-weight: 600;
+    width: 40%;
+  }
+
+
+  /* Limit input, select, and button width */
+  table.resume-table td input,
+  table.resume-table td select {
+    width: 60%; /* medium width */
+    max-width: 200px; /* optional max width */
+    min-width: 100px; /* optional min width */
+    box-sizing: border-box;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  table.resume-table td button.send-invite-btn {
+    width: 60%;           /* medium width */
+    max-width: 200px;     /* optional */
+    min-width: 100px;     /* optional */
+    padding: 6px 12px;    /* make button text centered and not cramped */
+    text-align: center;   /* center text */
+    display: inline-block; /* ensures text centering works */
+  }
+}
+@media screen and (max-width: 768px) {
+  /* Make the select box smaller */
+  select.interview-type-select {
+    width: 45%;      /* smaller width */
+    max-width: 120px;
+    padding: 3px 6px;
+    font-size: 13px;
+  }
+
+  /* Make the dropdown options smaller */
+  select.interview-type-select option {
+    font-size: 13px;  /* smaller text inside options */
+    padding: 4px 6px; /* optional: spacing inside dropdown */
+  }
+}
+
+@media (max-width: 768px) {
+       .logo-img { margin-left: 66px; margin-top: -26px;}
+       .sidebar-menu{
+        padding-top: 0px;
+        margin-top: -12px;
+       }
+      .mobile-toggle-btn { display: block; }
+      .back-icon { display: none; } /* Hide collapse icon on mobile */
+      .sidebar { left: -272px; }
+      .sidebar.active { left: 0; }
+      .main-content { margin-left: 0; padding: 80px 16px 20px; }
+      .table-header { display: none; }
+      .table-row { flex-direction: column; align-items: flex-start; padding: 16px; gap: 12px; }
+      .sidebar-profile{
+        margin-bottom: 60px;
+      }
+      .profile-col, .drives-col, .actions-col { flex: unset; width: 100%; }
+    }
+    @media (max-width: 768px) {
+  .sidebar-profile {
+    gap: 4px; /* slightly smaller gap for mobile */
+  }
+  .profile-info .name {
+    font-size: 13px;
+    
+  }
+  .profile-info .email {
+    font-size: 11px;
+    padding-top: 4px;
+  }}
+
+  /* Base button style */
+  button {
+    padding: 10px 18px;            /* desktop padding */
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;             /* smoother corners */
+    cursor: pointer;
+    transition: all 0.25s ease-in-out;
+    min-width: 90px;                /* ensures uniform width */
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* subtle shadow */
+  }
+
+  /* Resumes button - Blue */
+  .resumes-btn {
+    background: #38bdf8;
+    color: white;
+  }
+  .resumes-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+  }
+
+  /* Interviews button - Green */
+  .interviews-btn {
+    background: #38bdf8;
+    color: white;
+  }
+  .interviews-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+  }
+
+  /* Delete button - Red */
+  .delete-btn {
+    background: #e74c3c;
+    color: white;
+  }
+  .delete-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+  }
+
+  /* Optional: spacing between buttons in table */
+  td button {
+    margin-right: 6px; /* space between buttons */
+  }
+/* Modal backdrop */
+.modal {
+  position: fixed;
+  z-index: 2000;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px; /* 2 x 8 */
+}
+
+/* Modal container */
+.modal-content {
+  
+  background-color: #fff;
+  padding: 32px;       /* 4 x 8 */
+  border-radius: 16px; /* 2 x 8 */
+  width: 100%;
+  max-width: 560px;    /* multiple of 8 */
+  box-shadow: 0 16px 32px rgba(0,0,0,0.2); /* depth using 8pt multiples */
+  display: flex;
+  flex-direction: column;
+  gap: 24px;           /* 3 x 8 between fields */
+}
+
+/* Modal header */
+.modal-content h2 {
+  
+  font-size: 24px;     /* multiple of 8 for consistency */
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 0px; /* 2 x 8 */
+}
+
+/* Close button */
+.close-btn {
+  align-self: flex-end;
+  font-size: 24px;     /* 3 x 8 */
+  font-weight: 700;
+  cursor: pointer;
+  color: #111827;
+  margin-bottom: 8px;  /* 1 x 8 */
+}
+
+/* Labels */
+.modal-content label {
+  font-weight: 600;
+  font-size: 14px;
+  color: #374151;
+  margin-bottom: 8px; 
+  margin-top: 16px; /* 1 x 8 */
+  display: block;
+}
+
+/* Inputs & Selects */
+.modal-content input,
+.modal-content select {
+  padding: 16px 16px;  /* vertical 12 (~1.5 x 8), horizontal 16 (2 x 8) */
+  border: 1px solid #D1D5DB;
+  border-radius: 8px;  /* 1 x 8 */
+  font-size: 14px;
+  width: 100%;
+}
+
+/* Upload buttons */
+.modal-content .upload-btn {
+  padding: 12px 16px;
+  border-radius: 8px;
+  background-color: #38bdf8;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+}
+
+/* Submit button */
+.modal-content .submit-btn {
+  margin-top: 16px;   /* 2 x 8 */
+  padding: 12px 16px;
+  border-radius: 8px;
+  background-color: #10b981;
+  color: #fff;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+}
+
+.close-feedback {
+  color: #2b2b2b;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.close-feedback:hover {
+  color: #ff0000;
+}
+
+#feedbackText {
+  min-height: 120px;
+  font-size: 16px;
+  padding: 16px;
+  border: 1px solid #D1D5DB;
+  border-radius: 8px;
+  resize: vertical;
+}
+  .feedback-btn {
+    margin-right: 8px;
+    padding: 8px 12px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+
+  .feedback-btn:hover {
+    background-color: #e0e0e0;
+  }
+
+  textarea#feedbackText {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    margin-top: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    resize: vertical;
+  }
+  .add-resume-btn {
+  /* existing styles */
+  padding: 12px 20px;
+  border-radius: 12px;
+  background: #38bdf8;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+
+  /* new style to move it up */
+  position: relative;
+  top: 10px;  /* move up by 6px, adjust as needed */
+}
+/* Mobile responsive */
+  @media screen and (max-width: 768px) {
+    button {
+      padding: 8px 12px;
+      font-size: 13px;
+      min-width: 40px;  /* smaller buttons for mobile */
+    }
+    .resumes-btn,
+.interviews-btn,
+.delete-btn {
+    width: 150px;          /* fixed width */
+    max-width: 200px;      /* ensures it doesn't expand */
+    padding: 8px 0;        /* vertical padding */
+    text-align: center;    /* centers text */
+    display: inline-flex;  /* allows flex alignment */
+    justify-content: center; /* horizontal centering */
+    align-items: center;     /* vertical centering */
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    margin-right: -4px;
+}
+  }
+
+@media (max-width: 768px) {
+  /* Hide the checkbox itself */
+  .rowCheckbox {
+    display: none;
+  }
+
+  /* Hide the entire cell for Select column */
+  td[data-label="Select"] {
+    display: none;
+  }
+
+  /* Remove the pseudo-element label text */
+  td[data-label="Select"]::before {
+    content: none !important;
+  }
+}
+
+/* Mobile View Feedback Buttons */
+@media (max-width: 768px) {
+  #feedbackButtons {
+    display: flex;
+    flex-direction: column; /* stack vertically on mobile */
+    gap: 10px; /* spacing between buttons */
+    margin-bottom: 16px;
+  }
+
+  .feedback-btn {
+    width: 100%; /* full width of container */
+    padding: 12px 16px; /* slightly bigger for touch */
+    font-size: 16px; /* easier to read on mobile */
+    border-radius: 10px;
+    text-align: center;
+    background-color: #f0f0f0;
+    transition: all 0.2s ease;
+  }
+
+  .feedback-btn:hover {
+    background-color: #e0e0e0;
+    transform: translateY(-1px);
+  }
+
+  .feedback-btn:active {
+    transform: translateY(0);
+    background-color: #dcdcdc;
+  }
+
+  .feedback-btn.selected {
+    background-color: #4CAF50;
+    color: white;
+  }
+}
+
+@media (max-width: 768px) {
+  .form-actions {
+    display: flex;
+    flex-direction: column; /* stack buttons vertically */
+    gap: 10px;             /* spacing between buttons */
+    align-items: stretch;  /* full width buttons */
+    margin-top: 16px;
+  }
+
+  .form-actions .btn {
+    width: 100%;          /* full width */
+    padding: 12px 0;      /* vertical padding */
+    font-size: 16px;      
+    border-radius: 8px;
+    text-align: center;   /* horizontal centering */
+    display: flex;        /* flex for vertical centering */
+    justify-content: center; /* horizontal centering */
+    align-items: center;     /* vertical centering */
+  }
+
+  .form-actions .btn.save {
+    background-color: #4CAF50;
+    color: white;
+  }
+
+  .form-actions .btn.cancel {
+    background-color: #f0f0f0;
+    color: #333;
+  }
+}
+/* Feedback form action buttons */
+/* Desktop view */
+.form-actions {
+  display: flex;
+  flex-direction: row; /* side by side */
+  gap: 16px;           /* space between buttons */
+  justify-content: flex-start; /* align buttons to left, can change to center if needed */
+  margin-top: 20px;
+}
+
+.form-actions .btn {
+  padding: 12px 24px;  /* vertical and horizontal padding */
+  font-size: 16px;
+  border-radius: 8px;
+  text-align: center;  /* horizontal centering */
+  display: flex;       /* flex for vertical centering */
+  justify-content: center; /* horizontal centering */
+  align-items: center;     /* vertical centering */
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.form-actions .btn.save {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+}
+
+.form-actions .btn.cancel {
+  background-color: #f0f0f0;
+  color: #333;
+  border: none;
+}
+
+/* Optional: hover effect */
+.form-actions .btn:hover {
+  opacity: 0.9;
+}
+
+#feedbackButtons {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.feedback-btn {
+  flex: 1;
+  padding: 10px 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  background-color: #f0f0f0;
+}
+
+.feedback-btn:hover {
+  background-color: #e0e0e0;
+  transform: translateY(-2px);
+}
+
+.feedback-btn:active {
+  transform: translateY(0);
+  background-color: #dcdcdc;
+}
+
+/* Highlight selected button */
+.feedback-btn.selected {
+  background-color: #4CAF50;
+  color: white;
+}
+
+/* Textarea */
+#feedbackText {
+  width: 100%;
+  min-height: 80px;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  resize: vertical;
+} 
+/* Hide "Select" column (header + cells) */
+th:first-child,
+td[data-label="Select"] {
+  display: none !important;
+}
+
+/* Guided Tour */
+.tour-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5000;
+}
+
+.tour-step {
+  background: #fff;
+  padding: 24px;
+  border-radius: 12px;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.tour-step h3 {
+  margin-bottom: 12px;
+  font-size: 20px;
+  color: #111827;
+}
+
+.tour-step p {
+  font-size: 15px;
+  color: #374151;
+  margin-bottom: 20px;
+}
+
+.tour-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.tour-actions button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+#tourSkip {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+#tourNext {
+  background: #38bdf8;
+  color: white;
+}
+.introjs-overlay {
+  pointer-events: none !important;
+  background: rgba(0, 0, 0, 0.2); /* optional dimming */
+}
+.introjs-overlay,
+.introjs-helperLayer,
+.introjs-tooltipReferenceLayer {
+  pointer-events: none !important;
+}
+
+.introjs-tooltip {
+  pointer-events: auto !important;
+}
+
+
+  </style>
+</head>
+<body>
+ <button id="mobileToggle" class="mobile-toggle-btn"><i data-feather="menu"></i></button>
+
+  <div class="sidebar">
+    <!-- Top Section -->
+    <div>
+      <div class="sidebar-logo">
+        <img src="logo1.png" alt="Jobdrive Logo" class="logo-img" />
+        <span id="toggleSidebar" class="back-icon">
+          <i data-feather="chevron-left" class="icon-left"></i>
+          <i data-feather="chevron-right" class="icon-right"></i>
+        </span>
+      </div>
+      <ul class="sidebar-menu">
+        <li>
+          <a href="dashboard.html" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;">
+            <span class="icon"><i data-feather="home"></i></span>
+            <span class="label">Dashboard</span>
+          </a>
+        </li>
+        
+        <li class="active">
+          <a href="jobdrive.html" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;">
+            <span class="icon"><i data-feather="layers"></i></span>
+            <span class="label">Job Drives</span>
+          </a>
+        </li>
+        <li class="job-profiles">
+          <a href="job profile tour.html" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;" id="jobprofilelist">
+            <span class="icon"><i data-feather="user"></i></span>
+            <span class="label">Job Profiles</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <!-- Bottom Section -->
+    <div class="sidebar-bottom">
+      <ul class="sidebar-menu">
+        <li>
+           <a href="suggest_idea.html" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;">
+          <span class="icon"><i data-feather="zap"></i></span>
+          <span class="label">Suggest Idea</span>
+         </a>
+        </li>
+        <li>
+          <a href="settings.html" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;">
+          <span class="icon"><i data-feather="settings"></i></span>
+          <span class="label">Settings</span>
+        </a>
+        </li>
+        <li><span class="icon"><i data-feather="help-circle"></i></span><span class="label">Help</span></li>
+        <li><span class="icon"><i data-feather="log-out"></i></span><span class="label">Sign Out</span></li>
+      </ul>
+      <a href="/profile" class="sidebar-profile">
+        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profile" />
+        <div class="profile-info">
+          <span class="name">Brooklyn Simmons</span>
+          <span class="email">brooklyn@simmons.com</span>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+   <div class="main-content">
+   
+<div id="resumes" class="tab-content">
+  <div class="resume-controls-bar">
+  <!-- Left Side Controls (Filters) -->
+  <div class="left-controls">
+    <input type="text" id="searchInput" class="search-bar" placeholder="Search candidates...">
+    
+  <!-- Right Side Button -->
+  <button class="add-resume-btn">+ Add Job Drive</button>
+</div>
+
+<table class="resume-table">
+  <thead>
+    <tr>
+      <th><input type="checkbox" id="selectAll"></th>
+      <th>Job Drive</th>
+      <th>Job Title</th>
+      <th>Job Description</th>
+      <th>Resumes</th>
+      <th>Interviews</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody id="resumeTableBody">
+  <tr>
+    <td data-label="Select"><input type="checkbox" class="rowCheckbox"></td>
+    <td data-label="Job Drive">March 2025</td>
+    <td data-label="Job Title">UI/UX Desginer</td>
+    <td data-label="Job Description">HTML + CSS + JS</td>
+    <td data-label="Resumes"><button class="resumes-btn">Resumes</button></td>
+    <td data-label="Interviews"><button class="interviews-btn">Interviews</button></td>
+    <td data-label="Action"><button class="delete-btn">Delete</button></td>
+  </tr>
+ <tr>
+    <td data-label="Select"><input type="checkbox" class="rowCheckbox"></td>
+    <td data-label="Job Drive">March 2025</td>
+    <td data-label="Job Title">UI/UX Desginer</td>
+    <td data-label="Job Description">HTML + CSS + JS</td>
+    <td data-label="Resumes"><button class="resumes-btn">Resumes</button></td>
+    <td data-label="Interviews"><button class="interviews-btn">Interviews</button></td>
+    <td data-label="Action"><button class="delete-btn">Delete</button></td>
+  </tr>
+</tbody>
+
+</table>
+</div>
+
+
+       
+  <!-- Add Job Drive Modal -->
+<div id="jobDriveModal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <span class="close-btn">&times;</span>
+    <h2>Add Job Drive</h2>
+<div id="formContainer"> 
+    <form id="jobDriveForm">
+      <!-- Job Title Dropdown -->
+      <label for="jobTitle">Job Title</label>
+      <select id="jobTitle" name="jobTitle" required>
+        <option value="">Select Job Title</option>
+        <option value="frontend">Frontend Developer</option>
+        <option value="backend">Backend Developer</option>
+        <option value="fullstack">Fullstack Developer</option>
+        <option value="designer">Designer</option>
+      </select>
+
+      <!-- Job Drive Name -->
+      <label for="jobDriveName">Job Drive Name</label>
+      <input type="text" id="jobDriveName" name="jobDriveName" placeholder="Enter Job Drive Name" required />
+
+      <!-- Upload multiple resumes -->
+      <label for="multipleResumes">Upload Resumes (multiple)</label>
+      <input type="file" id="multipleResumes" name="multipleResumes" multiple />
+
+      <!-- Upload single resume -->
+      <label for="singleResume">Upload Resume (one)</label>
+      <input type="file" id="singleResume" name="singleResume" />
+
+      <button type="submit" class="add-profile-btn" style="margin-top:16px;">Submit</button>
+    </form>
+  </div>
+</div>
+ </div>   
+
+
+<!-- Feedback Modal -->
+<div id="feedbackModal" class="modal" style="display: none;">
+  <div class="modal-content" style="position: relative; width: 500px; max-width: 90%;">
+    <button class="close-feedback" style="position: absolute; top: 12px; right: 16px; background: none; border: none; font-size: 24px; cursor: pointer;">&times;</button>
+    
+    <h2 style="margin-bottom: 24px; margin-top: 48px;">✅ Job Profile Added Successfully</h2>
+    <div id="feedbackcontainer">
+    <!-- Feedback Buttons -->
+    <div id="feedbackButtons" style="margin-bottom: 16px;">
+      <button class="feedback-btn" data-text="Love this">❤️ Love this</button>
+      <button class="feedback-btn" data-text="Needs improvements">🛠 Needs improvements</button>
+      <button class="feedback-btn" data-text="Confusing">❓ Confusing</button>
+    </div>
+
+    <!-- Textarea -->
+    <div class="form-group">
+      <label for="feedbackText">We’d love your feedback:</label>
+      <textarea id="feedbackText" placeholder="Let us know what went well or what could be improved..."></textarea>
+    </div>
+
+    <!-- Actions -->
+    <div class="form-actions">
+      <button id="submitFeedback" class="btn save">Submit Feedback</button>
+      <button class="btn cancel close-feedback">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<link href="https://unpkg.com/intro.js/minified/introjs.min.css" rel="stylesheet">
+<script src="https://unpkg.com/intro.js/minified/intro.min.js"></script>
+
+<!-- Intro.js CSS -->
+<link href="https://unpkg.com/intro.js/minified/introjs.min.css" rel="stylesheet" />
+
+<!-- Intro.js JS -->
+<script src="https://unpkg.com/intro.js/minified/intro.min.js"></script>
+
+  <!-- Icons -->
+  <script>
+document.addEventListener('DOMContentLoaded', function () {
+  startTour();
+});
+function startTour() {
+  const tour = introJs();
+
+  tour.setOptions({
+    steps: [
+      {
+        element: document.querySelector('button.add-resume-btn'),
+        intro: `
+          <h3>Step 1: Add Job Drive</h3><br/>
+          Click here to create a new job drive.
+          <br/><br/>
+          <video controls autoplay muted width="250">
+            <source src="your-addjobdrive-video.mp4" type="video/mp4">
+          </video>
+        `,
+        disableInteraction: false
+      },
+      {
+        element: document.querySelector('#formContainer'),
+        intro: `
+          <h3>Step 2: Fill Job Drive Form</h3><br/>
+          Complete the job drive details here.
+          <br/><br/>
+          <video controls autoplay muted width="250">
+            <source src="your-formfill-video.mp4" type="video/mp4">
+          </video>
+        `,
+        disableInteraction: false
+      },
+     {
+  element: document.querySelector('#feedbackcontainer'),
+  intro: `
+    <h3>Step 3: Provide Feedback</h3><br/>
+    Please give us a bit of feedback.
+    <br/><br/>
+    <video controls autoplay muted width="250">
+      <source src="your-feedback-video.mp4" type="video/mp4">
+    </video>
+  `,
+  disableInteraction: false
+},
+      {
+        element: document.querySelector('#jobprofilelist'),
+        intro: `
+          <h3>Step 4: Navigate to Job Profiles</h3><br/>
+          Now create job profile will appear here.
+          <br/><br/>
+          <video controls autoplay muted width="250">
+            <source src="your-jobprofile-video.mp4" type="video/mp4">
+          </video>
+        `,
+        disableInteraction: false
+      }
+    ],
+    showProgress: true,
+    showBullets: false,
+    exitOnOverlayClick: false,
+    nextLabel: 'Next →',
+    prevLabel: '← Back',
+    doneLabel: 'Finish'
+  });
+
+  // Make overlay non-blocking
+  tour.onafterchange(() => {
+    const overlay = document.querySelector('.introjs-overlay');
+    if (overlay) overlay.style.pointerEvents = 'none';
+  });
+
+  tour.start();
+
+  // Step 1 → Step 2 on button click
+  document.querySelector('button.add-resume-btn').addEventListener('click', () => {
+    tour.nextStep();
+  });
+
+  // Step 2 → Step 3 on job drive form submission
+  const jobDriveForm = document.querySelector('form#jobDriveForm');
+  if (jobDriveForm) {
+    jobDriveForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      tour.nextStep();
+    });
+  }
+// Step 3 → Step 4 on feedback submit
+const feedbackBtn = document.querySelector('#submitFeedback');
+if (feedbackBtn) {
+  feedbackBtn.addEventListener('click', () => {
+    // Optional: collect data or validate
+    const modal = document.querySelector('#feedbackModal');
+    if (modal) modal.style.display = 'none';
+
+    tour.nextStep(); // Go to Step 4
+  });
+}
+
+
+  // Also close modal if user clicks 'Close'
+  document.querySelectorAll('.close-feedback').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelector('#feedbackModal').style.display = 'none';
+    });
+  });
+}
+
+const addJobBtn = document.querySelector('.add-resume-btn');
+  const jobDriveModal = document.getElementById('jobDriveModal');
+  const feedbackModal = document.getElementById('feedbackModal');
+  const closeBtns = document.querySelectorAll('.close-btn, .close-feedback');
+  const jobDriveForm = document.getElementById('jobDriveForm');
+  const resumeTableBody = document.getElementById('resumeTableBody');
+  const submitFeedbackBtn = document.getElementById('submitFeedback');
+
+  // Open Add Job Drive Modal
+  addJobBtn.addEventListener('click', () => {
+    jobDriveModal.style.display = 'block';
+  });
+
+  // Close Add Job Drive modal
+  closeBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      jobDriveModal.style.display = 'none';
+      feedbackModal.style.display = 'none';
+    });
+  });
+
+  // Close feedback modal when clicking outside content
+  feedbackModal.addEventListener('click', (e) => {
+    if (e.target === feedbackModal) {
+      feedbackModal.style.display = 'none';
+    }
+  });
+
+  // Submit Feedback button closes feedback modal
+  submitFeedbackBtn.addEventListener('click', () => {
+    feedbackModal.style.display = 'none';
+    // Optional: capture feedback text
+    const feedbackText = document.getElementById('feedbackText').value;
+    console.log("Feedback submitted:", feedbackText);
+    document.getElementById('feedbackText').value = ''; // clear text area
+  });
+
+  // Submit Add Job Drive Form
+  jobDriveForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const jobTitle = document.getElementById('jobTitle').value;
+    const jobDriveName = document.getElementById('jobDriveName').value;
+    const jobDescription = document.getElementById('singleResume').files[0]
+        ? document.getElementById('singleResume').files[0].name
+        : 'N/A';
+
+    // Create new row
+    const newRow = document.createElement('tr');
+    newRow.innerHTML = `
+      <td data-label="Select"><input type="checkbox" class="rowCheckbox"></td>
+      <td data-label="Job Drive">${jobDriveName}</td>
+      <td data-label="Job Title">${jobTitle}</td>
+      <td data-label="Job Description">${jobDescription}</td>
+      <td data-label="Resumes"><button class="resumes-btn">Resumes</button></td>
+      <td data-label="Interviews"><button class="interviews-btn">Interviews</button></td>
+      <td data-label="Action"><button class="delete-btn">Delete</button></td>
+    `;
+    resumeTableBody.appendChild(newRow);
+
+    attachRowEvents(newRow);
+
+    // Close Add Job Drive modal and open feedback modal
+    jobDriveModal.style.display = 'none';
+    feedbackModal.style.display = 'block';
+
+    jobDriveForm.reset();
+  });
+
+  // Function to attach row events
+  function attachRowEvents(row) {
+    row.querySelector('.resumes-btn').addEventListener('click', () => {
+      const jobDrive = row.querySelector('td[data-label="Job Drive"]').innerText;
+      window.location.href = `resumes.html?user=${encodeURIComponent(jobDrive)}`;
+    });
+
+    row.querySelector('.interviews-btn').addEventListener('click', () => {
+      const jobDrive = row.querySelector('td[data-label="Job Drive"]').innerText;
+      window.location.href = `interview.html?user=${encodeURIComponent(jobDrive)}`;
+    });
+
+    row.querySelector('.delete-btn').addEventListener('click', () => {
+      const jobDrive = row.querySelector('td[data-label="Job Drive"]').innerText;
+      if (confirm(`Are you sure you want to delete "${jobDrive}"?`)) {
+        row.remove();
+      }
+    });
+  }
+
+  // Attach events to existing rows on page load
+  document.querySelectorAll('#resumeTableBody tr').forEach(row => attachRowEvents(row));
+
+  
+
+ 
+function showTab(tab) {
+  // Hide all tabs
+  document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+
+  // Show the selected tab
+  document.getElementById(tab).style.display = 'block';
+  document.querySelector(`.tab[onclick="showTab('${tab}')"]`).classList.add('active');
+}
+feather.replace(); // re-render icons
+
+
+    feather.replace();
+
+// Auto-fill textarea when feedback button clicked
+document.querySelectorAll('.feedback-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    // Remove selected class from other buttons
+    document.querySelectorAll('.feedback-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    
+    // Add text to textarea
+    document.getElementById('feedbackText').value = btn.dataset.text;
+  });
+});
+
+// Close modal buttons
+document.querySelectorAll('.close-feedback').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.getElementById('feedbackModal').style.display = 'none';
+  });
+});
+
+    const sidebar = document.querySelector('.sidebar');
+    const toggleBtn = document.getElementById('toggleSidebar');
+    const mobileToggleBtn = document.getElementById('mobileToggle');
+    const mainContent = document.querySelector('.main-content');
+
+    // Desktop collapse
+    toggleBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('collapsed');
+      mainContent.classList.toggle('expanded');
+      feather.replace();
+    });
+
+// Mobile toggle
+    mobileToggleBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('active');
+    });
+
+    const filterSelect = document.getElementById("filterSelect");
+    const resumeCards = document.querySelectorAll(".resume-card");
+
+    filterSelect.addEventListener("change", function () {
+      const selectedRating = this.value;
+
+      resumeCards.forEach(card => {
+        const cardRating = card.getAttribute("data-rating");
+
+        if (!selectedRating || cardRating === selectedRating) {
+          card.style.display = "flex";
+        } else {
+          card.style.display = "none";
+        }
+      });
+    });
+  
+
+
+  </script>
+</body>
+</html>
