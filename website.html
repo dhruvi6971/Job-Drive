@@ -127,6 +127,8 @@ footer p { text-align: center; font-size: 12px; margin-top: 40px; color: #888; }
   padding: 120px 20px;
 }
 .hero-wrapper {
+  width: 100%;            /* full width */
+  height: auto;           /* adjust height as needed */
   max-width: 1500px;
   max-height: 1200px; 
   position: center;        /* keeps it centered */
@@ -249,7 +251,7 @@ footer p { text-align: center; font-size: 12px; margin-top: 40px; color: #888; }
   }
   .feature-row {
     flex-direction: column;
-    gap: 30px;
+    gap: -250px;
     margin-bottom: 60px;
     text-align: center;
   }
@@ -370,6 +372,348 @@ footer p { text-align: center; font-size: 12px; margin-top: 40px; color: #888; }
     text-align: center;
   }
 }
+.footer {
+  padding: 60px 10% 40px;
+  background: linear-gradient(to right, #0a0a0f, #111121);
+  color: #ccc;
+  border-radius: 16px;
+  font-family: 'Inter', sans-serif;
+}
+
+.footer-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.footer .logo img {
+  height: 50px;
+  width: auto;
+}
+
+.footer-links {
+  display: flex;
+  gap: 32px;
+}
+
+.footer-links a {
+  font-size: 16px;
+  font-weight: 500;
+  color: #e0e0e0;
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+.footer-links a:hover {
+  background-color: #1e293b;
+  color: #4e9eff;
+}
+
+.footer-links a:focus {
+  outline: 2px solid #4e9eff;
+  outline-offset: 2px;
+}
+
+footer p {
+  text-align: center;
+  font-size: 13px;
+  margin-top: 40px;
+  color: #888;
+}
+@media (max-width: 768px) {
+  .footer-top {
+    flex-direction: row;
+    justify-content: center;  /* ✅ Center the entire group */
+    align-items: center;
+    gap: 24px;                /* Optional spacing between logo and links */
+    text-align: center;
+  }
+
+  .footer-links {
+    flex-direction: row;
+    gap: 16px;
+  }
+
+  .footer-links a {
+    font-size: 14px;
+    padding: 6px 10px;
+  }
+
+  .footer .logo img {
+    height: 36px;
+  }
+
+  footer p {
+    font-size: 12px;
+    margin-top: 30px;
+  }
+
+  .footer-top {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 16px;
+  }
+
+  .footer .logo {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .footer .logo img {
+    height: 40px;
+    width: auto;
+  }
+
+  .footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .footer-links a {
+    font-size: 14px;
+    padding: 6px 10px;
+    color: #e0e0e0;
+    text-decoration: none;
+  }
+
+  .footer-links a:hover {
+    color: #4e9eff;
+  }
+
+  footer p {
+    margin-top: 24px;
+    font-size: 12px;
+    text-align: center;
+  }
+}
+
+
+.feature-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4rem;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.feature-row.reverse {
+  flex-direction: row-reverse;
+}
+
+.feature-text {
+  flex: 1;
+  min-width: 300px;
+}
+
+
+.feature-text {
+  flex: 1;
+  min-width: 300px;
+}
+
+
+.feature-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6rem;
+  margin-top: 8rem;     /* Tight spacing between stacked rows */
+  gap: 10rem;               /* Big gap between image and text */
+}
+
+.feature-row.reverse {
+  flex-direction: row-reverse;
+}
+
+.feature-text {
+  flex: 1;
+  min-width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.feature-text h3 {
+  font-size: 24px;
+  color: #111;
+  margin: 0;
+}
+
+.feature-text p {
+  font-size: 16px;
+  color: #555;
+  margin: 0;
+}
+
+
+#final1,
+#final2,
+#final3,
+#final4 {
+  max-width: 1600px;
+  width: 100%;
+  height: 100%;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
+}
+.overlay-container {
+  position: relative;
+  display: inline-block;
+}
+
+.overlay-container img {
+  display: block;
+  width: 44%;
+  border-radius: 18px;
+}
+
+.overlay-img {
+  position: absolute;
+  top: 62%;         /* adjust this as needed */
+  left: 76%;        /* adjust this as needed */
+  width: 50px;     /* scale your overlay */
+  pointer-events: none; /* ensures it doesn't block interactions */
+}
+.overlay-img2 {
+  position: absolute;
+  top: 62%;         /* adjust this as needed */
+  left: 0%;        /* adjust this as needed */
+  width: 70%;     /* scale your overlay */
+  pointer-events: none; /* ensures it doesn't block interactions */
+}
+#over{
+  position: absolute;
+  top: 50%;         /* adjust this as needed */
+  left: -150px;        /* adjust this as needed */
+  width: 70%;     /* scale your overlay */
+  pointer-events: none;
+  width: 26%;
+}
+#ai{
+ position: absolute;
+  top: 32%;         /* adjust this as needed */
+  left: -140px;        /* adjust this as needed */    /* scale your overlay */
+  pointer-events: none;
+  width: 40%;
+}
+#card442{
+ position: absolute;
+  top: 32%;         /* adjust this as needed */
+  left: -26%;        /* adjust this as needed */    /* scale your overlay */
+  pointer-events: none;
+  width: 42%;
+}
+#smart{
+ position: absolute;
+  top: 60%;         /* adjust this as needed */
+  left: 82%;        /* adjust this as needed */    /* scale your overlay */
+  pointer-events: none;
+  width: 40%;
+}
+#flexible{
+ position: absolute;
+  top: 66%;         /* adjust this as needed */
+  left: 76%;        /* adjust this as needed */    /* scale your overlay */
+  pointer-events: none;
+  width: 48%;
+}
+@media (max-width: 768px) {
+  .feature-row {
+    flex-direction: column;
+    align-items: center;
+    gap: 3rem; /* Reduce vertical gap between text and image */
+    padding: 0 0;
+  }
+
+  .feature-img img {
+    width: 90%;
+    max-width: 300px;
+    height: auto;
+  }
+
+  .overlay-container {
+    position: relative;
+    width: 90%;
+    max-width: 300px;
+  }
+
+  .overlay-img {
+    width: 60%; /* You can tweak this based on how much you want to shrink */
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .feature-text {
+    text-align: center;
+    padding: 0 1rem;
+  }
+
+  .feature-row.reverse {
+    flex-direction: column; /* Make reverse stack the same way on mobile */
+  }
+  /* General rule for overlay images */
+.overlay-img {
+  width: 50% !important;   /* Adjust this value as needed */
+  height: auto !important;
+}
+
+/* Optional: Adjust position if needed */
+.overlay-container {
+  position: relative;
+  width: 90%;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.overlay-container img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Ensure base iPad images are scaled too */
+#final1, #final2, #final3, #final4 {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+}
+
+/* Individual overrides if needed */
+#card442,
+#smart,
+#ai,
+#flexible,
+#over {
+  width: 50% !important;
+}
+#first{
+  left: 72%;
+  top: 60%;
+}
+#over{
+  display: none;
+}
+#card442{
+  left: -32%;
+  width: 5%;
+}
+#ai{
+  left: -32%;
+  width: 60%;
+}
+}
+#over {
+  box-shadow: none !important;
+}
+
 
   </style>
 </head>
@@ -392,7 +736,7 @@ footer p { text-align: center; font-size: 12px; margin-top: 40px; color: #888; }
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus eros felis, finibus nec bibendum eget, ornare et arcu.</p>
     <a href="signup.html" class="btn hero-btn">Try for Free</a>
     <div class="hero-img">
-      <img src="mac.png" alt="Dashboard UI"/>
+      <img src="789.png" alt="Dashboard UI"/>
     </div>
   </div>
   </section>
@@ -431,7 +775,12 @@ footer p { text-align: center; font-size: 12px; margin-top: 40px; color: #888; }
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
       </div>
       <div class="feature-img">
-        <img src="iPad4.png" alt="Feature Image"/>
+        <div class="feature-img overlay-container">
+  <img id="final1" src="iPad final.png" alt="iPad Image"/>
+  <img class="overlay-img" id="first" src="card 441.png" alt="Arrow Image"/>
+   <img class="overlay-img" id="over" src="Adobe Express - file.png" alt="Arrow Image"/>
+</div>
+
       </div>
     </div>
 
@@ -445,7 +794,10 @@ footer p { text-align: center; font-size: 12px; margin-top: 40px; color: #888; }
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
       </div>
       <div class="feature-img">
-        <img src="iPad5.png" alt="Feature Image"/>
+        <div class="feature-img overlay-container">
+  <img id="final2" src="iPad22.png" alt="iPad Image"/>
+  <img class="overlay-img" id="card442" src="skill.png" alt="Card Overlay"/>
+</div>
       </div>
     </div>
 
@@ -459,9 +811,33 @@ footer p { text-align: center; font-size: 12px; margin-top: 40px; color: #888; }
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
       </div>
       <div class="feature-img">
-        <img src="iPad 6.png" alt="Feature Image"/>
+         <div class="feature-img overlay-container">
+  <img id="final3" src="iPad33.png" alt="iPad Image"/>
+  <img class="overlay-img" id="flexible" src="flexible.png" alt="Arrow Image"/>
+   <img class="overlay-img" id="over" src="Vector-removebg-preview.png" alt="Arrow Image"/>
+</div>
       </div>
     </div>
+
+     <div class="feature-row reverse">
+      <div class="feature-text">
+        <h3>Add Job Drives</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        <h3>Filter & Search</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        <h3>Responsive Layout</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+      </div>
+      <div class="feature-img">
+        <div class="feature-img overlay-container">
+  <img id="final4" src="iPad44.png" alt="iPad Image"/>
+  <img class="overlay-img" id="smart" src="smart.png" alt="Arrow Image"/>
+   <img class="overlay-img" id="ai" src="ai.png" alt="Arrow Image"/>
+</div>
+      </div>
+    </div>
+
+    
   </section>
 
   <!-- FAQ -->
@@ -483,33 +859,20 @@ footer p { text-align: center; font-size: 12px; margin-top: 40px; color: #888; }
   </section>
 
   <!-- FOOTER -->
-  <footer class="footer">
-    <div class="footer-top">
-      <div class="logo">
-  <img src="logo1.png" alt="JobDrive Logo">
-</div>
-      <div class="footer-links">
-        <div>
-          <h4>Pages</h4>
-          <a href="#">Home</a>
-          <a href="#">Contact</a>
-          <a href="#">Support</a>
-        </div>
-        <div>
-          <h4>Sub Tools</h4>
-          <a href="#">Domains</a>
-          <a href="#">Business Support</a>
-          <a href="#">Integrations</a>
-        </div>
-        <div>
-          <h4>Resources</h4>
-          <a href="#">Blog</a>
-          <a href="#">Community</a>
-          <a href="#">Guides</a>
-        </div>
-      </div>
+<footer class="footer">
+  <div class="footer-top">
+    <div class="logo">
+      <img src="logo1.png" alt="JobDrive Logo">
     </div>
-    <p class="copyright">© 2025 JobDrive. All rights reserved.</p>
-  </footer>
+    <div class="footer-links">
+      <a href="#">Home</a>
+      <a href="#">Contact</a>
+      <a href="#">Pricing</a>
+    </div>
+  </div>
+  <p class="copyright">© 2025 JobDrive. All rights reserved. Hosted on AWS.</p>
+</footer>
+
+
 </body>
 </html>
